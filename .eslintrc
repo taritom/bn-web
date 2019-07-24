@@ -62,7 +62,8 @@
 	  "logical": "parens-new-line",
 	  "prop": "parens-new-line"
 	}],
-	"react/jsx-max-props-per-line": ["error", { "maximum": 1, "when": "multiline" }]
+	"react/jsx-max-props-per-line": ["error", { "maximum": 1, "when": "multiline" }],
+	"prefer-template": "error"
   },
   "env": {
     "browser": true,
