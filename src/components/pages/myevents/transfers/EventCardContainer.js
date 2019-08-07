@@ -76,10 +76,13 @@ const EventCardContainer = props => {
 		name,
 		imageUrl,
 		displayDate,
-		address
+		address,
+		imageStyle
 	} = props;
 
-	const mediaStyle = imageUrl ? { backgroundImage: `url(${imageUrl})` } : {};
+	const mediaStyle = imageUrl
+		? { backgroundImage: `url(${imageUrl})`, ...imageStyle }
+		: imageStyle;
 
 	return (
 		<React.Fragment>
@@ -123,7 +126,8 @@ const EventCardContainer = props => {
 };
 
 EventCardContainer.defaultPropTypes = {
-	name: "name"
+	name: "name",
+	imageStyle: {}
 };
 
 EventCardContainer.propTypes = {
@@ -134,7 +138,8 @@ EventCardContainer.propTypes = {
 	name: PropTypes.string,
 	imageUrl: PropTypes.string,
 	displayDate: PropTypes.string,
-	address: PropTypes.string
+	address: PropTypes.string,
+	imageStyle: PropTypes.object
 };
 
 export default withStyles(styles)(EventCardContainer);

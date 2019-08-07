@@ -10,11 +10,13 @@ import Card from "../../../elements/Card";
 import EventCardContainer from "../transfers/EventCardContainer";
 import moment from "moment-timezone";
 import getUrlParam from "../../../../helpers/getUrlParam";
-import { primaryHex } from "../../../../config/theme";
 
 const styles = theme => ({
-	card: {
-		padding: 20
+	ticketContainer: {
+		marginBottom: 40
+	},
+	qrContainer: {
+		padding: 10
 	}
 });
 
@@ -82,22 +84,29 @@ class Tickets extends Component {
 
 		return (
 			<TransferContainer>
-				<EventCardContainer
-					title={"Show these tickets to the door person."}
-					name={eventName}
-					imageUrl={eventImageUrl}
-					address={eventAddress}
-					displayDate={eventDisplayTime}
-				>
-					<QRCode size={"100%"} fgColor={primaryHex} value={"TODO"}/>
-				</EventCardContainer>
-				{/*<Grid container spacing={24} justify={"center"}>*/}
-				{/*	<Grid item xs={12} sm={10} md={8} lg={6}>*/}
-				{/*		<Card className={classes.card}>*/}
-				{/*			<div>External tickets</div>*/}
-				{/*		</Card>*/}
-				{/*	</Grid>*/}
-				{/*</Grid>*/}
+				{tickets.map((ticket, index) => {
+					const ticketType = "General access";
+
+					return (
+						<div key={index} className={classes.ticketContainer}>
+							<EventCardContainer
+								name={`1 x ${ticketType} - ${eventName}`}
+								imageUrl={eventImageUrl}
+								address={eventAddress}
+								displayDate={eventDisplayTime}
+								imageStyle={{ height: 200 }}
+							>
+								<div className={classes.qrContainer}>
+									<QRCode
+										style={{ width: "100%", height: "auto" }}
+										size={300}
+										value={"TODO"}
+									/>
+								</div>
+							</EventCardContainer>
+						</div>
+					);
+				})}
 			</TransferContainer>
 		);
 	}
