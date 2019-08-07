@@ -7,7 +7,12 @@ import errorReporting from "../../helpers/errorReporting";
 const showSideMenuRoutes = ["/admin", "/my-events", "/orders", "/account"];
 const showStudioLogoRoutes = ["/admin", "/box-office"];
 const showFooterRoutes = ["/events", "/tickets/transfers"];
-const removePaddingRoutes = ["/events", "/venues", "/tickets/transfers"];
+const removePaddingRoutes = [
+	"/events",
+	"/venues",
+	"/tickets/transfers",
+	"/public/tickets"
+];
 const removeContainerRoutes = [
 	"/widget",
 	"/login",
