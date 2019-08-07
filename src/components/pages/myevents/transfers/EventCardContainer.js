@@ -96,13 +96,17 @@ const EventCardContainer = props => {
 							<div className={classes.media} style={mediaStyle}>
 								<div className={classes.mediaOverlay}>
 									<div className={classes.topRow}>
-										<Typography className={classes.detailsText}>
-											{displayDate}
-										</Typography>
+										{displayDate ? (
+											<Typography className={classes.detailsText}>
+												{displayDate}
+											</Typography>
+										) : null}
 										<div style={{ marginTop: 8 }}/>
-										<Typography className={classes.detailsText}>
-											{address}
-										</Typography>
+										{address ? (
+											<Typography className={classes.detailsText}>
+												{address}
+											</Typography>
+										) : null}
 									</div>
 
 									<div className={classes.bottomRow}>

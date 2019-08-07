@@ -1,22 +1,53 @@
 import React, { Component } from "react";
-import { Typography, withStyles, CardMedia, Grid } from "@material-ui/core";
+import { Typography, withStyles } from "@material-ui/core";
 import QRCode from "qrcode.react";
+import moment from "moment-timezone";
 
 import notifications from "../../../../stores/notifications";
 import Bigneon from "../../../../helpers/bigneon";
 import Loader from "../../../elements/loaders/Loader";
 import TransferContainer from "../transfers/TransferContainer";
-import Card from "../../../elements/Card";
 import EventCardContainer from "../transfers/EventCardContainer";
-import moment from "moment-timezone";
 import getUrlParam from "../../../../helpers/getUrlParam";
+import { observer } from "mobx-react";
+import layout from "../../../../stores/layout";
 
 const styles = theme => ({
+	root: {
+		display: "flex",
+		justifyContent: "center",
+		flexDirection: "column",
+		alignItems: "center"
+	},
 	ticketContainer: {
-		marginBottom: 40
+		marginBottom: "10%",
+		width: "100%",
+		maxWidth: 600
 	},
 	qrContainer: {
-		padding: 10
+		padding: 10,
+		display: "flex",
+		justifyContent: "center"
+	},
+	redeemedImageContainer: {
+		padding: 10,
+		backgroundColor: "rgba(222, 226, 232, 0.4)",
+		display: "flex",
+		justifyContent: "center",
+		flexDirection: "column",
+		alignItems: "center"
+	},
+	redeemedImage: {
+		//margin: 20,
+		width: "100%",
+		maxWidth: 250,
+		height: "auto"
+	},
+	redeemedText: {
+		color: "#8b8b8b",
+		textAlign: "center",
+		marginTop: 10,
+		fontSize: 14
 	}
 });
 
@@ -27,18 +58,33 @@ class Tickets extends Component {
 		this.state = {
 			tickets: null
 		};
+
+		this.refreshTickets = this.refreshTickets.bind(this);
 	}
 
 	componentDidMount() {
-		setTimeout(() => {
-			this.setState({
-				tickets: [{ id: "test" }, { id: "test2" }, { id: "test3" }]
-			});
-		}, 1000);
-
 		const eventId = getUrlParam("event_id");
+
+		this.loadTickets();
+
 		if (eventId) {
 			this.loadEventDetails(eventId);
+		}
+
+		this.refreshInterval = setInterval(this.refreshTickets, 1000);
+	}
+
+	componentWillUnmount() {
+		if (this.refreshInterval) {
+			clearInterval(this.refreshInterval);
+		}
+	}
+
+	refreshTickets() {
+		const { windowIsActive } = layout;
+
+		if (windowIsActive && !this.isLoadingTickets) {
+			this.loadTickets();
 		}
 	}
 
@@ -68,6 +114,23 @@ class Tickets extends Component {
 			});
 	}
 
+	loadTickets() {
+		this.isLoadingTickets = true;
+
+		//TODO
+		setTimeout(() => {
+			this.setState({
+				tickets: [
+					{ id: "test" },
+					{ id: "test2", status: "Redeemed" },
+					{ id: "test3" }
+				]
+			});
+
+			this.isLoadingTickets = false;
+		}, 500);
+	}
+
 	render() {
 		const {
 			tickets,
@@ -84,29 +147,49 @@ class Tickets extends Component {
 
 		return (
 			<TransferContainer>
-				{tickets.map((ticket, index) => {
-					const ticketType = "General access";
+				<div className={classes.root}>
+					{tickets.map((ticket, index) => {
+						const ticketType = "General access";
+						const qrText = "TODO";
+						const isRedeemable = ticket.status !== "Redeemed"; //TODO check other status when data comes in
 
-					return (
-						<div key={index} className={classes.ticketContainer}>
-							<EventCardContainer
-								name={`1 x ${ticketType} - ${eventName}`}
-								imageUrl={eventImageUrl}
-								address={eventAddress}
-								displayDate={eventDisplayTime}
-								imageStyle={{ height: 200 }}
-							>
-								<div className={classes.qrContainer}>
-									<QRCode
-										style={{ width: "100%", height: "auto" }}
-										size={300}
-										value={"TODO"}
-									/>
-								</div>
-							</EventCardContainer>
-						</div>
-					);
-				})}
+						return (
+							<div key={index} className={classes.ticketContainer}>
+								<EventCardContainer
+									name={`1 x ${ticketType} - ${eventName}`}
+									imageUrl={eventImageUrl}
+									address={eventAddress}
+									displayDate={eventDisplayTime}
+									imageStyle={{ height: 160 }}
+								>
+									{isRedeemable ? (
+										<div className={classes.qrContainer}>
+											<QRCode
+												style={{
+													width: "100%",
+													height: "auto",
+													maxWidth: 350
+												}}
+												size={350}
+												value={qrText}
+											/>
+										</div>
+									) : (
+										<div className={classes.redeemedImageContainer}>
+											<img
+												className={classes.redeemedImage}
+												src={"/images/bn-logo-white.png"}
+											/>
+											<Typography className={classes.redeemedText}>
+												Ticket cannot be redeemed at this time.
+											</Typography>
+										</div>
+									)}
+								</EventCardContainer>
+							</div>
+						);
+					})}
+				</div>
 			</TransferContainer>
 		);
 	}
