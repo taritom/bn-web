@@ -150,7 +150,7 @@ class LandingAppBar extends Component {
 			<AppBar>
 				<Toolbar className={classes.toolBar}>
 					<div className={classes.barContent}>
-						<Link to={"/"}>
+						<Link to={"/"} onClick={this.forceUpdate}>
 							<AppBarLogo/>
 						</Link>
 
