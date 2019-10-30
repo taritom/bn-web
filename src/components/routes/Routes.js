@@ -311,7 +311,9 @@ class Routes extends Component {
 									path="/events/:id/tickets"
 									component={props => (
 										<Redirect
-											to={`/tickets/${props.match.params.id}/tickets`}
+											to={`/tickets/${props.match.params.id}/tickets/${
+												window.location.search
+											}`}
 										/>
 									)}
 								/>
