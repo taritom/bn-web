@@ -69,10 +69,12 @@ const validateFields = event => {
 		errors.eventType = "Invalid Event Category.";
 	}
 
-	if (privateAccessCode && privateAccessCode.length > 6) {
-		errors.privateAccessCode =
-			"Access code needs to be less than 6 characters.";
-	}
+	//Don't limit users on their private access codes
+
+	// if (privateAccessCode && privateAccessCode.length > 6) {
+	// 	errors.privateAccessCode =
+	// 		"Access code needs to be less than 6 characters.";
+	// }
 
 	if (!endTime) {
 		errors.endTime = "Event end time required.";
