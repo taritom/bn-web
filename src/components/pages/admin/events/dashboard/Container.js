@@ -281,6 +281,15 @@ class EventDashboardContainer extends Component {
 				) : (
 					<span/>
 				)}
+				{user.isAdmin ? (
+					<Link to={`/admin/events/${event.id}/announcements`}>
+						<MenuItem onClick={this.handleToolsMenuClose.bind(this)}>
+							Announcements
+						</MenuItem>
+					</Link>
+				) : (
+					<span/>
+				)}
 			</Menu>
 		);
 	}
