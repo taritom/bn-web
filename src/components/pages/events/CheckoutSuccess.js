@@ -46,16 +46,18 @@ const styles = theme => {
 			backgroundColor: "#FFFFFF"
 		},
 		mobileContent: {
-			flex: 1,
+			// flex: 1,
+			paddingTop: 40,
 			flexDirection: "column",
 			background: "linear-gradient(180deg, #9C2D82 0%, #3965A6 40%)",
 			display: "flex"
 		},
 		mobileTopContent: {
-			flex: 1,
+			// flex: 1,
 			display: "flex",
 			flexDirection: "column",
 			justifyContent: "center",
+			minHeight: "65vh",
 			paddingLeft: 22,
 			paddingRight: 22,
 			[iPhone5MediaQuery]: {
@@ -123,6 +125,9 @@ const styles = theme => {
 			backgroundImage: "linear-gradient(255deg, #e53d96, #5491cc)",
 			backgroundRepeat: "no-repeat",
 			backgroundSize: "cover",
+			OBackgroundSize: "cover",
+			MozBackgroundSize: "cover",
+			WebkitBackgroundSize: "cover",
 			boxShadow: "0 4px 15px 2px rgba(0,0,0,0.15)",
 			backgroundPosition: "center",
 			[theme.breakpoints.down("md")]: {
