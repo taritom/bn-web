@@ -159,12 +159,18 @@ class RichTextInputField extends Component {
 			currentHtml &&
 			prevProps.value !== currentHtml
 		) {
-			const editorState = convertHtmlPropToEditorState(currentHtml);
 			this.htmlHasBeenSet = true;
-			this.setState({ editorState });
-			this.applyLinkStyle();
+			if (currentHtml === "<p></p>") {
+				return;
+			} else {
+				const editorState = convertHtmlPropToEditorState(currentHtml);
+				this.setState({ editorState });
+
+				if (currentHtml.indexOf("<a") > -1) {
+					this.applyLinkStyle();
+				}
+			}
 		} else if (prevProps.value && currentHtml === "") {
-			//Html was cleared from the input
 			this.setState({ editorState: EditorState.createEmpty() });
 		}
 	}
@@ -174,7 +180,7 @@ class RichTextInputField extends Component {
 			const currentContent = this.state.editorState.getCurrentContent();
 			//const html = convertToHTML(currentContent);
 
-			let html = convertToHTML({
+			const html = convertToHTML({
 				styleToHTML: style => {},
 				blockToHTML: block => {},
 				entityToHTML: (entity, originalText) => {
@@ -188,10 +194,6 @@ class RichTextInputField extends Component {
 					return originalText;
 				}
 			})(currentContent);
-			
-			if (html === "<p></p>") {
-				html = "";
-			}
 
 			this.props.onChange(html);
 		});
@@ -289,7 +291,6 @@ class RichTextInputField extends Component {
 						/>
 					</div>
 				</div>
-
 				{error ? (
 					<FormHelperText error className={classes.errorHelperText}>
 						{error}

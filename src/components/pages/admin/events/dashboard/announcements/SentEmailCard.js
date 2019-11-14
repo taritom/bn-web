@@ -90,7 +90,11 @@ const SentEmailCard = ({
 					<br/>
 					<Typography className={classes.title}>Body message</Typography>
 					<br/>
-					<Typography className={classes.text}>{message}</Typography>
+
+					<Typography
+						className={classes.text}
+						dangerouslySetInnerHTML={{ __html: message }}
+					/>
 				</div>
 			</Collapse>
 		</Card>

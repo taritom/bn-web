@@ -78,13 +78,13 @@ const NewAnnouncementCard = ({
 
 					<div className={classes.buttonContainer}>
 						<Hidden smDown>
-							{/*<Button*/}
-							{/*	variant={"pinkBorder"}*/}
-							{/*	style={{ marginRight: 10, width: 200 }}*/}
-							{/*	onClick={onPreviewSend}*/}
-							{/*>*/}
-							{/*	Send a preview*/}
-							{/*</Button>*/}
+							<Button
+								variant={"pinkBorder"}
+								style={{ marginRight: 10, width: 200 }}
+								onClick={onPreviewSend}
+							>
+								Send a preview
+							</Button>
 							<Button
 								variant={"secondary"}
 								style={{ width: 200 }}
@@ -94,13 +94,13 @@ const NewAnnouncementCard = ({
 							</Button>
 						</Hidden>
 						<Hidden mdUp>
-							{/*<Button*/}
-							{/*	variant={"pinkBorder"}*/}
-							{/*	style={{ width: "100%", marginBottom: 10 }}*/}
-							{/*	onClick={onPreviewSend}*/}
-							{/*>*/}
-							{/*	Send a preview*/}
-							{/*</Button>*/}
+							<Button
+								variant={"pinkBorder"}
+								style={{ width: "100%", marginBottom: 10 }}
+								onClick={onPreviewSend}
+							>
+								Send a preview
+							</Button>
 							<Button
 								variant={"secondary"}
 								style={{ width: "100%" }}
