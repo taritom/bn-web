@@ -135,6 +135,12 @@ const styles = theme => ({
 			marginTop: theme.spacing.unit * 2
 		}
 	},
+	alignRightDesktop: {
+		textAlign: "right",
+		[theme.breakpoints.down("sm")]: {
+			textAlign: "left"
+		}
+	},
 	footerLinkTitle: {
 		fontSize: 20,
 		lineHeight: "23px",
@@ -250,9 +256,14 @@ const LandingFooter = props => {
 							</div>
 						</Grid>
 						<Grid item xs={12} sm={12} md={3} lg={3}>
-							<div className={classes.footerContentBlock}>
+							<div
+								className={classnames({
+									[classes.footerContentBlock]: true,
+									[classes.alignRightDesktop]: true
+								})}
+							>
 								<Typography className={classes.footerLinkTitle}>
-									Download Now:
+									Download Now:&nbsp;&nbsp;&nbsp;
 								</Typography>
 								<div className={classes.footerLinkContainer}>
 									<div className={classes.appLinksContainers}>
