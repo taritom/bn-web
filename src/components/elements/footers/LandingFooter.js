@@ -2,40 +2,57 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
-import Hidden from "@material-ui/core/Hidden";
 import Grid from "@material-ui/core/Grid";
 
 import Settings from "../../../config/settings";
 import {
 	callToActionBackground,
-	fontFamilyDemiBold
+	fontFamilyDemiBold,
+	fontFamily,
+	fontFamilyBold
 } from "../../../config/theme";
 import servedImage from "../../../helpers/imagePathHelper";
 
 //TODO change external links
 const rootUrl = "";
-const links = [
-	//{ label: "About Us", href: `${rootUrl}/about` },
-	{ label: "About Us", href: `${rootUrl}/venues-and-promoters.html` },
+const aboutLink = `${rootUrl}/venues-and-promoters.html`;
+const infoLinks = [
+	{
+		label: "Terms of Use",
+		href: `${rootUrl}/terms.html`
+	},
+	{
+		label: "Privacy Policy",
+		href: `${rootUrl}/privacy.html`
+	}
+];
+const custLinks = [
 	{
 		label: "Sell Tickets",
 		href: `${rootUrl}/venues-and-promoters.html#contact-chat`
 	}
-	//{ label: "News", href: `${rootUrl}/blog` },
-	//{ label: "FAQ", href: `${rootUrl}/faq` }
+];
+const smLinks = [
+	{
+		href: Settings().facebookLink,
+		imgUrl: "facebook-icon.png"
+	},
+	{
+		href: Settings().instagramLink,
+		imgUrl: "instagram-icon.png"
+	},
+	{
+		href: Settings().twitterLink,
+		imgUrl: "twitter-icon.png"
+	}
 ];
 
 if (Settings().appSupportLink) {
-	links.push({
+	custLinks.push({
 		label: "Support",
 		href: Settings().appSupportLink
 	});
 }
-
-const privacyPolicyLink = `${rootUrl}/privacy.html`;
-const termsLink = `${rootUrl}/terms.html`;
-const fbLink = Settings().facebookLink;
-const instaLink = Settings().instagramLink;
 
 const styles = theme => ({
 	root: {
@@ -75,7 +92,8 @@ const styles = theme => ({
 			width: "100%",
 			display: "flex",
 			flexDirection: "column",
-			alignItems: "flex-start"
+			alignItems: "flex-start",
+			marginTop: theme.spacing.unit * 3
 		}
 	},
 	copyrightSpan: {
@@ -119,8 +137,9 @@ const styles = theme => ({
 	},
 	link: {
 		color: "#3C383F",
-		fontFamily: fontFamilyDemiBold,
-		marginRight: theme.spacing.unit * 2
+		fontFamily: fontFamily,
+		fontSize: 18,
+		textTransform: "capitalize"
 	},
 	containerPadding: {
 		paddingTop: theme.spacing.unit * 3,
@@ -169,6 +188,26 @@ const styles = theme => ({
 		marginTop: theme.spacing.unit * 2,
 		marginRight: theme.spacing.unit,
 		maxHeight: 38
+	},
+	footerContentBlock: {
+		marginTop: theme.spacing.unit * 5,
+		textAlign: "left",
+		[theme.breakpoints.down("sm")]: {
+			marginTop: theme.spacing.unit * 2
+		}
+	},
+	footerLinkTitle: {
+		fontSize: 20,
+		lineHeight: "23px",
+		marginBottom: theme.spacing.unit * 5,
+		fontFamily: fontFamilyBold,
+		[theme.breakpoints.down("sm")]: {
+			marginBottom: theme.spacing.unit * 2
+		}
+	},
+	footerLinkContainer: {
+		display: "flex",
+		flexDirection: "column"
 	}
 });
 
@@ -179,70 +218,80 @@ const LandingFooter = props => {
 		<div className={classes.root}>
 			<Grid container justify="center">
 				<div className={classes.content}>
-					<div className={classes.linkLogoContainer}>
-						<img
-							alt={"LandingFooter icon"}
-							src={servedImage("/images/logo.png")}
-							className={classes.logo}
-						/>
-
-						<div className={classes.linksContainer}>
-							{links.map(({ label, href }, index) => (
-								<Typography className={classes.linkContainer} key={index}>
-									<a className={classes.link} href={href} target="_blank">
+					<Grid item xs={6} sm={6} md={2} lg={2}>
+						<div className={classes.footerContentBlock}>
+							<Typography className={classes.footerLinkTitle}>
+								About Big Neon
+							</Typography>
+							<div className={classes.footerLinkContainer}>
+								<a className={classes.link} href={aboutLink}>
+									About Us
+								</a>
+							</div>
+						</div>
+					</Grid>
+					<Grid item xs={6} sm={6} md={2} lg={2}>
+						<div className={classes.footerContentBlock}>
+							<Typography className={classes.footerLinkTitle}>
+								Customers
+							</Typography>
+							<div className={classes.footerLinkContainer}>
+								{custLinks.map(({ label, href }, index) => (
+									<a
+										key={index}
+										className={classes.link}
+										href={href}
+										target="_blank"
+									>
 										{label}
 									</a>
-								</Typography>
-							))}
+								))}
+							</div>
 						</div>
-					</div>
-					<div className={classes.containerPadding}>
-						<Typography className={classes.appBtnCaption}>
-							<span>
-								<img
-									className={classes.smallImage}
-									src={servedImage("/images/handemoji.png")}
-									alt="rock hand emoji
-						"
-								/>
-							</span>
-							&nbsp; Get the Bigneon app now:
-						</Typography>
-						<div className={classes.appLinksContainers}>
-							<a href={Settings().appStoreIos} target="_blank">
-								<img
-									className={classes.downloadBtn}
-									src={servedImage("/images/appstore-apple.png")}
-									alt="App Store download button"
-								/>
-							</a>
-							<a href={Settings().appStoreAndroid} target="_blank">
-								<img
-									className={classes.downloadBtn}
-									src={servedImage("/images/appstore-google-play.png")}
-									alt="Google Play download button"
-								/>
-							</a>
-						</div>
-					</div>
-					<Hidden smUp>
-						<div className={classes.containerPadding}>
-							<Typography className={classes.smLinks}>
-								<a
-									className={classes.termsLink}
-									href={instaLink}
-									target="_blank"
-								>
-									Instagram
-								</a>
+					</Grid>
+					<Grid item xs={6} sm={6} md={2} lg={2}>
+						<div className={classes.footerContentBlock}>
+							<Typography className={classes.footerLinkTitle}>
+								Further Info
 							</Typography>
-							<Typography className={classes.smLinks}>
-								<a className={classes.termsLink} href={fbLink} target="_blank">
-									Facebook
-								</a>
-							</Typography>
+							<div className={classes.footerLinkContainer}>
+								{infoLinks.map(({ label, href }, index) => (
+									<a
+										key={index}
+										className={classes.link}
+										href={href}
+										target="_blank"
+									>
+										{label}
+									</a>
+								))}
+							</div>
 						</div>
-					</Hidden>
+					</Grid>
+					<Grid item xs={6} sm={6} md={2} lg={2}>
+						<div className={classes.footerContentBlock}>
+							<Typography className={classes.footerLinkTitle}>
+								Follow Us
+							</Typography>
+							<div className={classes.footerSMLinkContainer}>
+								{smLinks.map(({ imgUrl, href }, index) => (
+									<a key={index} href={href} target="_blank">
+										<img
+											className={classes.smIcon}
+											src={servedImage(`/icons/${imgUrl}`)}
+											alt="Social Media Icon Button"
+										/>
+									</a>
+								))}
+							</div>
+						</div>
+					</Grid>
+					<Grid item xs={12} sm={12} md={4} lg={4}>
+						<div className={classes.footerContentBlock}>
+							<Typography className={classes.footerLinkTitle}>title</Typography>
+							<div className={classes.footerLinkContainer}>link</div>
+						</div>
+					</Grid>
 				</div>
 				<Grid item xs={12} sm={12} md={12} lg={12}>
 					<div className={classes.copyrightContainer}>
