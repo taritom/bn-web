@@ -10,7 +10,9 @@ import {
 	callToActionBackground,
 	fontFamilyDemiBold
 } from "../../../config/theme";
+import AppButton from "../AppButton";
 import servedImage from "../../../helpers/imagePathHelper";
+import Results from "../../pages/landing/cards/Results";
 
 //TODO change external links
 const rootUrl = "";
@@ -52,7 +54,7 @@ const styles = theme => ({
 		paddingLeft: theme.spacing.unit * 2,
 		paddingRight: theme.spacing.unit * 2,
 		display: "flex",
-		alignItems: "center",
+
 		[theme.breakpoints.down("sm")]: {
 			flexDirection: "column",
 			alignItems: "flex-start"
@@ -68,9 +70,8 @@ const styles = theme => ({
 		alignItems: "center"
 	},
 	copyright: {
-		fontSize: 12,
+		fontSize: theme.typography.fontSize * 0.9,
 		color: "#9DA3B4",
-		opacity: 0.8,
 		[theme.breakpoints.down("sm")]: {
 			width: "100%",
 			display: "flex",
@@ -247,14 +248,43 @@ const LandingFooter = props => {
 				<Grid item xs={12} sm={12} md={12} lg={12}>
 					<div className={classes.copyrightContainer}>
 						<div className={classes.content}>
-							<img
-								alt={"LandingFooter icon"}
-								src={servedImage("/images/logo.png")}
-								className={classes.logo}
-							/>
 							<Typography className={classes.copyright}>
+								<span className={classes.copyrightSpan}>
+									<a
+										className={classes.termsLink}
+										href={privacyPolicyLink}
+										target="_blank"
+									>
+										Privacy Policy
+									</a>
+									<a
+										className={classes.termsLink}
+										href={termsLink}
+										target="_blank"
+									>
+										Terms of Use
+									</a>
+								</span>
 								Copyright {dateYear}. BigNeon, Inc. All Rights Reserved.
 							</Typography>
+							<Hidden smDown>
+								<Typography className={classes.smLinks}>
+									<a
+										className={classes.termsLink}
+										href={instaLink}
+										target="_blank"
+									>
+										Instagram
+									</a>
+									<a
+										className={classes.termsLink}
+										href={fbLink}
+										target="_blank"
+									>
+										Facebook
+									</a>
+								</Typography>
+							</Hidden>
 						</div>
 					</div>
 				</Grid>
