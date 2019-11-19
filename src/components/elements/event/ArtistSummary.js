@@ -32,8 +32,8 @@ const styles = theme => ({
 		paddingBottom: theme.spacing.unit,
 		borderRadius: 10,
 		[theme.breakpoints.down("md")]: {
-			width: 80,
-			height: 80
+			width: 70,
+			height: 70
 		},
 		[theme.breakpoints.only("lg")]: {
 			width: 100,
@@ -76,10 +76,18 @@ const styles = theme => ({
 		marginBottom: 30
 	},
 	nameHeading: {
+		marginBottom: 5,
+		marginTop: 5,
 		[theme.breakpoints.down("sm")]: {
-			fontSize: 15,
-			marginBottom: 5,
-			marginTop: 5
+			fontSize: 15
+		}
+	},
+	headline: {
+		color: "#B1B5C3",
+		marginTop: 0,
+		marginBottom: 0,
+		[theme.breakpoints.down("lg")]: {
+			fontSize: 13
 		}
 	}
 });
@@ -195,6 +203,7 @@ class ArtistSummary extends Component {
 					<Grid item xs={9}>
 						<Grid container>
 							<Grid item xs={12} sm={4} m={12} l={4}>
+								{ headliner ? <h6 className={classes.headline}>HEADLINER</h6> : "" }
 								<h3 className={classes.nameHeading}>{name}</h3>
 							</Grid>
 							<Hidden smDown>

@@ -126,6 +126,10 @@ const styles = theme => {
 		divider: {
 			marginTop: theme.spacing.unit,
 			marginBottom: theme.spacing.unit * 4
+		},
+		artistsPerforming: {
+			marginBottom: 0,
+			marginTop: 0
 		}
 	};
 };
@@ -594,8 +598,8 @@ class ViewEvent extends Component {
 								justify="flex-start"
 								alignItems="flex-start"
 							>
-								<Grid item xs={12} style={{ paddingBottom: 0 }}>
-									<h4>Artists Performing</h4>
+								<Grid item xs={12} style={{ paddingBottom: 0, paddingTop: 0 }}>
+									<h4 className={classes.artistsPerforming}>Artists Performing</h4>
 								</Grid>
 								{artists.map(({ artist, importance }, index) => (
 									<Grid item xs={12} key={index}>

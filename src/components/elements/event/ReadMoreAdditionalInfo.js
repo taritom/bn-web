@@ -12,7 +12,15 @@ const styles = theme => ({
 	readMoreLink: {
 		font: "inherit",
 		color: secondaryHex,
-		cursor: "pointer"
+		cursor: "pointer",
+		fontSize: 18,
+		marginTop: 10,
+		marginBottom: 10,
+		display: "block",
+		[theme.breakpoints.down("md")]: {
+			fontSize: 13,
+			fontWeight: "bold"
+		}
 	},
 	shortenedTextBlock: {
 		overflow: "hidden",
