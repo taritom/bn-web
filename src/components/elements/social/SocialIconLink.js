@@ -58,7 +58,7 @@ const SocialIconLink = props => {
 			socialLink = `https://bandcamp.com/${userName}`;
 			break;
 		case "spotify":
-			src = `/images/social/spotify-circle.png`; // Only one color of icon
+			src = `/images/social/spotify-circle-${color}.png`;
 			socialLink = `https://open.spotify.com/artist/${userName}`;
 			break;
 		case "website":
@@ -114,7 +114,7 @@ SocialIconLink.propTypes = {
 	]).isRequired,
 	userName: PropTypes.string,
 	size: PropTypes.number,
-	color: PropTypes.oneOf(["white", "black"])
+	color: PropTypes.oneOf(["white", "black", "neon"])
 };
 
 export default withStyles(styles)(SocialIconLink);

@@ -88,8 +88,11 @@ const EventDescriptionBody = props => {
 					justify="flex-start"
 					alignItems="flex-start"
 				>
+					<Grid item xs={12} style={{ paddingBottom: 0 }}>
+						<h4>Artists Performing</h4>
+					</Grid>
 					{artists.map(({ artist, importance }, index) => (
-						<Grid item xs={12} sm={12} md={12} lg={6} xl={6} key={index}>
+						<Grid item xs={12} key={index}>
 							<ArtistSummary headliner={importance === 0} {...artist}/>
 						</Grid>
 					))}
