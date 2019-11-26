@@ -44,6 +44,8 @@ import getAllUrlParams from "../../../helpers/getAllUrlParams";
 import LinkifyReact from "linkifyjs/react";
 import FormattedAdditionalInfo from "./FormattedAdditionalInfo";
 import EventDetail from "./EventDetail";
+import Grid from "@material-ui/core/Grid";
+import ArtistSummary from "../../elements/event/ArtistSummary";
 
 const styles = theme => {
 	return {
@@ -124,6 +126,13 @@ const styles = theme => {
 		divider: {
 			marginTop: theme.spacing.unit,
 			marginBottom: theme.spacing.unit * 4
+		},
+		artistsContainer: {
+			paddingTop: theme.spacing.unit * 5
+		},
+		artistsPerforming: {
+			marginBottom: 0,
+			marginTop: 0
 		}
 	};
 };
@@ -581,11 +590,31 @@ class ViewEvent extends Component {
 									</FormattedAdditionalInfo>
 								</EventDetail>
 
-								<Divider
-									className={classes.divider}
-									style={{ marginBottom: 0 }}
-								/>
+								{/*<Divider*/}
+								{/*	className={classes.divider}*/}
+								{/*	style={{ marginBottom: 0 }}*/}
+								{/*/>*/}
 							</div>
+						) : null}
+
+						{artists && artists.length !== 0 ? (
+							<Grid
+								className={classes.artistsContainer}
+								spacing={32}
+								container
+								direction="row"
+								justify="flex-start"
+								alignItems="flex-start"
+							>
+								<Grid item xs={12} style={{ paddingBottom: 0, paddingTop: 0 }}>
+									<h4 className={classes.artistsPerforming}>Artists Performing</h4>
+								</Grid>
+								{artists.map(({ artist, importance }, index) => (
+									<Grid item xs={12} key={index}>
+										<ArtistSummary headliner={importance === 0} {...artist}/>
+									</Grid>
+								))}
+							</Grid>
 						) : null}
 					</div>
 
