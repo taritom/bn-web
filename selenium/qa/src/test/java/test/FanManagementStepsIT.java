@@ -33,8 +33,6 @@ public class FanManagementStepsIT extends BaseSteps {
 	@Test(dataProvider = "fan_profile_data", dependsOnMethods = {"predifinedDataUserPurchasesTickets"},
 			priority = 24, retryAnalyzer = utils.RetryAnalizer.class )
 	public void viewFanProfileAndEventsFiltering(User fan, User orgAdmin) throws Exception {
-		this.purchase = preparePurchase();
-		this.purchase.getEvent().setEventName("TestFanManagementEventName937107");
 
 		FacadeProvider fp = new FacadeProvider(driver);
 		maximizeWindow();
@@ -75,6 +73,7 @@ public class FanManagementStepsIT extends BaseSteps {
 	 */
 	@Test(dataProvider = "fan_profile_data", priority = 26, retryAnalyzer = utils.RetryAnalizer.class)
 	public void fanProfilePurchasedActivityItems(User fan, User orgAdmin) throws Exception {
+		
 		FacadeProvider fp = new FacadeProvider(driver);
 		maximizeWindow();
 		loginAndNavigationToFanProfilePage(fp, fan, orgAdmin);
@@ -102,9 +101,9 @@ public class FanManagementStepsIT extends BaseSteps {
 		//when
 		fp.getFanManagmentFacade().whenUserPicksEventSummaryCard(this.purchase.getEvent());
 		SelectedOrderPage selectedOrderPage = fp.getFanManagmentFacade().whenUserClicksOnPurchasedActivityItemOrderNumberLink();
-		boolean isOnOrderManagePage = fp.getEventDashboardFacade().thenUserIsOnSelectedManageOrderPage(selectedOrderPage);
+		boolean isOnOrderManagePage = fp.getOrderManageFacade().thenUserIsOnSelectedManageOrderPage(selectedOrderPage);
 		Assert.assertTrue(isOnOrderManagePage, "Not on orders manage page");
-		fp.getEventDashboardFacade().refundSteps(RefundReason.UNABLE_TO_ATTEND);
+		fp.getOrderManageFacade().refundSteps(RefundReason.UNABLE_TO_ATTEND);
 		navigateToFanProfilePage(fp.getFanManagmentFacade(), fan);
 		fp.getFanManagmentFacade().whenUserPicksEventSummaryCard(this.purchase.getEvent());
 		

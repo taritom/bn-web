@@ -1,11 +1,17 @@
 package pages.components.admin.orders.manage;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import enums.POSStatus;
 import model.User;
 import pages.BaseComponent;
+import utils.DateRange;
+import utils.ProjectUtils;
 import utils.SeleniumUtils;
 
 public class ManageOrderRow extends BaseComponent{
@@ -41,6 +47,17 @@ public class ManageOrderRow extends BaseComponent{
 	public String getOrderNumber() {
 		return getOrderNumberLinkElement().getText();
 	}
+	
+	public boolean isDateBetweenDateRange(DateRange range) throws Exception {
+		LocalDate current = getDate();
+		return range.isDateInRange(current);
+	}
+	
+	public LocalDate getDate() {
+		String text = getDateTimeElement().getText();
+		LocalDateTime dateTime = ProjectUtils.parseDateTime(ProjectUtils.ADMIN_EVENT_MANAGE_ORDERS_ORDER_ROW, text);
+		return dateTime.toLocalDate();
+	}
 
 	public String getCustomerName() {
 		WebElement customer = getCustomerElement();
@@ -62,6 +79,12 @@ public class ManageOrderRow extends BaseComponent{
 		user.setFirstName(nameTokens[0]);
 		user.setLastName(nameTokens[1]);
 		return user;
+	}
+	
+	public POSStatus getStatus() {
+		String text = getPOSElement().getText();
+		POSStatus status = POSStatus.getStatus(text);
+		return status;
 	}
 
 	private WebElement getOrderNumberLinkElement() {

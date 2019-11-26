@@ -127,6 +127,9 @@ const styles = theme => {
 			marginTop: theme.spacing.unit,
 			marginBottom: theme.spacing.unit * 4
 		},
+		artistsContainer: {
+			paddingTop: theme.spacing.unit * 5
+		},
 		artistsPerforming: {
 			marginBottom: 0,
 			marginTop: 0
@@ -354,7 +357,6 @@ class ViewEvent extends Component {
 			ticket_types,
 			hasAvailableTickets
 		} = selectedEvent;
-
 		if (event === null) {
 			return (
 				<div>
@@ -440,20 +442,20 @@ class ViewEvent extends Component {
 						<br/>
 						{addressLineSplit(venue.address)}
 					</Typography>
+					{venue.googleMapsLink ? (
+						<a target="_blank" href={venue.googleMapsLink}>
+							<span className={classes.eventDetailLinkText}>
+								Get Directions
+							</span>
+						</a>
+					) : null}
+					<br/>
 					<br/>
 					<Typography className={classes.eventDetailText}>
 						More Events at{" "}
 						<Link to={`/venues/${venue.slug}`}>
 							<span className={classes.eventDetailLinkText}>{venue.name}</span>{" "}
 						</Link>
-						|{" "}
-						{venue.googleMapsLink ? (
-							<a target="_blank" href={venue.googleMapsLink}>
-								<span className={classes.eventDetailLinkText}>
-									Get Directions
-								</span>
-							</a>
-						) : null}
 					</Typography>
 					<Typography className={classes.eventDetailText}>
 						More Events in{" "}
@@ -582,10 +584,10 @@ class ViewEvent extends Component {
 									</FormattedAdditionalInfo>
 								</EventDetail>
 
-								<Divider
-									className={classes.divider}
-									style={{ marginBottom: 0 }}
-								/>
+								{/*<Divider*/}
+								{/*	className={classes.divider}*/}
+								{/*	style={{ marginBottom: 0 }}*/}
+								{/*/>*/}
 							</div>
 						) : null}
 

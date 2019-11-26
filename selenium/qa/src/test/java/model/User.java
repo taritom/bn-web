@@ -25,6 +25,17 @@ public class User extends Model implements Serializable {
 	private String lastName;
 	@JsonProperty("phone_number")
 	private String phoneNumber;
+	
+	public User() {
+		super();
+	}
+	
+	public User(String textEl) {
+		String fullName  = textEl.split(":")[1].trim();
+		String[] tokens = fullName.split(" ");
+		this.firstName = tokens[0];
+		this.lastName = tokens[1];
+	}
 
 	public String getEmailAddress() {
 		return emailAddress;
@@ -134,4 +145,5 @@ public class User extends Model implements Serializable {
 		retVal.setPassConfirm(DataConstants.USER_PASS);
 		return retVal;
 	}
+	
 }

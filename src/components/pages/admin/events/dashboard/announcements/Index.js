@@ -60,15 +60,16 @@ class Announcements extends Component {
 
 	componentDidMount() {
 		Bigneon()
-			.events.dashboard({ id: this.eventId })
+			.events.read({ id: this.eventId })
 			.then(response => {
-				const { event } = response.data;
+				const { venue } = response.data;
 
-				this.setState({
-					numberOfRecipients: event.sold_held + event.sold_unreserved
-				});
-
-				this.timezone = event.venue.timezone;
+				//TODO we need an endpoint to get numberOfRecipients
+				// this.setState({
+				// 	numberOfRecipients: event.sold_held + event.sold_unreserved
+				// });
+				
+				this.timezone = venue.timezone;
 
 				this.loadEventHistory();
 			})

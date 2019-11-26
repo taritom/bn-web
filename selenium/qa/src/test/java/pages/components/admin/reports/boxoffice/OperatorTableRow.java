@@ -6,9 +6,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import data.holders.DataHolderProvider;
+import data.holders.reports.boxoffice.OperatorTableRowData;
 import pages.BaseComponent;
 
-public class OperatorTableRow extends BaseComponent {
+public class OperatorTableRow extends BaseComponent implements DataHolderProvider {
 
 	public WebElement container;
 
@@ -48,6 +50,19 @@ public class OperatorTableRow extends BaseComponent {
 
 	public BigDecimal getFaceValueMoneyAmount() {
 		return getAccessUtils().getBigDecimalMoneyAmount(container, relativeFaceValueXpath);
+	}
+	
+	public String getDate() {
+		WebElement el = getAccessUtils().getChildElementFromParentLocatedBy(container, By.xpath(relativeDateXpath));
+		return el != null ? el.getText() : null;
+	}
+	
+	public OperatorTableRowData getDataHolder() {
+		OperatorTableRowData data = new OperatorTableRowData();
+		data.setEventName(getEventName());
+		data.setStartDate(getDate());
+		data.setBoxOfficeSold(getBoxOfficeQuantity());
+		return data;
 	}
 
 }

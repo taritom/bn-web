@@ -18,7 +18,7 @@ import { dollars } from "../../../../helpers/money";
 import FanActivityPurchaseRow from "./FanActivityPurchaseRow";
 import { Link } from "react-router-dom";
 import Button from "../../../elements/Button";
-import CancelTransferDialog from "../../myevents/transfers/CancelTransferDialog";
+import CancelTransferDialog from "./CancelTransferDialog";
 import nl2br from "../../../../helpers/nl2br";
 import user from "../../../../stores/user";
 
@@ -1524,7 +1524,7 @@ class FanHistoryActivityCard extends Component {
 							cancelTransferKey: null
 						})
 					}
-					// onSuccess={() => this.refreshGuests()}
+					// onSuccess={() => this.refresh()}
 				/>
 				<Hidden smDown>{this.renderActivity(type, canCancelTransfer)}</Hidden>
 				<Hidden mdUp>{this.renderActivityMobile(type, canCancelTransfer)}</Hidden>

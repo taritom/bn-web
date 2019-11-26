@@ -54,8 +54,9 @@ const AdminOrganization = asyncComponent(() =>
 const AdminVenuesList = asyncComponent(() =>
 	import("../pages/admin/venues/List")
 );
-const AdminVenue = asyncComponent(() => import("../pages/admin/venues/Venue"));
-
+const AdminVenue = asyncComponent(() =>
+	import("../pages/admin/venues/Venue")
+);
 const AdminRegionsList = asyncComponent(() =>
 	import("../pages/admin/regions/List")
 );

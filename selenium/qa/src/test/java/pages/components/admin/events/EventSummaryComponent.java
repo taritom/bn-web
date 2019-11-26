@@ -1,4 +1,4 @@
-package pages.components.admin;
+package pages.components.admin.events;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import pages.components.dialogs.DeleteEventDialog;
 import utils.ProjectUtils;
 import utils.SeleniumUtils;
 
-public class AdminEventComponent extends BaseComponent {
+public class EventSummaryComponent extends BaseComponent {
 
 	private static final long serialVersionUID = 3498843919257980311L;
 
@@ -31,6 +31,8 @@ public class AdminEventComponent extends BaseComponent {
 	private String relativeIsPublishedXPath = ".//p[contains(text(),'Published')]";
 
 	private String relativeIsOnSaleXPath = ".//p[contains(text(),'On sale')]";
+	
+	private String relativeEventNameXpath = "./div/div[2]/div[1]/div[1]/a/p";
 
 	private String relativeVenueParagraphPath = ".//a[contains(@href,'/dashboard')]/following-sibling::p[1]";
 
@@ -48,7 +50,7 @@ public class AdminEventComponent extends BaseComponent {
 	
 	private String cancelEventDDAction = "Cancel event";
 
-	public AdminEventComponent(WebDriver driver, WebElement event) {
+	public EventSummaryComponent(WebDriver driver, WebElement event) {
 		super(driver);
 		this.event = event;
 	}
@@ -103,6 +105,10 @@ public class AdminEventComponent extends BaseComponent {
 		deleteDialog.clickOnDeleteButton(event.getEventName());
 		return deleteDialog;
 		
+	}
+	
+	public String getEventName() {
+		return SeleniumUtils.getChildElementFromParentLocatedBy(event, By.xpath(relativeEventNameXpath), driver).getText();
 	}
 
 	public void editEvent(Event event) {

@@ -12,10 +12,12 @@ import Settings from "../../../config/settings";
 import getPhoneOS from "../../../helpers/getPhoneOS";
 import HoldRow from "../../pages/admin/events/dashboard/holds/children/ChildRow";
 import analytics from "../../../helpers/analytics";
+import stateToAbbr from "../../../helpers/stateToAbbr";
+import lowerCaseTime from "../../../helpers/lowerCaseTime";
 
 const styles = theme => ({
 	card: {
-		maxWidth: 400,
+		maxWidth: 450,
 		boxShadow: "0 2px 7.5px 1px rgba(112, 124, 237, 0.07)"
 	},
 	media: {
@@ -45,6 +47,7 @@ const styles = theme => ({
 		WebkitLineClamp: 3,
 		WebkitBoxOrient: "vertical",
 		overflow: "hidden",
+		height: 42,
 		textOverflow: "ellipsis"
 	},
 	abbr: {
@@ -54,7 +57,8 @@ const styles = theme => ({
 		fontFamily: fontFamilyDemiBold,
 		fontSize: 21,
 		lineHeight: "21px",
-		borderBottom: "none"
+		borderBottom: "none",
+		height: 42
 	},
 	detailsContent: {
 		// height: 105,
@@ -110,10 +114,15 @@ const styles = theme => ({
 			transition: "box-shadow .3s ease-out"
 		},
 		boxShadow: "none",
-		transition: "box-shadow .3s ease-in"
+		transition: "box-shadow .3s ease-in",
+		maxWidth: 400
 	},
 	noHover: {
-		transition: "box-shadow .3s ease-out"
+		transition: "box-shadow .3s ease-out",
+		maxWidth: 400,
+		[theme.breakpoints.down("sm")]: {
+			maxWidth: "90vw"
+		}
 	}
 });
 
@@ -189,10 +198,12 @@ class EventResultCard extends Component {
 
 		const displayEventStartDate = eventStartDateMoment
 			.tz(newVenueTimezone)
-			.format("ddd, MMM Do");
-		const displayShowTime = moment(eventStartDateMoment)
-			.tz(newVenueTimezone)
-			.format("h:mm A");
+			.format("MMM D");
+		const displayShowTime = lowerCaseTime(
+			moment(eventStartDateMoment)
+				.tz(newVenueTimezone)
+				.format("ddd, h:mmA")
+		);
 
 		return (
 			<Link
@@ -229,17 +240,19 @@ class EventResultCard extends Component {
 								</abbr>
 							</Typography>
 						</div>
-						<div style={{ textAlign: "right" }}>
-							<PriceTag
-								min={min_ticket_price}
-								max={max_ticket_price}
-								classes={classes}
-							/>
-						</div>
+						{/*<div style={{ textAlign: "right" }}>*/}
+						{/*	<PriceTag*/}
+						{/*		min={min_ticket_price}*/}
+						{/*		max={max_ticket_price}*/}
+						{/*		classes={classes}*/}
+						{/*	/>*/}
+						{/*</div>*/}
 					</div>
 					<div className={classes.addressHolder}>
 						<Typography className={classes.value}>
-							@ {venueName}, {city}, {state}
+							{venueName}
+							{city ? `, ${city}` : null}
+							{state ? `, ${stateToAbbr(state, "abbr")}` : null}
 						</Typography>
 					</div>
 				</Card>

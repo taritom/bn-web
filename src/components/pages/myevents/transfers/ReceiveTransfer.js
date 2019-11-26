@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Typography, withStyles } from "@material-ui/core";
+import { Hidden, Typography, withStyles } from "@material-ui/core";
 import moment from "moment-timezone";
 import { Link } from "react-router-dom";
 
@@ -16,7 +16,10 @@ import {
 	secondaryHex
 } from "../../../../config/theme";
 import EventCardContainer from "./EventCardContainer";
-import { FacebookButton } from "../../authentication/social/FacebookButton";
+import {
+	FacebookButton,
+	logoutFB
+} from "../../authentication/social/FacebookButton";
 import Button from "../../../elements/Button";
 import TermsAndConditionsLinks from "../../authentication/TermsAndConditionsLinks";
 import SignupForm from "../../authentication/forms/SignupForm";
@@ -24,7 +27,7 @@ import LoginForm from "../../authentication/forms/LoginForm";
 import servedImage from "../../../../helpers/imagePathHelper";
 import SMSLinkForm from "../../../elements/SMSLinkForm";
 import optimizedImageUrl from "../../../../helpers/optimizedImageUrl";
-import settings from "../../../../config/settings";
+import Settings from "../../../../config/settings";
 
 const styles = theme => ({
 	root: {
@@ -34,7 +37,7 @@ const styles = theme => ({
 		flexDirection: "column",
 		minHeight: "90%",
 		paddingBottom: 50,
-
+		height: "100%",
 		[theme.breakpoints.down("xs")]: {
 			paddingTop: 20
 			// justifyContent: null
@@ -129,6 +132,16 @@ const styles = theme => ({
 			padding: 35,
 			paddingTop: "40%"
 		}
+	},
+	additionalText: {
+		paddingLeft: theme.spacing.unit * 2,
+		paddingTop: theme.spacing.unit * 2
+	},
+	noAppText: {
+		color: "#fff",
+		fontFamily: fontFamilyDemiBold,
+		textAlign: "center",
+		margin: "30px auto 0 auto"
 	}
 });
 
@@ -144,8 +157,10 @@ class ReceiveTransfer extends Component {
 			signupOrLogin: null,
 			receiveSuccess: false,
 			isClaiming: false,
-			transferStatus: null
+			transferStatus: null,
+			openedAppLink: false
 		};
+		this.scrollRef = React.createRef();
 	}
 
 	componentDidMount() {
@@ -162,10 +177,21 @@ class ReceiveTransfer extends Component {
 		);
 
 		this.refreshUser();
+		this.handleScrollToTop();
 	}
+
+	handleScrollToTop() {
+		window.scrollTo(0, 0);
+
+		if (this.scrollRef.current) {
+			this.scrollRef.current.scrollTop = 0;
+		}
+	}
+	// window.scrollTo(0, scrollPos);
 
 	refreshUser() {
 		//If we just landed on this page, make sure the user is logged in first
+
 		user.refreshUser(
 			() => this.setState({ isAuthenticated: true }),
 			() => this.setState({ isAuthenticated: false })
@@ -235,7 +261,6 @@ class ReceiveTransfer extends Component {
 
 	receiveTransfer() {
 		const { transferAuth } = this.state;
-
 		this.setState({ isClaiming: true });
 
 		Bigneon()
@@ -260,7 +285,7 @@ class ReceiveTransfer extends Component {
 
 		const senderName = "A user"; //TODO get this from the api when it comes
 
-		let text = `${senderName} has sent you a ticket... get it!`;
+		let text = `Get your tickets now!`;
 
 		if (ticketCount !== null) {
 			if (ticketCount > 1) {
@@ -270,6 +295,27 @@ class ReceiveTransfer extends Component {
 
 		return text;
 	}
+
+	handleOnSuccess = () => {
+		this.refreshUser.bind(this);
+		this.receiveTransfer();
+		this.handleScrollToTop();
+	};
+
+	handleAcceptClick = () => {
+		this.receiveTransfer();
+		window.open(Settings().genericAppDownloadLink, "_blank");
+		this.setState({ openedAppLink: true });
+	};
+
+	handleViewTicketsClick = () => {
+		window.open(Settings().genericAppDownloadLink, "_blank");
+	};
+
+	handleNotYouClick = () => {
+		user.onLogout(() => this.refreshUser());
+		logoutFB(() => this.refreshUser());
+	};
 
 	renderAuthenticationOptions() {
 		const { signupOrLogin } = this.state;
@@ -282,10 +328,7 @@ class ReceiveTransfer extends Component {
 			content = (
 				<div className={classes.authContainer}>
 					<Typography className={classes.authenticateTitle}>Sign Up</Typography>
-					<SignupForm
-						hideTermsAndConditions
-						onSuccess={this.refreshUser.bind(this)}
-					/>
+					<SignupForm hideTermsAndConditions onSuccess={this.handleOnSuccess}/>
 					<Typography className={classes.switchAuthTypeText}>
 						Already have an account?{" "}
 						<span
@@ -300,7 +343,7 @@ class ReceiveTransfer extends Component {
 		} else if (signupOrLogin === "login") {
 			content = (
 				<div className={classes.authContainer}>
-					<LoginForm onSuccess={this.refreshUser.bind(this)}/>
+					<LoginForm onSuccess={this.handleOnSuccess}/>
 					<Typography className={classes.switchAuthTypeText}>
 						Don't have an account?{" "}
 						<span
@@ -317,10 +360,10 @@ class ReceiveTransfer extends Component {
 				<React.Fragment>
 					<div className={classes.optionsContainer}>
 						<Typography className={classes.authenticateTitle}>
-							Log in or Sign up to Big Neon to claim your tickets!
+							To get your tickets create a Big Neon Account
 						</Typography>
 
-						<FacebookButton onSuccess={this.refreshUser.bind(this)}/>
+						<FacebookButton onSuccess={this.handleOnSuccess}/>
 
 						<Button
 							size={"mediumLarge"}
@@ -331,7 +374,16 @@ class ReceiveTransfer extends Component {
 							Continue with email
 						</Button>
 					</div>
-
+					<Typography className={classes.switchAuthTypeText}>
+						Already have an account?{" "}
+						<span
+							className={classes.textLink}
+							onClick={() => this.setState({ signupOrLogin: "login" })}
+						>
+							Log in
+						</span>
+					</Typography>
+					<br/>
 					<TermsAndConditionsLinks/>
 				</React.Fragment>
 			);
@@ -363,21 +415,35 @@ class ReceiveTransfer extends Component {
 
 				<Typography
 					className={classes.logoutText}
-					onClick={() => user.onLogout(() => this.refreshUser())}
+					onClick={this.handleNotYouClick}
 				>
 					Not you? Click here.
 				</Typography>
 
-				<div className={classes.optionsContainer}>
-					<Button
-						variant={"secondary"}
-						style={{ width: "100%" }}
-						onClick={this.receiveTransfer.bind(this)}
-						disabled={isClaiming}
-					>
-						{isClaiming ? "Claiming..." : "Let's do this"}
-					</Button>
-				</div>
+				<Hidden smUp>
+					<div className={classes.optionsContainer}>
+						<Button
+							variant={"secondary"}
+							style={{ width: "100%" }}
+							onClick={this.handleAcceptClick}
+							disabled={isClaiming}
+						>
+							{isClaiming ? "Claiming..." : "Accept tickets"}
+						</Button>
+					</div>
+				</Hidden>
+				<Hidden smDown>
+					<div className={classes.optionsContainer}>
+						<Button
+							variant={"secondary"}
+							style={{ width: "100%" }}
+							onClick={this.receiveTransfer.bind(this)}
+							disabled={isClaiming}
+						>
+							{isClaiming ? "Claiming..." : "Accept tickets"}
+						</Button>
+					</div>
+				</Hidden>
 			</div>
 		);
 	}
@@ -437,14 +503,15 @@ class ReceiveTransfer extends Component {
 					</Typography>
 					<br/>
 					<Typography className={classes.backgroundTextSmall}>
-						If you think this is a mistake, please contact Big Neon Customer Support.
+						If you think this is a mistake, please contact Big Neon Customer
+						Support.
 					</Typography>
 				</div>
 			);
 
 			buttonLink = (
 				<Button
-					href={settings().submitSupportLink || settings().appSupportLink}
+					href={Settings().submitSupportLink || Settings().appSupportLink}
 					size={"mediumLarge"}
 					variant={"whiteCTA"}
 					style={{ width: "100%", marginTop: 40 }}
@@ -484,20 +551,66 @@ class ReceiveTransfer extends Component {
 			eventAddress,
 			eventDisplayTime,
 			receiveSuccess,
+			openedAppLink,
 			transferStatus
 		} = this.state;
 
 		if (receiveSuccess) {
 			return (
-				<EventCardContainer
-					title={"Nice! Almost done..."}
-					name={"Download the Big Neon App."}
-					imageUrl={eventImageUrl}
-					address={eventAddress}
-					displayDate={eventDisplayTime}
-				>
-					<SMSLinkForm/>
-				</EventCardContainer>
+				<div>
+					<Hidden smDown>
+						<EventCardContainer
+							title={
+								"Transfer Accepted!" +
+								"\n" +
+								"Login to the app to view your tickets."
+							}
+							name={"Download the Big Neon App."}
+							imageUrl={eventImageUrl}
+							address={eventAddress}
+							displayDate={eventDisplayTime}
+						>
+							<Typography className={classes.additionalText}>
+								To receive a link to download the app enter your mobile number
+								below.
+							</Typography>
+							<SMSLinkForm/>
+						</EventCardContainer>
+						<br/>
+						<Typography className={classes.noAppText}>
+							No app? No problem. Just show your ID at the door.
+						</Typography>
+					</Hidden>
+					<Hidden smUp>
+						<EventCardContainer
+							title={
+								"Transfer Accepted!" +
+								"\n" +
+								"Login to the app to view your tickets."
+							}
+							name={eventName}
+							imageUrl={eventImageUrl}
+							address={eventAddress}
+							displayDate={eventDisplayTime}
+						>
+							<Button
+								variant={"secondary"}
+								style={{
+									width: "80%",
+									margin: "20px auto",
+									display: "flex"
+								}}
+								onClick={this.handleViewTicketsClick}
+							>
+								View tickets
+							</Button>
+						</EventCardContainer>
+						<br/>
+						<Typography className={classes.noAppText}>
+							No app? No problem. Just show your ID at the door.
+						</Typography>
+					</Hidden>
+				</div>
 			);
 		}
 
@@ -509,19 +622,57 @@ class ReceiveTransfer extends Component {
 			return this.renderTransferUnavailable();
 		}
 
-		return (
-			<EventCardContainer
-				title={this.title}
-				name={eventName}
-				imageUrl={eventImageUrl}
-				address={eventAddress}
-				displayDate={eventDisplayTime}
-			>
-				{isAuthenticated === false
-					? this.renderAuthenticationOptions()
-					: this.renderCallToAction()}
-			</EventCardContainer>
-		);
+		if (isAuthenticated === false) {
+			return (
+				<EventCardContainer
+					title={this.title}
+					name={eventName}
+					imageUrl={eventImageUrl}
+					address={eventAddress}
+					displayDate={eventDisplayTime}
+				>
+					{this.renderAuthenticationOptions()}
+				</EventCardContainer>
+			);
+		} else if (isAuthenticated === true && receiveSuccess === false) {
+			return (
+				<EventCardContainer
+					title={this.title}
+					name={eventName}
+					imageUrl={eventImageUrl}
+					address={eventAddress}
+					displayDate={eventDisplayTime}
+				>
+					{this.renderCallToAction()}
+				</EventCardContainer>
+			);
+		}
+
+		if (openedAppLink === true && receiveSuccess === true)
+			return (
+				<EventCardContainer
+					title={
+						"Transfer Accepted!" +
+						"\n" +
+						"Login to the app to view your tickets."
+					}
+					name={eventName}
+					imageUrl={eventImageUrl}
+					address={eventAddress}
+					displayDate={eventDisplayTime}
+				>
+					<Link to={"/"}>
+						<Button
+							size={"mediumLarge"}
+							variant={"whiteCTA"}
+							style={{ width: "100%", marginTop: 40 }}
+						>
+							Find other events
+						</Button>
+					</Link>
+					<SMSLinkForm/>
+				</EventCardContainer>
+			);
 	}
 
 	render() {
@@ -529,7 +680,9 @@ class ReceiveTransfer extends Component {
 
 		return (
 			<TransferContainer>
-				<div className={classes.root}>{this.renderContents()}</div>
+				<div ref={this.scrollRef} className={classes.root}>
+					{this.renderContents()}
+				</div>
 			</TransferContainer>
 		);
 	}

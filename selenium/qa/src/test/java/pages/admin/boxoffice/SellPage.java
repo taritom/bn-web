@@ -10,7 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import pages.BasePage;
-import pages.components.admin.events.TicketTypeRowComponent;
+import pages.components.boxoffice.sell.TicketTypeRowComponent;
 import utils.Constants;
 
 public class SellPage extends BasePage {

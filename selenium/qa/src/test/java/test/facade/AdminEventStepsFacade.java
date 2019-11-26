@@ -11,8 +11,8 @@ import org.testng.Assert;
 import model.Event;
 import pages.admin.events.AdminEventsPage;
 import pages.admin.events.CreateEventPage;
-import pages.components.admin.AdminEventComponent;
 import pages.components.admin.AdminSideBar;
+import pages.components.admin.events.EventSummaryComponent;
 import pages.components.dialogs.DeleteEventDialog;
 import utils.MsgConstants;
 import utils.ProjectUtils;
@@ -43,23 +43,23 @@ public class AdminEventStepsFacade extends BaseFacadeSteps {
 		adminEvents.isAtPage();
 	}
 	
-	public AdminEventComponent givenEventExistAndIsNotCanceled(Event event) throws URISyntaxException {
+	public EventSummaryComponent givenEventExistAndIsNotCanceled(Event event) throws URISyntaxException {
 		return givenEventWithNameAndPredicateExists(event, comp -> !comp.isEventCanceled());
 	}
 	
-	public AdminEventComponent findEventWithName(Event event) {
+	public EventSummaryComponent findEventWithName(Event event) {
 		return adminEvents.findEventByName(event.getEventName());
 	}
 
-	public AdminEventComponent findEventIsOpenedAndHasSoldItem(Event event) {
-		AdminEventComponent selectedEvent =  adminEvents.findEvent(event.getEventName(),
+	public EventSummaryComponent findEventIsOpenedAndHasSoldItem(Event event) {
+		EventSummaryComponent selectedEvent =  adminEvents.findEvent(event.getEventName(),
 				comp -> comp.isEventPublished() && comp.isEventOnSale() && comp.isSoldToAmountGreaterThan(0));
 		return selectedEvent;
 	}
 
-	public AdminEventComponent givenAnyEventWithPredicateExists(Event event, Predicate<AdminEventComponent> predicate)
+	public EventSummaryComponent givenAnyEventWithPredicateExists(Event event, Predicate<EventSummaryComponent> predicate)
 			throws URISyntaxException {
-		AdminEventComponent selectedEvent = adminEvents.findEvent(predicate);
+		EventSummaryComponent selectedEvent = adminEvents.findEvent(predicate);
 		if (selectedEvent == null) {
 			createNewRandomEvent(event);
 			selectedEvent = adminEvents.findEvent(predicate);
@@ -67,9 +67,9 @@ public class AdminEventStepsFacade extends BaseFacadeSteps {
 		return selectedEvent;
 	}
 
-	public AdminEventComponent givenEventWithNameAndPredicateExists(Event event,
-			Predicate<AdminEventComponent> predicate) throws URISyntaxException {
-		AdminEventComponent selectedEvent = adminEvents.findEvent(event.getEventName(), predicate);
+	public EventSummaryComponent givenEventWithNameAndPredicateExists(Event event,
+			Predicate<EventSummaryComponent> predicate) throws URISyntaxException {
+		EventSummaryComponent selectedEvent = adminEvents.findEvent(event.getEventName(), predicate);
 		if (selectedEvent == null) {
 			createNewRandomEvent(event);
 			selectedEvent = adminEvents.findEvent(event.getEventName(), predicate);
@@ -94,7 +94,7 @@ public class AdminEventStepsFacade extends BaseFacadeSteps {
 
 	
 	public boolean whenUserDeletesEvent(Event event) {
-		AdminEventComponent component = adminEvents.findEventByName(event.getEventName());
+		EventSummaryComponent component = adminEvents.findEventByName(event.getEventName());
 		DeleteEventDialog deleteDialog = component.deleteEvent(event);
 		if (adminEvents.isNotificationDisplayedWithMessage(MsgConstants.EVENT_DELETION_FAILED, 4)) {
 			deleteDialog.clickOnKeepEvent();
@@ -124,12 +124,12 @@ public class AdminEventStepsFacade extends BaseFacadeSteps {
 	}
 	
 	public void whenUserClicksOnViewEventOfSelecteEvent(Event event) {
-		AdminEventComponent eventComp = findEventWithName(event);
+		EventSummaryComponent eventComp = findEventWithName(event);
 		eventComp.viewEvent();
 	}
 
 	public boolean thenEventShouldBeCanceled(Event event) {
-		AdminEventComponent componentEvent = adminEvents.findEventByName(event.getEventName());
+		EventSummaryComponent componentEvent = adminEvents.findEventByName(event.getEventName());
 		if (componentEvent != null) {
 			return componentEvent.isEventCanceled();
 		} else {
@@ -138,7 +138,7 @@ public class AdminEventStepsFacade extends BaseFacadeSteps {
 	}
 
 	public boolean thenUpdatedEventShoudExist(Event event) {
-		AdminEventComponent component = this.adminEvents.findEventByName(event.getEventName());
+		EventSummaryComponent component = this.adminEvents.findEventByName(event.getEventName());
 		if (component != null) {
 			return component.checkIfDatesMatch(event.getStartDate());
 		} else {
@@ -160,7 +160,7 @@ public class AdminEventStepsFacade extends BaseFacadeSteps {
 	}
 
 	public boolean thenEventShouldBeDrafted(Event event) {
-		AdminEventComponent component = adminEvents.findEventByName(event.getEventName());
+		EventSummaryComponent component = adminEvents.findEventByName(event.getEventName());
 		return component.isEventDrafted();
 	}
 

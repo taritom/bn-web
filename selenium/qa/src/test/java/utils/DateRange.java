@@ -43,5 +43,22 @@ public class DateRange implements Iterable<LocalDate> {
 		}
 		return dates;
 	}
+	
+	public boolean isDateInRange(LocalDate current) throws Exception {
+		if(startDate.isAfter(endDate)) {
+			throw new Exception("end date is before start date");
+		}
+		boolean q = current.equals(startDate) || current.equals(endDate);
+		boolean b = current.isAfter(startDate);
+		boolean d = current.isBefore(endDate);
+		return (q || (b && d));
+	}
 
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
 }

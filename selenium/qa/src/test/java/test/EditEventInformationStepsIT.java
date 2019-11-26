@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 import model.Event;
 import model.User;
-import pages.components.admin.AdminEventComponent;
+import pages.components.admin.events.EventSummaryComponent;
 import test.facade.AdminEventStepsFacade;
 import test.facade.LoginStepsFacade;
 import test.facade.OrganizationStepsFacade;
@@ -26,7 +26,7 @@ public class EditEventInformationStepsIT extends BaseSteps {
 		organizationFacade.givenOrganizationExist(event.getOrganization());
 
 		adminEventFacade.givenUserIsOnAdminEventsPage();
-		AdminEventComponent eventComp = adminEventFacade.givenEventWithNameAndPredicateExists(event,
+		EventSummaryComponent eventComp = adminEventFacade.givenEventWithNameAndPredicateExists(event,
 				component -> !component.isEventDrafted());
 
 		eventComp.editEvent(event);//userIsOnEventPage

@@ -8,7 +8,9 @@ import { secondaryHex, fontFamilyDemiBold } from "../../../config/theme";
 import "../../pages/events/rich-event-description.css";
 
 const styles = theme => ({
-	root: {},
+	root: {
+		paddingTop: 10
+	},
 	readMoreLink: {
 		font: "inherit",
 		color: secondaryHex,

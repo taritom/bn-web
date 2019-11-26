@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.openqa.selenium.WebDriver;
 
+import test.facade.orders.order.OrderManageFacade;
+import test.facade.reports.AdminEventReportsFacade;
 import test.facade.reports.ReportsBoxOfficeFacade;
 import test.facade.reports.ReportsFacade;
 
@@ -60,6 +62,14 @@ public class FacadeProvider {
 	
 	public VenueStepsFacade getVenueFacade() {
 		return (VenueStepsFacade) getFacade(VenueStepsFacade.class);
+	}
+	
+	public OrderManageFacade getOrderManageFacade() {
+		return (OrderManageFacade) getFacade(OrderManageFacade.class);
+	}
+	
+	public AdminEventReportsFacade getEventReportsFacade() {
+		return (AdminEventReportsFacade) getFacade(AdminEventReportsFacade.class);
 	}
 
 	private BaseFacadeSteps getFacade(Class clazz) {

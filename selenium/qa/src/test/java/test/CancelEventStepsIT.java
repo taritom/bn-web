@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import model.Event;
 import model.User;
 import pages.LoginPage;
-import pages.components.admin.AdminEventComponent;
+import pages.components.admin.events.EventSummaryComponent;
 import test.facade.AdminEventStepsFacade;
 import test.facade.LoginStepsFacade;
 import test.facade.OrganizationStepsFacade;
@@ -31,7 +31,7 @@ public class CancelEventStepsIT extends BaseSteps {
 		boolean isOrganiztionPresent = organizationFacade.givenOrganizationExist(genericEvent.getOrganization());
 		Assert.assertTrue(isOrganiztionPresent);
 		eventWrapper.givenUserIsOnAdminEventsPage();
-		AdminEventComponent selectedEvent = eventWrapper.givenEventExistAndIsNotCanceled(event);
+		EventSummaryComponent selectedEvent = eventWrapper.givenEventExistAndIsNotCanceled(event);
 		
 		//when
 		selectedEvent.cancelEvent();

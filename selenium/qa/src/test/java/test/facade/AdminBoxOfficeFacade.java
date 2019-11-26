@@ -16,7 +16,7 @@ import model.User;
 import pages.admin.boxoffice.GuestPage;
 import pages.admin.boxoffice.SellPage;
 import pages.components.admin.AdminBoxOfficeSideBar;
-import pages.components.admin.events.TicketTypeRowComponent;
+import pages.components.boxoffice.sell.TicketTypeRowComponent;
 import utils.ProjectUtils;
 import pages.components.dialogs.BoxOfficeSellCheckoutDialog;
 import pages.components.dialogs.BoxOfficeSellOrderCompleteDialog;
@@ -84,7 +84,10 @@ public class AdminBoxOfficeFacade extends BaseFacadeSteps {
 		}
 		whenUserEntersGuestInformationAndClicksOnCompleteOrder(customer, "Box office reports");
 		thenUserShouldSeeOrderCompleteDialog();
+		String orderNumber = getOrderNumberFromCompleteDialog();
 		whenUserClickOnReturnToBoxOffice();
+		//add customer and order number to purchase
+		purchase.addBoxOfficeOrderLine(customer, orderNumber);
 	}
 
 	public boolean whenUserSearchesByUserName(User user) {
@@ -211,6 +214,11 @@ public class AdminBoxOfficeFacade extends BaseFacadeSteps {
 		} else {
 			return false;
 		}
+	}
+	
+	public String getOrderNumberFromCompleteDialog() {
+		BoxOfficeSellOrderCompleteDialog orderCompleteDialog = new BoxOfficeSellOrderCompleteDialog(driver);
+		return orderCompleteDialog.getOrderNumber();
 	}
 	
 	public void whenUserClickOnReturnToBoxOffice() {

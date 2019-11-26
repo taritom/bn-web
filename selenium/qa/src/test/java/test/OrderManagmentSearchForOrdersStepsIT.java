@@ -12,7 +12,7 @@ import model.Purchase;
 import model.TicketType;
 import model.User;
 import pages.EventsPage;
-import pages.components.admin.AdminEventComponent;
+import pages.components.admin.events.EventSummaryComponent;
 import pages.components.admin.orders.manage.ManageOrderRow;
 import pages.components.dialogs.IssueRefundDialog.RefundReason;
 import test.facade.AdminBoxOfficeFacade;
@@ -21,6 +21,7 @@ import test.facade.AdminEventStepsFacade;
 import test.facade.EventStepsFacade;
 import test.facade.LoginStepsFacade;
 import test.facade.OrganizationStepsFacade;
+import test.facade.orders.order.OrderManageFacade;
 import utils.DataConstants;
 
 public class OrderManagmentSearchForOrdersStepsIT extends BaseSteps {
@@ -160,6 +161,7 @@ public class OrderManagmentSearchForOrdersStepsIT extends BaseSteps {
 		AdminEventStepsFacade adminEventFacade = new AdminEventStepsFacade(driver);
 		OrganizationStepsFacade organizationFacade = new OrganizationStepsFacade(driver);
 		AdminEventDashboardFacade dashboardFacade = new AdminEventDashboardFacade(driver);
+		OrderManageFacade orderManageFacade = new OrderManageFacade(driver);
 
 		maximizeWindow();
 
@@ -178,15 +180,15 @@ public class OrderManagmentSearchForOrdersStepsIT extends BaseSteps {
 		
 		Assert.assertTrue(retVal);
 		
-		dashboardFacade.whenUserClicksOnOrderLinkOfGivenUser(customerOne);
-		boolean isExpanded = dashboardFacade.whenUserExpandOrderDetailsAndCheckIfExpanded();
+		dashboardFacade.whenUserClicksOnOrderLinkOfGivenUser(customerOne, orderManageFacade);
+		boolean isExpanded = orderManageFacade.whenUserExpandOrderDetailsAndCheckIfExpanded();
 		Assert.assertTrue(isExpanded);
-		dashboardFacade.whenUserSelectsPurchasedStatusTicketForRefund();
-		dashboardFacade.whenUserClicksOnRefundButton();
-		dashboardFacade.thenRefundDialogShouldBeVisible();
-		dashboardFacade.whenUserSelectRefundReasonAndClicksOnConfirmButton(RefundReason.UNABLE_TO_ATTEND);
-		dashboardFacade.thenRefundDialogShouldBeVisible();
-		dashboardFacade.whenUserClicksOnGotItButtonOnRefundSuccessDialog();
+		orderManageFacade.whenUserSelectsPurchasedStatusTicketForRefund();
+		orderManageFacade.whenUserClicksOnRefundButton();
+		orderManageFacade.thenRefundDialogShouldBeVisible();
+		orderManageFacade.whenUserSelectRefundReasonAndClicksOnConfirmButton(RefundReason.UNABLE_TO_ATTEND);
+		orderManageFacade.thenRefundDialogShouldBeVisible();
+		orderManageFacade.whenUserClicksOnGotItButtonOnRefundSuccessDialog();
 		
 		adminEventFacade.givenUserIsOnAdminEventsPage();
 		
@@ -204,18 +206,19 @@ public class OrderManagmentSearchForOrdersStepsIT extends BaseSteps {
 		AdminEventStepsFacade adminEventFacade = new AdminEventStepsFacade(driver);
 		OrganizationStepsFacade organizationFacade = new OrganizationStepsFacade(driver);
 		AdminEventDashboardFacade dashboardFacade = new AdminEventDashboardFacade(driver);
+		OrderManageFacade orderManageFacade = new OrderManageFacade(driver);
 
 	    maximizeWindow();
 
 	    loginPickOrgNavToManageOrders(loginFacade, adminEventFacade, organizationFacade, dashboardFacade, event, orgAdmin);
 	    
-		dashboardFacade.whenUserClicksOnOrderLinkOfGivenUser(customerOne);
+		dashboardFacade.whenUserClicksOnOrderLinkOfGivenUser(customerOne, orderManageFacade);
 		//find a way to put this args in data
-		boolean isThereCorrectNumberInOrderHistory = dashboardFacade.thenThereShouldBeItemsInOrderHistory(NUMBER_OF_ACTIVITY_ITEMS_AFTER_REFUND);
+		boolean isThereCorrectNumberInOrderHistory = orderManageFacade.thenThereShouldBeItemsInOrderHistory(NUMBER_OF_ACTIVITY_ITEMS_AFTER_REFUND);
 		Assert.assertTrue(isThereCorrectNumberInOrderHistory);
-		boolean isTherePurchasedHistoryItem =  dashboardFacade.thenThereShouldBePurchasedHistoryItem(customerOne, purchase);
+		boolean isTherePurchasedHistoryItem =  orderManageFacade.thenThereShouldBePurchasedHistoryItem(customerOne, purchase);
 		Assert.assertTrue(isTherePurchasedHistoryItem);
-		boolean isEveryRowCollapsed = dashboardFacade.thenAllItemsShouldBeClosed();
+		boolean isEveryRowCollapsed = orderManageFacade.thenAllItemsShouldBeClosed();
 		Assert.assertTrue(isEveryRowCollapsed);
 
 	
@@ -233,20 +236,21 @@ public class OrderManagmentSearchForOrdersStepsIT extends BaseSteps {
 		AdminEventStepsFacade adminEventFacade = new AdminEventStepsFacade(driver);
 		OrganizationStepsFacade organizationFacade = new OrganizationStepsFacade(driver);
 		AdminEventDashboardFacade dashboardFacade = new AdminEventDashboardFacade(driver);
+		OrderManageFacade orderManageFacade = new OrderManageFacade(driver);
 
 	    maximizeWindow();
 
 	    boolean isInitialStepsComplete = loginPickOrgNavToManageOrders(loginFacade, adminEventFacade, 
 	    		organizationFacade, dashboardFacade, event, orgAdmin);
 	    Assert.assertTrue(isInitialStepsComplete);
-		dashboardFacade.whenUserClicksOnOrderLinkOfGivenUser(customerOne);
+		dashboardFacade.whenUserClicksOnOrderLinkOfGivenUser(customerOne, orderManageFacade);
 		
-		boolean isTherePurchasedHistoryItem =  dashboardFacade.thenThereShouldBePurchasedHistoryItemWithNumberOfPurchases(customerOne, purchase, 3);
+		boolean isTherePurchasedHistoryItem =  orderManageFacade.thenThereShouldBePurchasedHistoryItemWithNumberOfPurchases(customerOne, purchase, 3);
 		Assert.assertTrue(isTherePurchasedHistoryItem);
 		TicketType ticketType = event.getTicketTypes().stream().filter(tt->tt.getTicketTypeName().equals(ticketTypeName)).findFirst().get();
-		boolean isDataValid = dashboardFacade.whenUserExpandsActivityItemAndChecksValidityOfData(purchase, MULTIPLE_PURCHASE_QTY_FOR_ONE_USER, ticketType);
+		boolean isDataValid = orderManageFacade.whenUserExpandsActivityItemAndChecksValidityOfData(purchase, MULTIPLE_PURCHASE_QTY_FOR_ONE_USER, ticketType);
 		Assert.assertTrue(isDataValid, "Activity Item data invalid");
-		boolean isRefundDataValid = dashboardFacade.whenUserExpandsRefundedHistoryItemAndChecksData(purchase, 1, ticketType);
+		boolean isRefundDataValid = orderManageFacade.whenUserExpandsRefundedHistoryItemAndChecksData(purchase, 1, ticketType);
 		Assert.assertTrue(isRefundDataValid, "Refunded history item data invalid");
 		loginFacade.logOut();
 		
@@ -261,21 +265,22 @@ public class OrderManagmentSearchForOrdersStepsIT extends BaseSteps {
 		AdminEventStepsFacade adminEventFacade = new AdminEventStepsFacade(driver);
 		OrganizationStepsFacade organizationFacade = new OrganizationStepsFacade(driver);
 		AdminEventDashboardFacade dashboardFacade = new AdminEventDashboardFacade(driver);
+		OrderManageFacade orderManageFacade = new OrderManageFacade(driver);
 		maximizeWindow();
 		
 		boolean isInitialStepsComplete = loginPickOrgNavToManageOrders(loginFacade, adminEventFacade, 
 	    		organizationFacade, dashboardFacade, event, orgAdmin);
 	    Assert.assertTrue(isInitialStepsComplete);
-	    dashboardFacade.whenUserClicksOnOrderLinkOfGivenUser(customerOne);
-	    dashboardFacade.whenUserAddsANote(purchase.getOrderNote());
-	    boolean isNotificationVisible = dashboardFacade.thenNotificationNoteAddedShouldBeVisible();
+	    dashboardFacade.whenUserClicksOnOrderLinkOfGivenUser(customerOne, orderManageFacade);
+	    orderManageFacade.whenUserAddsANote(purchase.getOrderNote());
+	    boolean isNotificationVisible = orderManageFacade.thenNotificationNoteAddedShouldBeVisible();
 	    
-	    boolean isNoteActivityItemVisible = dashboardFacade.thenUserShouldSeeNoteActivityItem(purchase.getOrderNote(), orgAdmin);
+	    boolean isNoteActivityItemVisible = orderManageFacade.thenUserShouldSeeNoteActivityItem(purchase.getOrderNote(), orgAdmin);
 	    Assert.assertTrue(isNoteActivityItemVisible, "Note activity item for creator: "+ orgAdmin.getEmailAddress() + " not present");
 	    
 	    adminEventFacade.givenUserIsOnAdminEventsPage();
 	    
-	    AdminEventComponent eventComponent = adminEventFacade.findEventIsOpenedAndHasSoldItem(event);
+	    EventSummaryComponent eventComponent = adminEventFacade.findEventIsOpenedAndHasSoldItem(event);
 		if (eventComponent != null) {
 			eventComponent.cancelEvent();
 		}
@@ -292,7 +297,7 @@ public class OrderManagmentSearchForOrdersStepsIT extends BaseSteps {
 		loginFacade.givenAdminUserIsLogedIn(user);
 		organizationStepsFacade.givenOrganizationExist(event.getOrganization());
 		adminEventFacade.givenUserIsOnAdminEventsPage();
-		AdminEventComponent eventComponent = adminEventFacade.findEventIsOpenedAndHasSoldItem(event);
+		EventSummaryComponent eventComponent = adminEventFacade.findEventIsOpenedAndHasSoldItem(event);
 		Assert.assertNotNull(eventComponent, "No Event with name: " + event.getEventName() + " found");
 		eventComponent.clickOnEvent();
 		dashboardFacade.givenUserIsOnManageOrdersPage();

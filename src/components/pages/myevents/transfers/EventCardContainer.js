@@ -9,6 +9,7 @@ import {
 	fontFamilyDemiBold,
 	secondaryHex
 } from "../../../../config/theme";
+import nl2br from "../../../../helpers/nl2br";
 
 const styles = theme => ({
 	root: {},
@@ -16,7 +17,10 @@ const styles = theme => ({
 		color: "#FFFFFF",
 		fontFamily: fontFamilyBold,
 		fontSize: 28,
-		textAlign: "center"
+		textAlign: "center",
+		[theme.breakpoints.down("sm")]: {
+			textAlign: "left"
+		}
 	},
 	eventNameText: {
 		color: "#FFFFFF",
@@ -60,10 +64,13 @@ const styles = theme => ({
 		backgroundColor: "#FFFFFF",
 		fontFamily: fontFamilyDemiBold,
 		marginBottom: 10,
-		paddingLeft: 12,
-		paddingRight: 12,
+		paddingLeft: 6,
+		paddingRight: 6,
 		paddingTop: 6,
 		paddingBottom: 2,
+		whiteSpace: "pre-wrap",
+		boxDecorationBreak: "clone",
+		WebkitBoxDecorationBreak: "clone",
 		display: "inline"
 	}
 });
@@ -88,7 +95,9 @@ const EventCardContainer = props => {
 		<React.Fragment>
 			<Grid justify={"center"} container>
 				<Grid item xs={12} sm={8} lg={12}>
-					<Typography className={classes.headingText}>{title}</Typography>
+					<Typography className={classes.headingText}>
+						{nl2br(title)}
+					</Typography>
 				</Grid>
 				<Grid item xs={12} sm={8} lg={6}>
 					<Card variant="raisedLight" className={classes.card}>

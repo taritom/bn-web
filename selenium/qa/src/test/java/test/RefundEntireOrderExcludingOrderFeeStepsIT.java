@@ -25,24 +25,24 @@ public class RefundEntireOrderExcludingOrderFeeStepsIT extends TemplateRefundFee
 	
 	@Override
 	public void customSteps() {
-		getEventDashboardFacade().whenUserSelectsAllTicketsForRefund();
-		boolean isRefundButtonAmountCorrect = getEventDashboardFacade().thenRefundButtonAmountShouldBeCorrect();
+		getOrderManageFacade().whenUserSelectsAllTicketsForRefund();
+		boolean isRefundButtonAmountCorrect = getOrderManageFacade().thenRefundButtonAmountShouldBeCorrect();
 		Assert.assertTrue(isRefundButtonAmountCorrect, "Refund amount on refund button incorect");
 
 		refundSteps(RefundReason.OTHER);
 
-		boolean isAtSelectedOrderPage = getEventDashboardFacade().thenUserIsOnSelecteOrderPage();
+		boolean isAtSelectedOrderPage = getOrderManageFacade().thenUserIsOnSelecteOrderPage();
 		Assert.assertTrue(isAtSelectedOrderPage, "After refund user is not on correct page");
 		
-		boolean isStatusOfTicketRefunded = getEventDashboardFacade().thenStatusOnAllTicketShouldBeRefunded();
+		boolean isStatusOfTicketRefunded = getOrderManageFacade().thenStatusOnAllTicketShouldBeRefunded();
 		Assert.assertTrue(isStatusOfTicketRefunded, "Not all tickets status is refunded");
-		getEventDashboardFacade().whenUserSelectsRefundedStatusTicketForRefund();
+		getOrderManageFacade().whenUserSelectsRefundedStatusTicketForRefund();
 		
-		boolean isRefundButtonVisible = getEventDashboardFacade().thenRefundButtonShouldBeVisible();
+		boolean isRefundButtonVisible = getOrderManageFacade().thenRefundButtonShouldBeVisible();
 		Assert.assertFalse(isRefundButtonVisible,
 				"Refund button on per order fee after already refunded should not be visible");
 		
-		boolean isRefundTotalCorrect = getEventDashboardFacade().thenTotalOrderRefundShouldBeCorrect();
+		boolean isRefundTotalCorrect = getOrderManageFacade().thenTotalOrderRefundShouldBeCorrect();
 		Assert.assertTrue(isRefundTotalCorrect);
 		
 	}

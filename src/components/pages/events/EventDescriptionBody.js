@@ -13,6 +13,7 @@ import {
 import ArtistSummary from "../../elements/event/ArtistSummary";
 import { Link } from "react-router-dom";
 import LinkifyReact from "linkifyjs/react";
+import Divider from "@material-ui/core/Divider";
 
 const styles = theme => ({
 	root: {
@@ -32,7 +33,7 @@ const styles = theme => ({
 		color: textColorPrimary
 	},
 	artistsContainer: {
-		paddingTop: theme.spacing.unit * 2
+		paddingTop: theme.spacing.unit * 4
 	},
 	eventDescriptionLink: {
 		color: secondaryHex
@@ -51,6 +52,10 @@ const styles = theme => ({
 	artistsPerforming: {
 		marginBottom: 0,
 		marginTop: 0
+	},
+	divider: {
+		marginTop: 30,
+		marginBottom: 30
 	}
 });
 
@@ -93,11 +98,12 @@ const EventDescriptionBody = props => {
 					alignItems="flex-start"
 				>
 					<Grid item xs={12} style={{ paddingBottom: 0, paddingTop: 0 }}>
-						<h4 className={classes.artistsPerforming}>Artists Performing</h4>
+						<h3 className={classes.artistsPerforming}>Artists Performing</h3>
 					</Grid>
 					{artists.map(({ artist, importance }, index) => (
 						<Grid item xs={12} key={index}>
 							<ArtistSummary headliner={importance === 0} {...artist}/>
+							{ (artists.length === index + 1) ? "" : <Divider className={classes.divider}/> }
 						</Grid>
 					))}
 				</Grid>

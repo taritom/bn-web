@@ -134,7 +134,6 @@ class SMSLinkForm extends Component {
 	render() {
 		const { phone, isSubmitting, isSent } = this.state;
 		const { classes, autoFocus } = this.props;
-
 		return (
 			<div className={classes.smsContainer}>
 				<form noValidate autoComplete="off" onSubmit={this.onSubmit.bind(this)}>
@@ -142,6 +141,7 @@ class SMSLinkForm extends Component {
 						autoFocus={autoFocus}
 						label="Mobile number"
 						value={phone}
+						placeholder="+1"
 						type="phone"
 						name="phone"
 						onChange={e => this.setState({ phone: e.target.value })}

@@ -16,6 +16,7 @@ export const settingsFactory = () => {
 			genericAppDownloadLink: process.env.REACT_APP_DOWNLOAD_APP,
 			facebookLink: process.env.REACT_APP_FACEBOOK_URL,
 			instagramLink: process.env.REACT_APP_INSTAGRAM_URL,
+			twitterLink: process.env.REACT_APP_TWITTER_URL,
 			appSupportLink: process.env.REACT_APP_SUPPORT_URL,
 			supportFAQLink: process.env.REACT_APP_SUPPORT_FAQ_LINK,
 			submitSupportLink: process.env.REACT_APP_NEW_SUPPORT_LINK,

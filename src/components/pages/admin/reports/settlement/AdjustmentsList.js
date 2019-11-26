@@ -52,12 +52,11 @@ const AdjustmentsList = props => {
 							- {displayCreatedAt}
 						</Typography>
 						<Typography className={classes.text}>
-							<span className={classes.boldText}>Value:</span>{" "}
-							{dollars(amount_in_cents)}
+							Value: {dollars(amount_in_cents)}
 						</Typography>
 
 						<Typography className={classes.text}>
-							<span className={classes.boldText}>Note:</span> {note || "-"}
+							Note: {note || "-"}
 						</Typography>
 					</div>
 				);

@@ -196,7 +196,7 @@ class RightHeaderMenu extends React.Component {
 							: "/images/profile-pic-placeholder.png"
 					}
 					className={classes.avatar}
-					style={{ padding: profilePicUrl ? 0 : 10 }}
+					style={{ padding: profilePicUrl ? 0 : 10, marginLeft: 15 }}
 				/>
 
 				<Hidden smDown implementation="css">

@@ -11,7 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import pages.BasePage;
-import pages.components.admin.AdminEventComponent;
+import pages.components.admin.events.EventSummaryComponent;
 import utils.Constants;
 import utils.SeleniumUtils;
 
@@ -41,21 +41,21 @@ public class AdminEventsPage extends BasePage {
 		setUrl(Constants.getAdminEvents());
 	}
 
-	public AdminEventComponent findEventByName(String eventName) {
+	public EventSummaryComponent findEventByName(String eventName) {
 		if (isEventPresent(eventName)) {
 			WebElement element = findWebElementEventByName(eventName);
-			AdminEventComponent component = new AdminEventComponent(driver, element);
+			EventSummaryComponent component = new EventSummaryComponent(driver, element);
 			return component;
 		} else {
 			return null;
 		}
 	}
 
-	public AdminEventComponent findEvent(String eventName, Predicate<AdminEventComponent> predicate) {
+	public EventSummaryComponent findEvent(String eventName, Predicate<EventSummaryComponent> predicate) {
 		if (isEventPresent(eventName)) {
 			List<WebElement> elements = findWebElementsEventByName(eventName);
-			Optional<AdminEventComponent> optionalComponent = elements.stream()
-					.map(e -> new AdminEventComponent(driver, e)).filter(predicate).findFirst();
+			Optional<EventSummaryComponent> optionalComponent = elements.stream()
+					.map(e -> new EventSummaryComponent(driver, e)).filter(predicate).findFirst();
 			if (optionalComponent != null && optionalComponent.isPresent()) {
 				return optionalComponent.get();
 			} else {
@@ -69,11 +69,11 @@ public class AdminEventsPage extends BasePage {
 	/*
 	 * Returns first event component that matches the predicate conditions, or returns null
 	 */
-	public AdminEventComponent findEvent(Predicate<AdminEventComponent> predicate) {
+	public EventSummaryComponent findEvent(Predicate<EventSummaryComponent> predicate) {
 		List<WebElement> allEvents = findAllWebElements();
 		if (allEvents != null) {
-			Optional<AdminEventComponent> optionalComponent = allEvents.stream()
-					.map(e -> new AdminEventComponent(driver, e)).filter(predicate).findFirst();
+			Optional<EventSummaryComponent> optionalComponent = allEvents.stream()
+					.map(e -> new EventSummaryComponent(driver, e)).filter(predicate).findFirst();
 			if (optionalComponent != null && optionalComponent.isPresent()) {
 				return optionalComponent.get();
 			} else {

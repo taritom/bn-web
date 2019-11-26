@@ -10,9 +10,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import data.holders.DataHolder;
+import data.holders.DataHolderProvider;
+import data.holders.reports.boxoffice.OperatorTableData;
 import pages.BaseComponent;
 
-public class OperatorTable extends BaseComponent {
+public class OperatorTable extends BaseComponent implements DataHolderProvider {
 
 	private WebElement container;
 
@@ -124,5 +127,13 @@ public class OperatorTable extends BaseComponent {
 		}
 		return null;
 	}
+
+	@Override
+	public OperatorTableData getDataHolder() {
+		List<OperatorTableRow> rows = getAllEventRows();
+		OperatorTableData tableData = new OperatorTableData();
+		rows.stream().map(row->row.getDataHolder()).forEach(dataRow->tableData.addRow(dataRow));
+		return tableData;
+	}	
 
 }

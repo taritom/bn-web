@@ -38,9 +38,24 @@ public class ReportsFacade extends BaseFacadeSteps {
 		getReportsMainPage().isAtPage();
 	}
 	
+	public void givenUserIsOnReportsBoxOfficePage() {
+		getAdminSideBar().clickOnReports();
+		thenUserIsOnReportsMainPage();
+		getReportsMainPage().clickOnBoxOfficeSales();
+		thenUserIsOnReportsBoxOfficePage();
+	}
+	
 	public void whenUserSelectBoxOfficeTab() {
 		getReportsMainPage().clickOnBoxOfficeSales();
-		getReportsBoxOfficePage().isAtPage();
+		thenUserIsOnReportsBoxOfficePage();
+	}
+	
+	public boolean thenUserIsOnReportsBoxOfficePage() {
+		return getReportsBoxOfficePage().isAtPage();
+	}
+	
+	public boolean thenUserIsOnReportsMainPage() {
+		return getReportsMainPage().isAtPage();
 	}
 	
 	@Override

@@ -26,39 +26,39 @@ public class RefundPartialCheckOrderFeeRefundDisabledStepsIT extends TemplateRef
 
 	@Override
 	public void customSteps() {
-		getEventDashboardFacade().whenUserSelectsPurchasedStatusTicketForRefund();
-		getEventDashboardFacade().whenUserClicksOnOrderFeeCheckBox();
-		boolean isRefundButtonAmountCorrect = getEventDashboardFacade().thenRefundButtonAmountShouldBeCorrect();
+		getOrderManageFacade().whenUserSelectsPurchasedStatusTicketForRefund();
+		getOrderManageFacade().whenUserClicksOnOrderFeeCheckBox();
+		boolean isRefundButtonAmountCorrect = getOrderManageFacade().thenRefundButtonAmountShouldBeCorrect();
 		Assert.assertTrue(isRefundButtonAmountCorrect, "Refund amount on refund button incorect");
 
 		refundSteps(RefundReason.OTHER);
 
-		boolean isAtSelectedOrderPage = getEventDashboardFacade().thenUserIsOnSelecteOrderPage(true);
+		boolean isAtSelectedOrderPage = getOrderManageFacade().thenUserIsOnSelecteOrderPage(true);
 		Assert.assertTrue(isAtSelectedOrderPage, "After refund user is not on correct page");
 		
-		getEventDashboardFacade().thenClearUpTotalAmountFromDataMap();
+		getOrderManageFacade().thenClearUpTotalAmountFromDataMap();
 		
-		getEventDashboardFacade().whenUserExpandOrderDetailsAndCheckIfExpanded();
+		getOrderManageFacade().whenUserExpandOrderDetailsAndCheckIfExpanded();
 		
-		getEventDashboardFacade().whenUserSelectsPurchasedStatusTicketForRefund();
-		getEventDashboardFacade().thenRefundButtonShouldBeVisible();
-		isRefundButtonAmountCorrect = getEventDashboardFacade().thenRefundButtonAmountShouldBeCorrect();
+		getOrderManageFacade().whenUserSelectsPurchasedStatusTicketForRefund();
+		getOrderManageFacade().thenRefundButtonShouldBeVisible();
+		isRefundButtonAmountCorrect = getOrderManageFacade().thenRefundButtonAmountShouldBeCorrect();
 		Assert.assertTrue(isRefundButtonAmountCorrect, "Refund amount on refund button incorect");
 		
-		getEventDashboardFacade().whenUserClicksOnOrderFeeCheckBox();
-		boolean isChecked = getEventDashboardFacade().thenOrderFeeCheckboxShouldBeChecked();
+		getOrderManageFacade().whenUserClicksOnOrderFeeCheckBox();
+		boolean isChecked = getOrderManageFacade().thenOrderFeeCheckboxShouldBeChecked();
 		Assert.assertFalse(isChecked, "Per order fee refund button should not be checked");
 		
-		isRefundButtonAmountCorrect = getEventDashboardFacade().thenRefundButtonAmountShouldBeCorrect();
+		isRefundButtonAmountCorrect = getOrderManageFacade().thenRefundButtonAmountShouldBeCorrect();
 		Assert.assertTrue(isRefundButtonAmountCorrect, "Refund amount on refund button incorect");
 		
-		getEventDashboardFacade().whenUserRemembersRefundTotalOfOrder();
+		getOrderManageFacade().whenUserRemembersRefundTotalOfOrder();
 		
 		refundSteps(RefundReason.UNABLE_TO_ATTEND);
 		
-		getEventDashboardFacade().thenUserIsOnSelecteOrderPage(true);
+		getOrderManageFacade().thenUserIsOnSelecteOrderPage(true);
 
-		boolean isRefundTotalCorrect = getEventDashboardFacade().thenTotalOrderRefundShouldBeCorrect();
+		boolean isRefundTotalCorrect = getOrderManageFacade().thenTotalOrderRefundShouldBeCorrect();
 		Assert.assertTrue(isRefundTotalCorrect);
 	}
 	

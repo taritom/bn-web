@@ -98,13 +98,17 @@ class SettlementReport extends Component {
 				const dateFormat = "MMM D, YYYY";
 				const dateTimeFormat = "MMM D, YYYY, h:mm A z";
 
-				const displayDateRange = `${moment
-					.utc(start_time)
-					.tz(organizationTimezone)
-					.format(dateFormat)} to ${moment
-					.utc(end_time)
-					.tz(organizationTimezone)
-					.format(dateFormat)}`;
+				const startDate = moment.utc(start_time).tz(organizationTimezone);
+				const endDate = moment.utc(end_time).tz(organizationTimezone);
+
+				//Back one day if needed for display
+				if (startDate.diff(endDate, "days") > 1) {
+					endDate.add("d", -1);
+				}
+
+				const displayDateRange = `${startDate.format(
+					dateFormat
+				)} to ${endDate.format(dateFormat)}`;
 
 				let adjustmentsInCents = 0;
 				let totalFaceInCents = 0;

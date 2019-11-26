@@ -53,27 +53,39 @@ class SettlementReportList extends Component {
 				const { data, paging } = response.data; //TODO pagination
 				const reports = [];
 
-				data.forEach(({ created_at, start_time, end_time, only_finished_events, ...rest }) => {
-					const displayDateRange = `${moment
-						.utc(start_time)
-						.tz(organizationTimezone)
-						.format(rangeDateFormat)} to ${moment
-						.utc(end_time)
-						.tz(organizationTimezone)
-						.format(rangeDateFormat)}`;
+				data.forEach(
+					({
+						created_at,
+						start_time,
+						end_time,
+						only_finished_events,
+						...rest
+					}) => {
+						const startDate = moment.utc(start_time).tz(organizationTimezone);
+						const endDate = moment.utc(end_time).tz(organizationTimezone);
 
-					const createdAtMoment = moment
-						.utc(created_at)
-						.tz(organizationTimezone);
+						//Back one day if needed for display
+						if (startDate.diff(endDate, "days") > 1) {
+							endDate.add("d", -1);
+						}
 
-					reports.push({
-						...rest,
-						createdAtMoment,
-						displayCreatedAt: createdAtMoment.format(dateFormat),
-						displayDateRange,
-						isPostEventSettlement: only_finished_events
-					});
-				});
+						const displayDateRange = `${startDate.format(
+							rangeDateFormat
+						)} to ${endDate.format(rangeDateFormat)}`;
+
+						// const createdAtMoment = moment
+						// 	.utc(created_at)
+						// 	.tz(organizationTimezone);
+
+						reports.push({
+							...rest,
+							createdAtMoment: endDate, //Order by the date the report ends for
+							displayCreatedAt: endDate.format(dateFormat),
+							displayDateRange,
+							isPostEventSettlement: only_finished_events
+						});
+					}
+				);
 
 				reports.sort((a, b) => {
 					if (a.createdAtMoment.diff(b.createdAtMoment) < 0) {

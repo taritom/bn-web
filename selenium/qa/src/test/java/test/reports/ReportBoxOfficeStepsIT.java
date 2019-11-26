@@ -1,5 +1,6 @@
 package test.reports;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,18 +9,16 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import data.holders.DataHolder;
 import model.Event;
 import model.Organization;
 import model.Purchase;
 import model.User;
 import test.BaseSteps;
-import test.facade.AdminBoxOfficeFacade;
-import test.facade.AdminEventStepsFacade;
-import test.facade.EventStepsFacade;
 import test.facade.FacadeProvider;
-import test.facade.LoginStepsFacade;
-import test.facade.OrganizationStepsFacade;
 import utils.DataConstants;
+import utils.DateRange;
+import utils.ProjectUtils;
 
 public class ReportBoxOfficeStepsIT extends BaseSteps {
 	
@@ -49,6 +48,52 @@ public class ReportBoxOfficeStepsIT extends BaseSteps {
 		Assert.assertFalse(isEventPresent,"There should be not tickets sold for this event in box office report" + notBoxOfficePurchaseSAST.getEvent().getEventName());
 	}
 	
+	@Test(priority = 33, retryAnalyzer = utils.RetryAnalizer.class)
+	public void filterOnDateAndVerifyDataByCrossReferencingOnOrderManagePage() throws Exception {
+		maximizeWindow();
+		FacadeProvider fp = new FacadeProvider(driver);
+		navigateToReportsBoxOffice(fp, firstBOPurchaseEST);
+		DateRange range = ProjectUtils.getDateRangeWithSpecifiedRAngeInDaysWithStartOffset(0, 0);
+		fp.getReportsBoxOfficeFacade().enterDates(range);
+		
+		DataHolder dataHolder = fp.getReportsBoxOfficeFacade().getPageDataHolder();
+		boolean isDataInReport = fp.getReportsBoxOfficeFacade().whenUserChecksIfPurchaseEventsAreInReport(boxOfficePurchases(), dataHolder);
+		Assert.assertTrue(isDataInReport, "Data not found in report");
+		fp.getEventReportsFacade().givenUserIsOnAdminEventsPage();
+		fp.getEventReportsFacade().whenUserVerifiesOrdersForFoundEvents(dataHolder, boxOfficePurchases(), range);
+		fp.getLoginFacade().logOut();
+	}
+	
+	private List<Purchase> boxOfficePurchases(){
+		List<Purchase> purchases = new ArrayList<Purchase>();
+		purchases.add(this.firstBOPurchaseEST);
+		purchases.add(this.secondBOPurchaseJST);
+		return purchases;
+	}
+	
+	@Test(priority = 34, retryAnalyzer = utils.RetryAnalizer.class)
+	public void verifyTransactionsAreSortedViaOperatorPerEventStartDate() throws Exception {
+		maximizeWindow();
+
+		FacadeProvider fp = new FacadeProvider(driver);
+		navigateToReportsBoxOffice(fp, firstBOPurchaseEST);
+		
+		DateRange range = ProjectUtils.getDateRangeWithSpecifiedRAngeInDaysWithStartOffset(0, 0);
+		fp.getReportsBoxOfficeFacade().enterDates(range);
+		
+		DataHolder dataHolder = fp.getReportsBoxOfficeFacade().getPageDataHolder();
+		boolean isDataOrdered = fp.getReportsBoxOfficeFacade().thenThereShouldBeMultipeTablesWithCorrectOrder(dataHolder);
+		Assert.assertTrue(isDataOrdered);
+		fp.getLoginFacade().logOut();
+	}
+	
+	private void navigateToReportsBoxOffice(FacadeProvider fp, Purchase purchase) throws Exception {
+		Organization organization = purchase.getEvent().getOrganization();
+		User orgAdmin = organization.getTeam().getOrgAdminUser();
+		fp.getLoginFacade().givenAdminUserIsLogedIn(orgAdmin);
+		fp.getOrganizationFacade().givenOrganizationExist(organization);
+		fp.getReportsFacade().givenUserIsOnReportsBoxOfficePage();
+	}
 	
 	@Test(dataProvider = "prepare_box_offce_report_data_fixture", priority = 32)
 	public void boxOfficeReportPrepareDataFixture(Map<String, Object> data) throws Exception {
@@ -95,6 +140,7 @@ public class ReportBoxOfficeStepsIT extends BaseSteps {
 		fp.getEventFacade().givenUserIsOnHomePage();
 		fp.getEventFacade().whenUserDoesThePurchses(notBoxOfficePurchaseSAST, standardCustomer);
 		fp.getLoginFacade().logOut();
+		
 	}
 	
 	@DataProvider(name = "prepare_box_offce_report_data_fixture")

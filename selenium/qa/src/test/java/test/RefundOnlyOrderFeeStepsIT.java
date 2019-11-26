@@ -25,22 +25,22 @@ public class RefundOnlyOrderFeeStepsIT extends TemplateRefundFeeSteps {
 	
 	@Override
 	public void customSteps() {
-		getEventDashboardFacade().whenUserClicksOnOrderFeeCheckBox();
-		boolean isRefundButtonAmountCorrect = getEventDashboardFacade().thenRefundButtonAmountShouldBeCorrect();
+		getOrderManageFacade().whenUserClicksOnOrderFeeCheckBox();
+		boolean isRefundButtonAmountCorrect = getOrderManageFacade().thenRefundButtonAmountShouldBeCorrect();
 		Assert.assertTrue(isRefundButtonAmountCorrect, "Refund amount on refund button incorect");
 
-		getEventDashboardFacade().whenUserClicksOnRefundButton();
-		boolean isRefundDialogVisible = getEventDashboardFacade().thenRefundDialogShouldBeVisible();
+		getOrderManageFacade().whenUserClicksOnRefundButton();
+		boolean isRefundDialogVisible = getOrderManageFacade().thenRefundDialogShouldBeVisible();
 		Assert.assertTrue(isRefundDialogVisible, "Refund dialog not visible");
-		boolean isRefundDialogAmountCorrect = getEventDashboardFacade().thenRefundTotalOnRefundDialogShouldBeCorrect();
+		boolean isRefundDialogAmountCorrect = getOrderManageFacade().thenRefundTotalOnRefundDialogShouldBeCorrect();
 		Assert.assertTrue(isRefundDialogAmountCorrect);
-		getEventDashboardFacade().whenUserSelectRefundReasonAndClicksOnConfirmButton(RefundReason.OTHER);
-		getEventDashboardFacade().whenUserClicksOnGotItButtonOnRefundSuccessDialog();
+		getOrderManageFacade().whenUserSelectRefundReasonAndClicksOnConfirmButton(RefundReason.OTHER);
+		getOrderManageFacade().whenUserClicksOnGotItButtonOnRefundSuccessDialog();
 
-		boolean isAtSelectedOrderPage = getEventDashboardFacade().thenUserIsOnSelecteOrderPage();
+		boolean isAtSelectedOrderPage = getOrderManageFacade().thenUserIsOnSelecteOrderPage();
 		Assert.assertTrue(isAtSelectedOrderPage, "After refund user is not on correct page");
-		getEventDashboardFacade().whenUserClicksOnOrderFeeCheckBox();
-		boolean isRefundButtonVisible = getEventDashboardFacade().thenRefundButtonShouldBeVisible();
+		getOrderManageFacade().whenUserClicksOnOrderFeeCheckBox();
+		boolean isRefundButtonVisible = getOrderManageFacade().thenRefundButtonShouldBeVisible();
 		Assert.assertFalse(isRefundButtonVisible,
 				"Refund button on per order fee after already refunded should not be visible");
 		

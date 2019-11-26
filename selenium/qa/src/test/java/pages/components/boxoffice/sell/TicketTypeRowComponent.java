@@ -1,4 +1,4 @@
-package pages.components.admin.events;
+package pages.components.boxoffice.sell;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

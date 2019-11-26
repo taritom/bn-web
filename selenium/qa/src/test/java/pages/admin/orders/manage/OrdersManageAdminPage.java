@@ -1,8 +1,11 @@
 package pages.admin.orders.manage;
 
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import model.User;
@@ -49,6 +52,12 @@ public class OrdersManageAdminPage extends BasePage {
 
 	public ManageOrderRow findOrderRowWithUserName(String name) {
 		return getListContainer().findOrderWithCustomerName(name);
+	}
+	
+	public ManageOrderRow findRowWithOrderId(String orderId) {
+		List<WebElement> ordersEl =  getListContainer().findOrdersWithOrderNumber(orderId);
+		List<ManageOrderRow> rows = ordersEl.stream().map(el->new ManageOrderRow(driver, el)).collect(Collectors.toList());
+		return rows != null ? rows.get(0) : null;
 	}
 
 	public boolean seachCheckByEmail(User user) {

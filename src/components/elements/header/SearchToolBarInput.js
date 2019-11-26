@@ -7,7 +7,7 @@ import notifications from "../../../stores/notifications";
 import servedImage from "../../../helpers/imagePathHelper";
 import { Hidden } from "@material-ui/core";
 
-const styles = {
+const styles = theme => ({
 	root: {
 		display: "flex",
 		justifyContent: "space-between",
@@ -27,14 +27,17 @@ const styles = {
 		marginRight: -8,
 		height: 61,
 		width: 61,
-		marginLeft: -24
+		marginLeft: -14,
+		[theme.breakpoints.down("sm")]: {
+			marginLeft: -24
+		}
 	},
 
 	closeIcon: {
 		marginRight: 8,
 		marginLeft: -24
 	}
-};
+});
 
 class SearchToolBarInput extends Component {
 	constructor(props) {

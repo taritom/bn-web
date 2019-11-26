@@ -6,21 +6,19 @@ import model.Event;
 import model.Organization;
 import model.Purchase;
 import model.User;
-import pages.components.admin.AdminEventComponent;
+import pages.components.admin.events.EventSummaryComponent;
 import pages.components.dialogs.IssueRefundDialog.RefundReason;
 import test.facade.AdminEventDashboardFacade;
 import test.facade.AdminEventStepsFacade;
 import test.facade.EventStepsFacade;
+import test.facade.FacadeProvider;
 import test.facade.LoginStepsFacade;
 import test.facade.OrganizationStepsFacade;
+import test.facade.orders.order.OrderManageFacade;
 
 public abstract class TemplateRefundFeeSteps extends BaseSteps {
 
-	private LoginStepsFacade loginFacade;
-	private OrganizationStepsFacade organizationFacade;
-	private AdminEventStepsFacade adminEventsFacade;
-	private EventStepsFacade eventStepsFacade;
-	private AdminEventDashboardFacade eventDashboardFacade;
+	private FacadeProvider facadeProvider;
 
 	public abstract void customSteps();
 
@@ -71,21 +69,21 @@ public abstract class TemplateRefundFeeSteps extends BaseSteps {
 
 	public void navigateToOrderManage(Event event) {
 		getAdminEventsFacade().thenUserIsAtEventsPage();
-		AdminEventComponent eventCardComp = getAdminEventsFacade().findEventIsOpenedAndHasSoldItem(event);
+		EventSummaryComponent eventCardComp = getAdminEventsFacade().findEventIsOpenedAndHasSoldItem(event);
 		eventCardComp.clickOnEvent();
 		getEventDashboardFacade().givenUserIsOnManageOrdersPage();
-		getEventDashboardFacade().whenUserClickOnOrderLinkOfFirstOrder();
-		getEventDashboardFacade().whenUserExpandOrderDetailsAndCheckIfExpanded();
+		getEventDashboardFacade().whenUserClickOnOrderLinkOfFirstOrder(getOrderManageFacade());
+		getOrderManageFacade().whenUserExpandOrderDetailsAndCheckIfExpanded();
 	}
 
 	public void refundSteps(RefundReason refundReason) {
-		getEventDashboardFacade().whenUserClicksOnRefundButton();
-		boolean isRefundDialogVisible = getEventDashboardFacade().thenRefundDialogShouldBeVisible();
+		getOrderManageFacade().whenUserClicksOnRefundButton();
+		boolean isRefundDialogVisible = getOrderManageFacade().thenRefundDialogShouldBeVisible();
 		Assert.assertTrue(isRefundDialogVisible, "Refund dialog not visible");
-		boolean isRefundDialogAmountCorrect = getEventDashboardFacade().thenRefundTotalOnRefundDialogShouldBeCorrect();
+		boolean isRefundDialogAmountCorrect = getOrderManageFacade().thenRefundTotalOnRefundDialogShouldBeCorrect();
 		Assert.assertTrue(isRefundDialogAmountCorrect);
-		getEventDashboardFacade().whenUserSelectRefundReasonAndClicksOnConfirmButton(refundReason);
-		getEventDashboardFacade().whenUserClicksOnGotItButtonOnRefundSuccessDialog();
+		getOrderManageFacade().whenUserSelectRefundReasonAndClicksOnConfirmButton(refundReason);
+		getOrderManageFacade().whenUserClicksOnGotItButtonOnRefundSuccessDialog();
 
 	}
 
@@ -95,7 +93,7 @@ public abstract class TemplateRefundFeeSteps extends BaseSteps {
 			getAdminEventsFacade().thenUserIsAtEventsPage();
 			getAdminEventsFacade().whenUserRefreshesThePage();
 			getAdminEventsFacade().thenUserIsAtEventsPage();
-			AdminEventComponent eventComponent = getAdminEventsFacade().findEventWithName(event);
+			EventSummaryComponent eventComponent = getAdminEventsFacade().findEventWithName(event);
 			eventComponent.cancelEvent();
 		} catch (Exception e) {
 			// log it once logger is added
@@ -109,28 +107,33 @@ public abstract class TemplateRefundFeeSteps extends BaseSteps {
 			// log it once logger is added
 		}
 	}
+	private FacadeProvider getFacadeProvider() {
+		return this.facadeProvider != null ? this.facadeProvider : 
+			(this.facadeProvider = new FacadeProvider(driver));
+	}
 
 	public LoginStepsFacade getLoginFacade() {
-		return loginFacade != null ? this.loginFacade : (this.loginFacade = new LoginStepsFacade(driver));
+		return getFacadeProvider().getLoginFacade();
 	}
 
 	public OrganizationStepsFacade getOrganizationFacade() {
-		return organizationFacade != null ? this.organizationFacade
-				: (this.organizationFacade = new OrganizationStepsFacade(driver));
+		return getFacadeProvider().getOrganizationFacade();
 	}
 
 	public AdminEventStepsFacade getAdminEventsFacade() {
-		return adminEventsFacade != null ? this.adminEventsFacade
-				: (this.adminEventsFacade = new AdminEventStepsFacade(driver));
+		return getFacadeProvider().getAdminEventStepsFacade();
 	}
 
 	public EventStepsFacade getEventFacade() {
-		return eventStepsFacade != null ? this.eventStepsFacade
-				: (this.eventStepsFacade = new EventStepsFacade(driver));
+		return getFacadeProvider().getEventFacade();
 	}
 
 	public AdminEventDashboardFacade getEventDashboardFacade() {
-		return eventDashboardFacade != null ? this.eventDashboardFacade
-				: (this.eventDashboardFacade = new AdminEventDashboardFacade(driver));
+		return getFacadeProvider().getEventDashboardFacade();
 	}
+	
+	public OrderManageFacade getOrderManageFacade() {
+		return getFacadeProvider().getOrderManageFacade();
+	}
+	
 }

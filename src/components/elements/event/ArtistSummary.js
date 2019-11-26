@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Hidden from "@material-ui/core/Hidden";
@@ -71,10 +71,6 @@ const styles = theme => ({
 		color: "#656d78",
 		fontSize: theme.typography.fontSize
 	},
-	divider: {
-		marginTop: 30,
-		marginBottom: 30
-	},
 	nameHeading: {
 		marginBottom: 5,
 		marginTop: 5,
@@ -87,7 +83,12 @@ const styles = theme => ({
 		marginTop: 0,
 		marginBottom: 0,
 		[theme.breakpoints.down("lg")]: {
-			fontSize: 13
+			fontSize: 12
+		}
+	},
+	socialGrid: {
+		[theme.breakpoints.up("md")]: {
+			justifyContent: "flex-end"
 		}
 	}
 });
@@ -112,80 +113,99 @@ class ArtistSummary extends Component {
 			theme
 		} = this.props;
 
-		let imageSrc = thumb_image_url || image_url;
+		let imageSrc = thumb_image_url || image_url || "/images/artist-placeholder.png";
 		imageSrc = optimizedImageUrl(imageSrc);
 
 		const artistSocial = (
-			<div>
+			<Grid container
+				  direction="row"
+				  alignItems="center"
+				  spacing={8}
+				  className={classes.socialGrid}
+			>
 				{facebook_username ? (
-					<SocialIconLink
-						style={{ marginLeft: 6 }}
-						icon={"facebook"}
-						userName={facebook_username}
-						size={30}
-						color={"neon"}
-					/>
+					<Grid item xs={2} md={3} lg={2}>
+						<SocialIconLink
+							style={{ marginLeft: 6 }}
+							icon={"facebook"}
+							userName={facebook_username}
+							size={40}
+							color={"neon"}
+						/>
+					</Grid>
 				) : null}
 
 				{instagram_username ? (
-					<SocialIconLink
-						style={{ marginLeft: 6 }}
-						icon={"instagram"}
-						userName={instagram_username}
-						size={30}
-						color={"neon"}
-					/>
+					<Grid item xs={2} md={3} lg={2}>
+						<SocialIconLink
+							style={{ marginLeft: 6 }}
+							icon={"instagram"}
+							userName={instagram_username}
+							size={40}
+							color={"neon"}
+						/>
+					</Grid>
 				) : null}
 				{snapchat_username ? (
-					<SocialIconLink
-						style={{ marginLeft: 6 }}
-						icon={"snapchat"}
-						userName={snapchat_username}
-						size={30}
-						color={"neon"}
-					/>
+					<Grid item xs={2} md={3} lg={2}>
+						<SocialIconLink
+							style={{ marginLeft: 6 }}
+							icon={"snapchat"}
+							userName={snapchat_username}
+							size={40}
+							color={"neon"}
+						/>
+					</Grid>
 				) : null}
 
 				{soundcloud_username ? (
-					<SocialIconLink
-						style={{ marginLeft: 6 }}
-						icon={"soundcloud"}
-						userName={soundcloud_username}
-						size={30}
-						color={"neon"}
-					/>
+					<Grid item xs={2} md={3} lg={2}>
+						<SocialIconLink
+							style={{ marginLeft: 6 }}
+							icon={"soundcloud"}
+							userName={soundcloud_username}
+							size={40}
+							color={"neon"}
+						/>
+					</Grid>
 				) : null}
 
 				{bandcamp_username ? (
-					<SocialIconLink
-						style={{ marginLeft: 6 }}
-						icon={"bandcamp"}
-						userName={bandcamp_username}
-						size={30}
-						color={"neon"}
-					/>
+					<Grid item xs={2} md={3} lg={2}>
+						<SocialIconLink
+							style={{ marginLeft: 6 }}
+							icon={"bandcamp"}
+							userName={bandcamp_username}
+							size={40}
+							color={"neon"}
+						/>
+					</Grid>
 				) : null}
 
 				{website_url ? (
-					<SocialIconLink
-						style={{ marginLeft: 6 }}
-						icon={"website"}
-						href={website_url}
-						size={30}
-						color={"neon"}
-					/>
+					<Grid item xs={2} md={3} lg={2}>
+						<SocialIconLink
+							style={{ marginLeft: 6 }}
+							icon={"website"}
+							href={website_url}
+							size={40}
+							color={"neon"}
+						/>
+					</Grid>
 				) : null}
 
 				{spotify_id ? (
-					<SocialIconLink
-						style={{ marginLeft: 6 }}
-						icon={"spotify"}
-						userName={spotify_id}
-						size={30}
-						color={"neon"}
-					/>
+					<Grid item xs={2} md={3} lg={2}>
+						<SocialIconLink
+							style={{ marginLeft: 6 }}
+							icon={"spotify"}
+							userName={spotify_id}
+							size={40}
+							color={"neon"}
+						/>
+					</Grid>
 				) : null}
-			</div>
+			</Grid>
 		);
 
 		return (
@@ -201,13 +221,15 @@ class ArtistSummary extends Component {
 						</div>
 					</Grid>
 					<Grid item xs={9}>
-						<Grid container>
-							<Grid item xs={12} sm={4} m={12} l={4}>
+						<Grid container
+							  alignItems="center"
+						>
+							<Grid item xs={12} sm={3} m={12} lg={3}>
 								{ headliner ? <h6 className={classes.headline}>HEADLINER</h6> : "" }
 								<h3 className={classes.nameHeading}>{name}</h3>
 							</Grid>
 							<Hidden smDown>
-								<Grid item xs={12} sm={8} m={12} l={8}>
+								<Grid item xs={12} sm={9} m={12} lg={9}>
 									{artistSocial}
 								</Grid>
 							</Hidden>
@@ -220,7 +242,6 @@ class ArtistSummary extends Component {
 						</Hidden>
 					</Grid>
 				</Grid>
-				<Divider className={classes.divider}/>
 			</div>
 		);
 	}

@@ -32,7 +32,9 @@ public class BoxOfficeSellOrderCompleteDialog extends DialogContainerComponent {
 	
 	public String getOrderNumber() {
 		explicitWaitForVisiblity(orderNumber);
-		return ProjectUtils.getTextForElementAndReplace(orderNumber, "#", "");
+		String text = ProjectUtils.getTextForElementAndReplace(orderNumber, "#", "").trim();
+		String orderNum = text.split(" ")[1];
+		return orderNum;
 	}
 	
 	public void clickOnReturnTOBoxOfficeButton() {
