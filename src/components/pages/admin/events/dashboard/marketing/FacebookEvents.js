@@ -230,12 +230,14 @@ class FacebookEvents extends Component {
 			facebookCategory,
 			description,
 			locationType,
-			customAddress
+			customAddress,
+			title
 		} = this.state;
 		this.setState({ isSubmitting: true });
 		Bigneon()
 			.external.facebook.createEvent({
 				event_id: this.props.eventId,
+				title: title,
 				page_id: pageId,
 				category: facebookCategory,
 				description,
@@ -482,7 +484,7 @@ class FacebookEvents extends Component {
 										</Typography>
 										<input
 											value={title}
-											name="title "
+											name="title"
 											className={classes.inputStyle}
 											type="text"
 											onChange={e =>
