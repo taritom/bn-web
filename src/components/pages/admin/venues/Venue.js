@@ -18,6 +18,7 @@ import PageHeading from "../../../elements/PageHeading";
 import removePhoneFormatting from "../../../../helpers/removePhoneFormatting";
 import cloudinaryWidget from "../../../../helpers/cloudinaryWidget";
 import Settings from "../../../../config/settings";
+import user from "../../../../stores/user";
 
 const styles = theme => ({
 	paper: {
@@ -548,6 +549,7 @@ class Venue extends Component {
 												type="text"
 												onChange={e => this.setState({ country: e.target.value })}
 												onBlur={this.validateFields.bind(this)}
+												disabled={!user.isSuper}
 											/>
 										</Grid>
 									</Grid>
