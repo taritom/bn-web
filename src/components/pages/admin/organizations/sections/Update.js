@@ -6,12 +6,12 @@ import Button from "../../../../elements/Button";
 import user from "../../../../../stores/user";
 import notifications from "../../../../../stores/notifications";
 import { validPhone } from "../../../../../validators";
-import LocationInputGroup from "../../../../common/form/LocationInputGroup";
-import addressTypeFromGoogleResult from "../../../../../helpers/addressTypeFromGoogleResult";
 import Bigneon from "../../../../../helpers/bigneon";
 import removePhoneFormatting from "../../../../../helpers/removePhoneFormatting";
 import moment from "moment-timezone";
 import SelectGroup from "../../../../common/form/SelectGroup";
+import Grid from "@material-ui/core/Grid";
+import Settings from "../../../../../config/settings";
 
 const styles = theme => ({});
 
@@ -27,12 +27,13 @@ class OrganizationUpdate extends Component {
 			address: "",
 			city: "",
 			state: "",
-			country: "",
-			zip: "",
+			country: "United States",
+			postal_code: "",
 			timezone: moment.tz.guess(),
 			errors: {},
 			isSubmitting: false,
-			showApiKeys: false
+			showApiKeys: false,
+			states: {}
 		};
 	}
 
@@ -51,7 +52,7 @@ class OrganizationUpdate extends Component {
 						city,
 						state,
 						country,
-						zip,
+						postal_code,
 						timezone
 					} = response.data;
 
@@ -63,7 +64,7 @@ class OrganizationUpdate extends Component {
 						city: city || "",
 						state: state || "",
 						country: country || "",
-						zip: zip || "",
+						postal_code: postal_code || "",
 						timezone: timezone || moment.tz.guess()
 					});
 				})
@@ -77,6 +78,33 @@ class OrganizationUpdate extends Component {
 					});
 				});
 		}
+
+		fetch(Settings().webUrl + "/countries.json")
+			.then(response => response.json())
+			.then(
+				(result) => {
+					const states = [];
+					result.forEach(country => {
+						if (country.name === "United States") {
+							Object.keys(country.province_codes).forEach(code => {
+								states.push({
+									value: country.province_codes[code],
+									label: code + " (" + country.province_codes[code] + ")"
+								});
+							});
+						}
+					});
+					this.setState({ states });
+				},
+				(error) => {
+					console.error(error);
+
+					notifications.showFromErrorResponse({
+						defaultMessage: "Loading states failed.",
+						error
+					});
+				}
+			);
 	}
 
 	validateFields() {
@@ -86,17 +114,29 @@ class OrganizationUpdate extends Component {
 		}
 
 		const { name, address, eventFee, timezone } = this.state;
-		const { organizationId } = this.props;
 		const phone = removePhoneFormatting(this.state.phone);
 
 		const errors = {};
+
+		const required = [
+			"city",
+			"state",
+			"country",
+			"postal_code",
+			"timezone"
+		];
+		required.forEach(field => {
+			if (!this.state[field]) {
+				errors[field] = `Missing ${field}.`;
+			}
+		});
 
 		if (!name) {
 			errors.name = "Missing organization name.";
 		}
 
 		if (!address) {
-			errors.address = "Missing address.";
+			errors.address = "Missing street address.";
 		}
 
 		if (!phone) {
@@ -105,17 +145,9 @@ class OrganizationUpdate extends Component {
 			errors.phone = "Invalid phone number.";
 		}
 
-		if (!timezone) {
-			errors.timezone = "Missing timezone";
-		}
-
 		this.setState({ errors });
 
-		if (Object.keys(errors).length > 0) {
-			return false;
-		}
-
-		return true;
+		return Object.keys(errors).length <= 0;
 	}
 
 	createNewOrganization(params, onSuccess) {
@@ -175,7 +207,7 @@ class OrganizationUpdate extends Component {
 			city,
 			state,
 			country,
-			zip,
+			postal_code,
 			timezone
 		} = this.state;
 		const { organizationId } = this.props;
@@ -187,7 +219,7 @@ class OrganizationUpdate extends Component {
 			city,
 			state,
 			country,
-			zip,
+			postal_code,
 			timezone
 		};
 
@@ -240,35 +272,34 @@ class OrganizationUpdate extends Component {
 		);
 	}
 
+	renderStates() {
+		const { state, states, errors } = this.state;
+
+		return (
+			<SelectGroup
+				value={state}
+				items={states}
+				error={errors.state}
+				name={"state"}
+				label={"State *"}
+				onChange={e => this.setState({ state: e.target.value })}
+			/>
+		);
+	}
+
 	render() {
 		const {
-			owner_user_id,
 			name,
 			address = "",
 			city = "",
-			state = "",
 			country = "",
-			zip = "",
-			latitude = "",
-			longitude = "",
+			postal_code = "",
 			phone,
 			errors,
-			isSubmitting,
-			showManualEntry
+			isSubmitting
 		} = this.state;
 
 		const { organizationId } = this.props;
-
-		const addressBlock = {
-			address,
-			city,
-			state,
-			country,
-			zip,
-			latitude,
-			longitude
-		};
-		const { classes } = this.props;
 
 		return (
 			<div>
@@ -277,7 +308,7 @@ class OrganizationUpdate extends Component {
 						error={errors.name}
 						value={name}
 						name="name"
-						label="Organization name"
+						label="Organization name *"
 						type="text"
 						onChange={e => this.setState({ name: e.target.value })}
 						onBlur={this.validateFields.bind(this)}
@@ -287,7 +318,7 @@ class OrganizationUpdate extends Component {
 						error={errors.phone}
 						value={phone}
 						name="phone"
-						label="Phone number"
+						label="Phone number *"
 						type="phone"
 						onChange={e => this.setState({ phone: e.target.value })}
 						onBlur={this.validateFields.bind(this)}
@@ -295,39 +326,54 @@ class OrganizationUpdate extends Component {
 
 					{this.renderTimezones()}
 
-					<LocationInputGroup
+					<InputGroup
 						error={errors.address}
-						label="Organization address"
-						address={address}
-						addressBlock={addressBlock}
-						showManualEntry={showManualEntry}
-						onError={error => {
-							this.setState({ showManualEntry: true });
-							notifications.show({
-								message: `Google API error: ${error}`, //TODO add more details here
-								variant: "error"
-							});
-						}}
-						onAddressChange={address => this.setState({ address })}
-						onLatLngResult={latLng => {
-							this.setState({
-								latitude: latLng.lat,
-								longitude: latLng.lng
-							});
-						}}
-						onFullResult={result => {
-							const city = addressTypeFromGoogleResult(result, "locality");
-							const state = addressTypeFromGoogleResult(
-								result,
-								"administrative_area_level_1"
-							);
-							const country = addressTypeFromGoogleResult(result, "country");
-
-							const zip = addressTypeFromGoogleResult(result, "postal_code");
-
-							this.setState({ city, state, country, zip });
-						}}
+						value={address}
+						name="address"
+						label="Street address *"
+						type="text"
+						onChange={e => this.setState({ address: e.target.value })}
+						onBlur={this.validateFields.bind(this)}
 					/>
+					<Grid container spacing={24}>
+						<Grid item xs={12} sm={3}>
+							<InputGroup
+								error={errors.city}
+								value={city}
+								name="city"
+								label="City *"
+								type="text"
+								onChange={e => this.setState({ city: e.target.value })}
+								onBlur={this.validateFields.bind(this)}
+							/>
+						</Grid>
+						<Grid item xs={12} sm={3}>
+							<InputGroup
+								error={errors.postal_code}
+								value={postal_code}
+								name="postal_code"
+								label="Zip *"
+								type="text"
+								onChange={e => this.setState({ postal_code: e.target.value })}
+								onBlur={this.validateFields.bind(this)}
+							/>
+						</Grid>
+						<Grid item xs={12} sm={3}>
+							{this.renderStates()}
+						</Grid>
+						<Grid item xs={12} sm={3}>
+							<InputGroup
+								error={errors.country}
+								value={country}
+								name="country"
+								label="Country *"
+								type="text"
+								onChange={e => this.setState({ country: e.target.value })}
+								onBlur={this.validateFields.bind(this)}
+								disabled={!user.isSuper}
+							/>
+						</Grid>
+					</Grid>
 
 					<Button
 						disabled={isSubmitting}

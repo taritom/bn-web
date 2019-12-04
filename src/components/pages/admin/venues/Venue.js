@@ -508,7 +508,7 @@ class Venue extends Component {
 										error={errors.address}
 										value={address}
 										name="address"
-										label="Address *"
+										label="Street address *"
 										type="text"
 										onChange={e => this.setState({ address: e.target.value })}
 										onBlur={this.validateFields.bind(this)}
