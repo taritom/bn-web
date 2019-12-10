@@ -78,6 +78,13 @@
 		"first_name": "test",
 		"last_name": "testqa"
 	},
+	"user_data_std_2":{
+		"email_address": "bluetestneouser2@mailinator.com",
+		"password": "test1111",
+		"confirm_password": "test1111",
+		"first_name": "test2",
+		"last_name": "testqa2"
+	},
 	"generate_new_user_data": {
 		"email_address": "",
 		"password": "seleniumpassword",
@@ -280,7 +287,7 @@
 		"order_note": "some pretty text note",
 		"additional_tendered_amount": 3
 	},
-	"event_JST" :{
+	"event_PST" :{
 		"organization":{
 			"name":"Sast_Org",
 			"time_zone":"Africa/Johannesburg",
@@ -303,8 +310,8 @@
 			}
 		},
 		"artist_name": "TheTestArtistAuto",
-		"event_name": "TestJSTNameEvent",
-		"venue_name": "TokyoOpera",
+		"event_name": "TestPSTNameEvent",
+		"venue_name": "SanFranciscoOpera",
 		"start_time": "08:30 PM",
 		"end_time": "10:00 PM",
 		"door_time": "1",
@@ -383,22 +390,32 @@
 			]
 		}
 	},
-	"venue_SAST":{
-		"name":"DuglasDriveOpera",
-		"timezone":"Africa/Johannesburg",
-		"region":"Other",
+	"venue_CST":{
+		"name":"TopekaHall",
 		"organization_name":"Sast_Org",
-		"phone_number":"27728146598",
-		"location":"Opera, Douglas Drive, Douglasdale, Johannesburg, South Africa",
+		"timezone":"America/Indiana/Knox",
+		"region":"No Region",
+		"phone_number":"123456789012",
+		"address":"1700 SW Jewell Ave, Topeka",
+		"city":"Topeka",
+		"zip":"66621",
+		"state":"Kansas",
+		"stateAbbr":"KS",
+		"country": "United States",
 		"image_name":"lorem_ipsum_img_101.jpg"
 	},
-	"venue_JST":{
-		"name":"TokyoOpera",
-		"timezone":"Asia/Tokyo",
+	"venue_PST":{
+		"name":"SanFranciscoOpera",
+		"timezone":"America/Los_Angeles",
 		"region":"No Region",
 		"organization_name":"Sast_Org",
 		"phone_number":"123456789012",
-		"location":"New National Theatre Tokyo, 1 Chome-1-1 Honmachi, Shibuya City, Tokyo, Japan",
+		"address":"301 Van Ness Ave, San Francisco",
+		"city":"San Francisco",
+		"zip":"94102",
+		"state": "California",
+		"stateAbbr":"CA",
+		"country":"United States",
 		"image_name":"lorem_ipsum_img_101.jpg"
 	},
 	"venue_EST":{
@@ -407,16 +424,26 @@
 		"organization_name":"Sast_Org",
 		"region":"No Region",
 		"phone_number":"123456789012",
-		"location":"Metropolitan Opera House, Lincoln Center Plaza, New York, NY, USA",
+		"address":"30 Lincoln Center Plaza",
+		"city":"New York",
+		"zip": "10023",
+		"state":"New York",
+		"stateAbbr":"NY",
+		"country":"United States",
 		"image_name":"lorem_ipsum_img_101.jpg"
 	},
 	"venue_std":{
 		"name":"TAEVenue",
 		"organization_name":"Auto Test12",
-		"timezone":"Africa/Johannesburg",
+		"timezone":"America/Indiana/Knox",
 		"region":"No Region",
 		"phone_number":"123456789012",
-		"location":"Opera, Douglas Drive, Douglasdale, Johannesburg, South Africa",
+		"address":"1700 SW Jewell Ave, Topeka",
+		"city":"Topeka",
+		"zip":"66621",
+		"state":"Kansas",
+		"stateAbbr":"KS",
+		"country": "United States",
 		"image_name":"lorem_ipsum_img_101.jpg"
 	}
 }

@@ -7,10 +7,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import model.User;
+import model.Venue;
 import pages.BaseComponent;
 import pages.components.dialogs.IssueRefundDialog.RefundReason;
-import utils.ProjectUtils;
 import utils.SeleniumUtils;
+import utils.formatter.VenueFormatter;
 
 public class ActivityItem extends BaseComponent {
 
@@ -203,9 +204,9 @@ public class ActivityItem extends BaseComponent {
 
 		private WebElement container;
 
-		private String relativeTicketsMoneyAmount = "./div/div/div/div[2]/div/p[1]/span[1]";
+		private String relativeTicketsMoneyAmount = "./div/div/div/div[2]/div/p[contains(text(),'Tickets')]/span[1]";
 
-		private String relativePerTicketFeeXpath = "./div/div/div/div[2]/div/p[1]/span[2]";
+		private String relativePerTicketFeeXpath = "./div/div/div/div[2]/div/p[contains(text(),'Tickets')]/span[2]";
 
 		private String relativeRefundedReasonXpath = ".//div[p[contains(text(),'Reason')]]/following-sibling::div/p";
 
@@ -283,6 +284,10 @@ public class ActivityItem extends BaseComponent {
 			return isVenueVisible && isDateTimeVisible && isQtyVisible && isTotalMoneyVisible;
 		}
 
+		public Venue getVenue() {
+			return new VenueFormatter("A, L ,C , S, CT").parse(getVenueLocation().trim());
+		}
+		
 		public String getVenueLocation() {
 			return getVenueLocationElement().getText();
 		}

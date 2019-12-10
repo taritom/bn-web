@@ -10,6 +10,7 @@ import pages.components.user.EventComponent;
 import pages.mailinator.MailinatorHomePage;
 import pages.mailinator.inbox.MailinatorInboxPage;
 import pages.user.MyEventsPage;
+import utils.DataConstants;
 import utils.MsgConstants;
 
 public class TransferTicketStepsIT extends BaseSteps {
@@ -93,7 +94,7 @@ public class TransferTicketStepsIT extends BaseSteps {
 
 	@DataProvider(name = "ticket_transfer_to_new_user_data")
 	public static Object[][] data_new_user() {
-		User sender = User.generateUser();
+		User sender = User.generateUserFromJson(DataConstants.USER_STANDARD_KEY);
 		User receiver = User.generateRandomUser();
 
 		return new Object[][] { { sender, receiver } };
@@ -101,7 +102,7 @@ public class TransferTicketStepsIT extends BaseSteps {
 
 	@DataProvider(name = "ticket_transfer_to_old_user_data")
 	public static Object[][] data_existing_user() {
-		User sender = User.generateUser();
+		User sender = User.generateUserFromJson(DataConstants.USER_STANDARD_KEY);
 		User receiver = new User();
 		receiver.setEmailAddress("altbluetestneouser@mailinator.com");
 		receiver.setFirstName("testalt");

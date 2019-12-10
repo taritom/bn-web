@@ -248,8 +248,7 @@ public class OrderManagmentSearchForOrdersStepsIT extends BaseSteps {
 		boolean isTherePurchasedHistoryItem =  orderManageFacade.thenThereShouldBePurchasedHistoryItemWithNumberOfPurchases(customerOne, purchase, 3);
 		Assert.assertTrue(isTherePurchasedHistoryItem);
 		TicketType ticketType = event.getTicketTypes().stream().filter(tt->tt.getTicketTypeName().equals(ticketTypeName)).findFirst().get();
-		boolean isDataValid = orderManageFacade.whenUserExpandsActivityItemAndChecksValidityOfData(purchase, MULTIPLE_PURCHASE_QTY_FOR_ONE_USER, ticketType);
-		Assert.assertTrue(isDataValid, "Activity Item data invalid");
+		orderManageFacade.whenUserExpandsActivityItemAndChecksValidityOfData(purchase, MULTIPLE_PURCHASE_QTY_FOR_ONE_USER, ticketType);
 		boolean isRefundDataValid = orderManageFacade.whenUserExpandsRefundedHistoryItemAndChecksData(purchase, 1, ticketType);
 		Assert.assertTrue(isRefundDataValid, "Refunded history item data invalid");
 		loginFacade.logOut();

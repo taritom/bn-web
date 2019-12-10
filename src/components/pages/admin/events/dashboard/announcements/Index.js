@@ -12,6 +12,7 @@ import ConfirmSendDialog from "./ConfirmSendDialog";
 import EmailHistory from "./EmailHistory";
 import Loader from "../../../../../elements/loaders/Loader";
 import user from "../../../../../../stores/user";
+import splitByCamelCase from "../../../../../../helpers/splitByCamelCase";
 
 const styles = theme => ({
 	root: {},
@@ -104,21 +105,37 @@ class Announcements extends Component {
 				const { data } = response.data;
 				const emailHistory = [];
 
+				const timezone = this.timezone || user.currentOrgTimezone;
+
 				data.forEach(email => {
 					const {
 						id,
+						created_at,
 						notification_type,
 						send_at,
 						status,
 						preview_email
 					} = email;
 					if (notification_type === "Custom" && !preview_email) {
-						email.sendAtDisplay = send_at
-							? moment
-								.utc(send_at)
-								.tz(this.timezone || user.currentOrgTimezone)
-								.format("MM/DD/YY hh:mm A z")
-							: null;
+						const dateFormat = "MM/DD/YY hh:mm A z";
+
+						if (send_at) {
+							//If send in past
+							if (moment.utc(send_at).isBefore(moment.utc())) {
+								email.sentAtDisplay = moment
+									.utc(send_at)
+									.tz(timezone)
+									.format(dateFormat);
+							} else {
+								//If scheduled for future, use the status
+								email.sentAtDisplay = splitByCamelCase(status);
+							}
+						} else {
+							email.sentAtDisplay = moment
+								.utc(created_at)
+								.tz(timezone)
+								.format(dateFormat);
+						}
 
 						emailHistory.push(email);
 					}
@@ -164,8 +181,6 @@ class Announcements extends Component {
 				preview_email: email
 			})
 			.then(response => {
-				this.loadEventHistory();
-
 				this.setState({
 					previewIsSending: false,
 					previewIsSent: true
@@ -229,7 +244,7 @@ class Announcements extends Component {
 				notification_type: "Custom"
 			})
 			.then(response => {
-				this.loadEventHistory();
+				setTimeout(() => this.loadEventHistory(), 1000);
 
 				this.setState({
 					isSending: false,

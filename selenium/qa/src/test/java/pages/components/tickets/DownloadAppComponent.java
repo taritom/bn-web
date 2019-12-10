@@ -10,10 +10,10 @@ import utils.SeleniumUtils;
 
 public class DownloadAppComponent extends BaseComponent {
 
-	@FindBy(xpath = "//a[span[div[contains(text(),'APP STORE')]]]")
+	@FindBy(xpath = "//div[img[contains(@alt,'Bigneon Logo')]]/div/a[img[contains(@alt,'App Store download button')]]")
 	private WebElement appStore;
 
-	@FindBy(xpath = "//a[span[div[contains(text(),'GOOGLE PLAY')]]]")
+	@FindBy(xpath = "//div[img[contains(@alt,'Bigneon Logo')]]/div/a[img[contains(@alt,'Google Play download button')]]")
 	private WebElement googlePlay;
 
 	public DownloadAppComponent(WebDriver driver) {

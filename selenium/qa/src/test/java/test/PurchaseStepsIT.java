@@ -5,12 +5,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import data.holders.DataHolder;
-import data.holders.events.results.EventResultCardData;
 import data.holders.ticket.order.OrderDetailsData;
 import model.Event;
 import model.Purchase;
 import model.User;
-import pages.components.admin.orders.manage.ManageOrderRow;
 import pages.mailinator.MailinatorHomePage;
 import pages.mailinator.inbox.MailinatorInboxPage;
 import test.facade.EventStepsFacade;
@@ -93,7 +91,7 @@ public class PurchaseStepsIT extends BaseSteps {
 		// TODO: replace with some other number
 		purchase.setPhoneNumber("14422460151");
 		return new Object[][] { 
-			{ User.generateUser(), purchase }}
+			{ User.generateUserFromJson(DataConstants.USER_STANDARD_KEY), purchase }}
 		;
 	}
 }

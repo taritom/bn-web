@@ -60,11 +60,9 @@ const SentEmailCard = ({
 		sent_quantity,
 		status,
 		updated_at,
-		sendAtDisplay,
+		sentAtDisplay,
 		...rest
 	} = email;
-
-	const sentAt = sendAtDisplay || splitByCamelCase(status);
 
 	const emailBody = (
 		<Typography
@@ -79,7 +77,7 @@ const SentEmailCard = ({
 			<Hidden smDown>
 				<div className={classes.row}>
 					<Typography className={classes.dateText} style={colStyles[0]}>
-						{sentAt}
+						{sentAtDisplay}
 					</Typography>
 					<Typography className={classes.text} style={colStyles[1]}>
 						{name}
@@ -112,7 +110,7 @@ const SentEmailCard = ({
 			{/*MOBILE*/}
 			<Hidden mdUp>
 				<Typography className={classes.title}>Date Sent</Typography>
-				<Typography className={classes.dateText}>{sentAt}</Typography>
+				<Typography className={classes.dateText}>{sentAtDisplay}</Typography>
 				<br/>
 				<Typography className={classes.title}>Subject</Typography>
 				<Typography>{name}</Typography>

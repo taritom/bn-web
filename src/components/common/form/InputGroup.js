@@ -59,6 +59,9 @@ const styles = theme => {
 			textAlign: "center",
 			fontSize: theme.typography.body1.fontSize
 		},
+		disabledInput: {
+			color: "#737373"
+		},
 		errorHelperText: {
 			marginTop: 0,
 			paddingTop: 0,
@@ -109,7 +112,8 @@ class InputGroup extends Component {
 			InputProps = {},
 			autoComplete,
 			allowNegative,
-			labelProps
+			labelProps,
+			inputRef
 		} = this.props;
 
 		if (type === "phone") {
@@ -143,12 +147,14 @@ class InputGroup extends Component {
 					margin="normal"
 					onBlur={onBlur}
 					onFocus={onFocus}
+					inputRef={inputRef}
 					InputProps={{
 						...InputProps,
 						classes: {
 							input: classnames({
 								[classes.input]: true,
-								[classes.searchInput]: isSearch
+								[classes.searchInput]: isSearch,
+								[classes.disabledInput]: disabled
 							})
 						}
 					}}
@@ -219,7 +225,8 @@ InputGroup.propTypes = {
 	disabled: PropTypes.bool,
 	autoComplete: PropTypes.string,
 	allowNegative: PropTypes.bool,
-	labelProps: PropTypes.object
+	labelProps: PropTypes.object,
+	inputRef: PropTypes.object
 };
 
 export default withStyles(styles)(InputGroup);

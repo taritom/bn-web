@@ -156,15 +156,6 @@ public class User extends Model implements Serializable {
 		return users;
 	}
 
-	public static User generateUser() {
-		User user = new User();
-		user.setEmailAddress("bluetestneouser@mailinator.com");
-		user.setPass("test1111");
-		user.setFirstName("test");
-		user.setLastName("testqa");
-		return user;
-	}
-
 	public static User generateRandomUser() {
 		User user = generateUserFromJson(DataConstants.GENERATE_NEW_USER_KEY);
 		user.setEmailAddress(user.getFirstName() + ProjectUtils.generateRandomInt(DataConstants.RANDOM_NUMBER_SIZE_10M) + "@" + DataConstants.MAILINATOR_MAIL_DOMAIN);

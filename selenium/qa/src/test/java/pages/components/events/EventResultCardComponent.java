@@ -1,8 +1,6 @@
 package pages.components.events;
 
 import java.time.LocalDateTime;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +13,7 @@ import model.Event;
 import model.Venue;
 import pages.BaseComponent;
 import utils.ProjectUtils;
+import utils.formatter.VenueFormatter;
 
 public class EventResultCardComponent extends BaseComponent implements DataHolderProvider {
 
@@ -42,12 +41,7 @@ public class EventResultCardComponent extends BaseComponent implements DataHolde
 	
 	public Venue getVenueInfo() {
 		String venueText = getAccessUtils().getTextOfElement(getVenueElement());
-		String[] arr = venueText.split(", ");
-		String venueName = arr[0];
-		String venueLocation = arr[1] + ", " + arr[2] ;
-		Venue venue = new Venue();
-		venue.setName(venueName);
-		venue.setLocation(venueLocation);
+		Venue venue = new VenueFormatter("N, C, S").parse(venueText);
 		return venue;
 	}
 
@@ -60,7 +54,7 @@ public class EventResultCardComponent extends BaseComponent implements DataHolde
 		String dayAndTime = dateTimeTokens[1].replace("pm", " PM").replace("am", " AM");
 		StringBuilder sb = new StringBuilder();
 		sb.append(dateTimeTokens[0].trim() + " ").append(dayAndTime.trim());
-		LocalDateTime date = ProjectUtils.parseDateTimeWithoutYear("MMM dd EEE, h:mm a", sb.toString());
+		LocalDateTime date = ProjectUtils.parseDateTimeWithoutYear(ProjectUtils.EVENT_RESULT_SUMMARY_DATE_TIME_FORMAT, sb.toString());
 		
 		Event event = new Event();
 		event.setDate(date);

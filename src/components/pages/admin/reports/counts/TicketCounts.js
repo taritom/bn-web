@@ -249,7 +249,7 @@ class TicketCounts extends Component {
 				</div>
 				{eventId ? (
 					<div>
-						<Typography>ID: {eventId}</Typography>
+						{/*<Typography>ID: {eventId}</Typography>*/}
 						<br/>
 						<br/>
 						<Typography className={classes.subheading}> Inventory </Typography>

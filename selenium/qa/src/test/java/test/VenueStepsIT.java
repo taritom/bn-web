@@ -1,11 +1,11 @@
 package test;
 
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import model.User;
 import model.Venue;
+import test.facade.FacadeProvider;
 import test.facade.LoginStepsFacade;
 import test.facade.VenueStepsFacade;
 import utils.DataConstants;
@@ -14,20 +14,13 @@ public class VenueStepsIT extends BaseSteps {
 
 	@Test(dataProvider = "create_venue_data", priority = 22, retryAnalyzer = utils.RetryAnalizer.class)
 	public void createVenue(Venue venue, User superuser) {
-		LoginStepsFacade loginFacade = new LoginStepsFacade(driver);
-		VenueStepsFacade venueStepsFacade = new VenueStepsFacade(driver);
+		FacadeProvider fp = new FacadeProvider(driver);
+		LoginStepsFacade loginFacade = fp.getLoginFacade();
+		VenueStepsFacade venueStepsFacade = fp.getVenueFacade();
 		maximizeWindow();
 
 		loginFacade.givenAdminUserIsLogedIn(superuser);
-		venueStepsFacade.givenUserIsOnVenuesPage();
-		venueStepsFacade.givenUserIsOnCreateVenuePage();
-
-		venueStepsFacade.whenUserFillsOutVenueInfo(venue);
-		venueStepsFacade.whenUserClicksOnCreateVenue();
-
-		boolean isNotificationVisible = venueStepsFacade.thenNotificationVenueCreatedShouldBeVisible();
-		Assert.assertTrue(isNotificationVisible);
-
+		venueStepsFacade.venueCreateSteps(venue);
 		loginFacade.logOut();
 	}
 
@@ -40,22 +33,15 @@ public class VenueStepsIT extends BaseSteps {
 
 	@Test(dataProvider = "edit_venue_data", priority = 23, retryAnalyzer = utils.RetryAnalizer.class)
 	public void updateVenue(Venue venue, User superuser) {
-		LoginStepsFacade loginStepsFacade = new LoginStepsFacade(driver);
-		VenueStepsFacade venueStepsFacade = new VenueStepsFacade(driver);
+		FacadeProvider fp = new FacadeProvider(driver);
+		LoginStepsFacade loginStepsFacade = fp.getLoginFacade();
+		VenueStepsFacade venueStepsFacade = fp.getVenueFacade();
 		maximizeWindow();
 
 		loginStepsFacade.givenAdminUserIsLogedIn(superuser);
 		venueStepsFacade.givenUserIsOnVenuesPage();
+		venueStepsFacade.venueUpdateSteps(venue);
 		
-		venueStepsFacade.whenUserClicksOnEditButtonOfSelectedVenue(venue.getName());
-		venueStepsFacade.whenUserUpdatesVenue(venue);
-		venueStepsFacade.whenUserClickOnUpdateButtonOnEditPage();
-
-		boolean isNotificationVisible = venueStepsFacade.thenNotificationVenueUpdatedShoudBeVisible();
-		boolean isAtVenuesPage = venueStepsFacade.thenUserIsOnVenuesPage();
-
-		Assert.assertTrue(isNotificationVisible && isAtVenuesPage);
-
 		loginStepsFacade.logOut();
 
 	}

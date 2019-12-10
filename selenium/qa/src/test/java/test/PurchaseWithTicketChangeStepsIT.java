@@ -57,7 +57,7 @@ public class PurchaseWithTicketChangeStepsIT extends BaseSteps {
 		purchase.setRemoveNumberOfTickets(1);
 		
 		return new Object[][] { 
-			{ User.generateUser(), purchase } };
+			{ User.generateUserFromJson(DataConstants.USER_STANDARD_KEY), purchase } };
 	}
 	
 	

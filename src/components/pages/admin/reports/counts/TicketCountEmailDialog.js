@@ -50,7 +50,7 @@ const styles = theme => ({
 		width: 25,
 		height: 25,
 		padding: 0,
-		margin: "0 0 16px 0"
+		margin: "0 16px 16px 0"
 	},
 	btnHolder: {
 		display: "flex",
@@ -76,7 +76,7 @@ const styles = theme => ({
 	dialogDesc: {
 		marginTop: theme.spacing.unit * 3,
 		marginBottom: theme.spacing.unit * 3,
-		width: 400
+		width: 380
 	}
 });
 
@@ -90,6 +90,7 @@ class TicketCountEmailDialog extends Component {
 			previousEmail: false,
 			showFirstInput: false,
 			showNewInput: false,
+			showInput: false,
 			errors: {}
 		};
 
@@ -97,6 +98,7 @@ class TicketCountEmailDialog extends Component {
 		this.onEnter = this.onEnter.bind(this);
 		this.handleNewEmailInput = this.handleNewEmailInput.bind(this);
 		this.validateEmail = this.validateEmail.bind(this);
+		this.inputRef = React.createRef();
 	}
 
 	onEnter() {
@@ -106,7 +108,6 @@ class TicketCountEmailDialog extends Component {
 	addNewSubscriber(newEmail, saveClose) {
 		const { eventId } = this.props;
 		const { previousEmail } = this.state;
-
 		if (newEmail === "" && saveClose === true) {
 			this.onClose();
 		} else {
@@ -168,8 +169,15 @@ class TicketCountEmailDialog extends Component {
 
 	handleNewEmailInput() {
 		const { listData, newSubscriberEmail } = this.state;
+
 		if (listData.length > 0) {
-			this.setState({ showNewInput: true });
+			this.setState({ showNewInput: true }, () => {
+				setTimeout(() => {
+					if (this.inputRef) {
+						this.inputRef.current.focus();
+					}
+				}, 1000);
+			});
 		}
 		if (newSubscriberEmail.length > 0) {
 			this.addNewSubscriber(newSubscriberEmail, false);
@@ -231,17 +239,11 @@ class TicketCountEmailDialog extends Component {
 	renderInputs() {
 		const { classes } = this.props;
 
-		const {
-			listData,
-			showNewInput,
-			newSubscriberEmail,
-			errors,
-			showFirstInput
-		} = this.state;
+		const { listData } = this.state;
 		const iconUrlDelete = "/icons/dash.svg";
 
-		let inputs = [];
-		const newInputs = [];
+		const inputs = [];
+		// const newInputs = [];
 
 		if (listData && listData.length > 0) {
 			listData.forEach((listItem, index) => {
@@ -251,6 +253,7 @@ class TicketCountEmailDialog extends Component {
 						value={listItem.email}
 						disabled={true}
 						name="email"
+						autoFocus={false}
 						label=""
 						placeholder="admin@subscriber.com"
 						type="text"
@@ -278,53 +281,17 @@ class TicketCountEmailDialog extends Component {
 				);
 			});
 		}
-		if (showFirstInput === true) {
-			newInputs.push(
-				<InputGroup
-					key={"first input"}
-					value={newSubscriberEmail}
-					disabled={false}
-					label="Email Address"
-					autoFocus={true}
-					error={errors.email}
-					name="email"
-					placeholder="admin@subscriber.com"
-					type="text"
-					onChange={e => {
-						this.setState({ newSubscriberEmail: e.target.value });
-					}}
-					onBlur={this.validateEmail}
-				/>
-			);
-		}
-
-		if (showNewInput === true && showFirstInput === false) {
-			newInputs.push(
-				<InputGroup
-					key={"new input"}
-					value={newSubscriberEmail}
-					disabled={false}
-					label="Email Address"
-					autoFocus={true}
-					error={errors.email}
-					name="email"
-					placeholder="admin@subscriber.com"
-					type="text"
-					onChange={e => {
-						this.setState({ newSubscriberEmail: e.target.value });
-					}}
-					onBlur={this.validateEmail}
-				/>
-			);
-		}
-
-		inputs = inputs.concat(newInputs);
 		return inputs;
 	}
 
 	render() {
 		const { eventId, classes } = this.props;
-		const { newSubscriberEmail } = this.state;
+		const {
+			newSubscriberEmail,
+			showNewInput,
+			showFirstInput,
+			errors
+		} = this.state;
 		const iconUrl = "/icons/envelope.png";
 		const iconUrlAdd = "/icons/add-active.svg";
 		return (
@@ -332,15 +299,35 @@ class TicketCountEmailDialog extends Component {
 				onClose={this.onClose}
 				onEnter={this.onEnter}
 				iconUrl={iconUrl}
-				title={"Daily Counts"}
+				title={"Ticket Count Report"}
 				open={!!eventId}
 			>
 				<Typography className={classes.dialogDesc}>
-					Add emails below. Recipients will receive a daily report of ticket
-					sales for this event each morning, ending on the morning after the
-					event ends.
+					Recipients will receive a daily Ticket Count Report for this event
+					each morning until the morning after the event ends. Enter recipient
+					email addresses below.
 				</Typography>
-				<div className={classes.scrollContainer}>{this.renderInputs()}</div>
+				<div className={classes.scrollContainer}>
+					{this.renderInputs()}
+					{showNewInput || showFirstInput ? (
+						<InputGroup
+							key={"new input"}
+							inputRef={this.inputRef}
+							value={newSubscriberEmail}
+							disabled={false}
+							label=""
+							autoFocus
+							error={errors.email}
+							name="email"
+							placeholder="admin@subscriber.com"
+							type="text"
+							onChange={e => {
+								this.setState({ newSubscriberEmail: e.target.value });
+							}}
+							onBlur={this.validateEmail}
+						/>
+					) : null}
+				</div>
 				<div className={classes.btnHolder}>
 					<CustomIconButton
 						className={classNames({

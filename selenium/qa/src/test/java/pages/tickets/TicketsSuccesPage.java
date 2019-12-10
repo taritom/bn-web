@@ -16,6 +16,7 @@ import pages.BasePage;
 import pages.components.tickets.DownloadAppComponent;
 import pages.components.tickets.OrderDetailsComponent;
 import utils.ProjectUtils;
+import utils.formatter.VenueFormatter;
 
 public class TicketsSuccesPage extends BasePage implements DataHolderProvider {
 	
@@ -41,9 +42,6 @@ public class TicketsSuccesPage extends BasePage implements DataHolderProvider {
 	private WebElement eventImage;
 	
 	private String linkToCustomerReportValue = "https://support.bigneon.com/hc/en-us/requests/new";
-	
-	@FindBy(linkText = "see our FAQ")
-	private WebElement faqLink;
 	
 	private OrderDetailsComponent orderDetails;
 	
@@ -78,13 +76,6 @@ public class TicketsSuccesPage extends BasePage implements DataHolderProvider {
 		return href.equals(linkToCustomerReportValue);
 	}
 	
-	public boolean isFAQLinkCorrect() {
-		explicitWaitForVisiblity(faqLink);
-		waitVisibilityAndBrowserCheckClick(faqLink);
-		boolean retVal = isExplicitConditionTrue(15, ExpectedConditions.urlContains("Frequently-Asked-Questions"));
-		driver.navigate().back();
-		return retVal && isAtPage();
-	}
 	
 	public boolean isTicketTotalEqualToOrderDetailsSubtotal() {
 		return getOrderDetails().getSubtotal().compareTo(getOrderDetails().getTicketTotal()) == 0;
@@ -130,8 +121,10 @@ public class TicketsSuccesPage extends BasePage implements DataHolderProvider {
 	public boolean compareOnPageVenueInfos() {
 		Venue orderDetailsVenue =  getOrderDetails().getVenueInfo();
 		Venue venue = getVenueInfo();
-		return orderDetailsVenue.getName().equals(venue.getName()) 
-				&& orderDetailsVenue.getLocation().equals(venue.getLocation());
+		return orderDetailsVenue.getName().equals(venue.getName())
+				&& orderDetailsVenue.getAddress().equals(venue.getAddress())
+				&& orderDetailsVenue.getCity().equals(venue.getCity())
+				&& orderDetailsVenue.getState().equals(venue.getState());
 	}
 	
 	public Venue getVenueInfo() {
@@ -139,9 +132,8 @@ public class TicketsSuccesPage extends BasePage implements DataHolderProvider {
 		String[] venueInformation = venueInfo.getText().split("\\n");
 		String venueName = venueInformation[0];
 		String venueLocation = venueInformation[1];
-		Venue venue = new Venue();
+		Venue venue = new VenueFormatter("A, L, C, S").parse(venueLocation);
 		venue.setName(venueName);
-		venue.setLocation(venueLocation);
 		return venue;
 	}
 	

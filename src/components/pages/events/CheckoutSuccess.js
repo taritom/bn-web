@@ -31,7 +31,7 @@ import OrgAnalytics from "../../common/OrgAnalytics";
 import Bigneon from "../../../helpers/bigneon";
 import moment from "moment-timezone";
 import Settings from "../../../config/settings";
-
+import classNames from "classnames";
 import PurchaseDetails from "./PurchaseDetails";
 import Hero from "./SuccessHero";
 import removeCountryFromAddress from "../../../helpers/removeCountryFromAddress";
@@ -138,8 +138,6 @@ const styles = theme => {
 		},
 		downloadBtn: {
 			width: 140,
-			marginRight: theme.spacing.unit,
-			marginBottom: theme.spacing.unit,
 			height: 47
 		},
 		desktopCardContent: {
@@ -218,20 +216,23 @@ const styles = theme => {
 			marginTop: 10,
 			fontFamily: fontFamilyDemiBold
 		},
+		desktopFooterTextTitle: {
+			marginBottom: 15
+		},
 		fakeList: {
 			color: "#3C383F",
 			fontSize: 17,
 			lineHeight: "20px",
 			fontFamily: fontFamilyDemiBold,
-			maxWidth: 260,
+			maxWidth: 220,
 			display: "flex",
 			margin: "0 auto",
 			textAlign: "left"
 		},
 		desktopCardFooterContainer: {
-			padding: 10,
-			paddingRight: 10,
-			paddingLeft: 10,
+			// padding: 10,
+			// paddingRight: 10,
+			// paddingLeft: 10,
 			textAlign: "center",
 			[theme.breakpoints.down("md")]: {
 				textAlign: "left"
@@ -269,7 +270,7 @@ const styles = theme => {
 			flexDirection: "column",
 			alignItems: "flex-start",
 			marginLeft: theme.spacing.unit * 6,
-			marginBottom: theme.spacing.unit * 4,
+			marginBottom: 25,
 			[theme.breakpoints.down("md")]: {
 				marginLeft: 0,
 				marginBottom: theme.spacing.unit * 2
@@ -289,8 +290,8 @@ const styles = theme => {
 		heartLogo: {
 			height: 55,
 			width: 53,
-			marginTop: theme.spacing.unit * 2,
-			marginBottom: theme.spacing.unit * 2
+			marginTop: 25,
+			marginBottom: 25
 		},
 		cardLargeText: {
 			color: "#3C383F",
@@ -308,8 +309,8 @@ const styles = theme => {
 			fontSize: 18,
 			fontFamily: fontFamilyBold,
 			lineHeight: "21px",
-			marginTop: theme.spacing.unit * 2,
-			marginBottom: theme.spacing.unit * 2
+			marginTop: 0,
+			marginBottom: 25
 		},
 		btnContainer: {
 			display: "flex",
@@ -317,7 +318,7 @@ const styles = theme => {
 			alignItems: "center",
 			justifyContent: "space-around",
 			maxWidth: 330,
-			margin: "24px auto 24px auto"
+			margin: "25px auto 25px auto"
 		},
 		purchaseInfoBlock: {
 			padding: theme.spacing.unit * 4,
@@ -352,9 +353,9 @@ const styles = theme => {
 			height: 1,
 			width: "100%",
 			opacity: "0.2",
-			backgroundColor: "rgba(0,0,0,0.3)",
-			marginTop: 24,
-			marginBottom: 24
+			backgroundColor: "rgba(0,0,0,0.75)",
+			marginTop: 25,
+			marginBottom: 25
 		},
 		leftColumn: {
 			display: "flex",
@@ -654,11 +655,16 @@ class CheckoutSuccess extends Component {
 											</Typography>
 										</div>
 
-										<Divider/>
+										<div className={classes.divider}/>
 
 										<div className={classes.desktopCardFooterContainer}>
-											<Typography className={classes.desktopFooterText}>
-												You’ll need the Big Neon App to:
+											<Typography
+												className={classNames({
+													[classes.desktopFooterText]: true,
+													[classes.desktopFooterTextTitle]: true
+												})}
+											>
+												With the Big Neon App you can:
 											</Typography>
 											<div className={classes.iconText}>
 												<Typography className={classes.desktopFooterText}>
@@ -783,16 +789,13 @@ class CheckoutSuccess extends Component {
 													</CustomButton>
 												</a>
 											</div>
-											<Typography className={classes.cardMedText}>
-												(or just bring your photo ID to the door)
-											</Typography>
 										</div>
 
 										<Divider/>
 
 										<div className={classes.desktopCardFooterContainer}>
 											<Typography className={classes.desktopFooterText}>
-												You’ll need the Big Neon App to:
+												With the Big Neon App you can:
 											</Typography>
 											<br/>
 											<div className={classes.iconText}>

@@ -15,10 +15,11 @@ import model.User;
 import model.Venue;
 import pages.BaseComponent;
 import utils.ProjectUtils;
+import utils.formatter.VenueFormatter;
 
 public class OrderDetailsComponent extends BaseComponent implements DataHolderProvider {
 
-	@FindBy(xpath = "//p[contains(text(),'Questions about your purchase')]/following-sibling::div")
+	@FindBy(xpath = "//p[contains(text(),'Any questions')]/following-sibling::div")
 	private WebElement container;
 	// relative to container
 	private String relativeEventNameXpath = "./div[1]/p[1]";
@@ -83,9 +84,8 @@ public class OrderDetailsComponent extends BaseComponent implements DataHolderPr
 	public Venue getVenueInfo() {
 		 WebElement location = getAccessUtils().getChildElementFromParentLocatedBy(container, By.xpath(relativeVenueLocationXpath));
 		 WebElement name= getAccessUtils().getChildElementFromParentLocatedBy(container, By.xpath(relativeVenueNameXpath));
-		 Venue venue = new Venue();
+		 Venue venue = new VenueFormatter("A, L, C, S").parse(location.getText().trim());
 		 venue.setName(name.getText().trim());
-		 venue.setLocation(location.getText().trim());
 		 return venue;
 	}
 

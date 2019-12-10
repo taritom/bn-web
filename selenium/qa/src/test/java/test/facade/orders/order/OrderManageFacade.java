@@ -14,18 +14,18 @@ import model.Event;
 import model.Purchase;
 import model.TicketType;
 import model.User;
+import model.Venue;
 import pages.admin.orders.manage.SelectedOrderPage;
 import pages.components.admin.orders.manage.ActivityItem;
 import pages.components.admin.orders.manage.ActivityItem.ExpandedContent;
 import pages.components.admin.orders.manage.ActivityItem.NoteExpandedContent;
 import pages.components.admin.orders.manage.ActivityItem.RefundedExpandedContent;
 import pages.components.admin.orders.manage.OrderInfo;
-import pages.components.admin.orders.manage.tickets.TicketRow;
 import pages.components.admin.orders.manage.tickets.OrderTicketsDetails.PerOrderFeeComponent;
+import pages.components.admin.orders.manage.tickets.TicketRow;
 import pages.components.dialogs.IssueRefundDialog;
 import pages.components.dialogs.IssueRefundDialog.RefundReason;
 import test.facade.BaseFacadeSteps;
-import test.facade.FacadeProvider;
 import utils.MsgConstants;
 import utils.ProjectUtils;
 
@@ -223,15 +223,15 @@ public class OrderManageFacade extends BaseFacadeSteps{
 		return activityItem != null ? true : false;
 	}
 
-	public boolean whenUserExpandsActivityItemAndChecksValidityOfData(Purchase purchase, Integer quantity,
+	public void whenUserExpandsActivityItemAndChecksValidityOfData(Purchase purchase, Integer quantity,
 			TicketType ticketType) {
 		SelectedOrderPage selectedOrderPage = (SelectedOrderPage) getData(SELECTED_ORDER_PAGE_KEY);
 		Event event = purchase.getEvent();
 		ActivityItem activityItem = selectedOrderPage.getHistoryActivityItem(
 				aitem -> aitem.isPruchased() && aitem.getEventName().contains(event.getEventName()));
+		SoftAssert softAssert  = new SoftAssert();
 		if (activityItem != null) {
 			activityItem.clickOnShowDetailsLink();
-			String location = event.getVenue().getLocation();
 			LocalDateTime eventStartDateTime = ProjectUtils.getLocalDateTime(ProjectUtils.DATE_FORMAT,
 					event.getStartDate(), ProjectUtils.TIME_FORMAT, event.getStartTime());
 
@@ -240,17 +240,25 @@ public class OrderManageFacade extends BaseFacadeSteps{
 			totalWithFees = ProjectUtils.roundUp(totalWithFees, 3);
 			
 			ExpandedContent expandedContent = activityItem.getExpandedContent();
+			Venue expandedContentVenue = expandedContent.getVenue();
+			Venue dataVenue = event.getVenue();
 			LocalDateTime itemDate = ProjectUtils.parseDateTime(ProjectUtils.MANAGE_ORDER_HISTORY_ITEM_DATE_FORMAT,
 					expandedContent.getEventDateAndTime());
-			boolean retVal = true;
-			retVal = retVal && eventStartDateTime.equals(itemDate);
-			retVal = retVal && location.equals(expandedContent.getVenueLocation());
-			retVal = retVal && quantity.equals(expandedContent.getQuantity());
-			retVal = retVal && totalWithFees.equals(expandedContent.getTotalMoneyAmount());
-			return retVal;
+			softAssert.assertTrue(eventStartDateTime.equals(itemDate), 
+					"Entered time at event creation and event in activity item not the same");
+			softAssert.assertTrue(dataVenue.getAddress().equals(expandedContentVenue.getAddress()) 
+					&& dataVenue.getCity().equals(expandedContentVenue.getCity()) 
+					&& dataVenue.getState().equals(expandedContentVenue.getState()),
+					"Venue information from data fixture and expanded content is not the same");
+			softAssert.assertTrue(quantity.equals(expandedContent.getQuantity()),
+					"Purchase quantity from data fixture and expanded content is not the same");
+			softAssert.assertTrue(totalWithFees.equals(expandedContent.getTotalMoneyAmount()),
+					"Total total with fees is not equal from data fixture and expanded content");
 		} else {
-			return false;
+			softAssert.fail();
 		}
+		softAssert.assertAll();
+		
 	}
 	
 	public boolean thenOrderFeeCheckboxShouldBeChecked() {

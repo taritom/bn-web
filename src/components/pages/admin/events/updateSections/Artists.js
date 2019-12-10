@@ -425,7 +425,7 @@ class ArtistDetails extends Component {
 							<LeftAlignedSubCard key={uniqueFlipKey} active={active}>
 								<EventArtist
 									socialAccounts={socialAccounts}
-									typeHeading={index === 0 ? "Headline act *" : "Supporting act"}
+									typeHeading={importance === 0 ? "Headline act *" : "Supporting act"}
 									title={name}
 									setTime={setTime}
 									importance={importance}

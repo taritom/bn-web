@@ -12,7 +12,6 @@ import pages.admin.venue.CreateVenuePage;
 import pages.components.admin.AdminSideBar;
 import pages.components.admin.venues.AdminVenueComponent;
 import utils.MsgConstants;
-import utils.ProjectUtils;
 
 public class VenueStepsFacade extends BaseFacadeSteps {
 
@@ -77,7 +76,11 @@ public class VenueStepsFacade extends BaseFacadeSteps {
 		createVenuePage.enterTimezone(venue.getTimezone());
 		createVenuePage.enterRegion(venue.getRegion());
 		createVenuePage.enterPhoneNumber(venue.getPhoneNumber());
-		createVenuePage.enterVenueLocation(venue.getLocation());
+		createVenuePage.enterAddress(venue.getAddress());
+		createVenuePage.enterCity(venue.getCity());
+		createVenuePage.enterZip(venue.getZip());
+		createVenuePage.enterState(venue.getState());
+		createVenuePage.enterCountry(venue.getCountry());
 	}
 
 	public void whenUserClicksOnCreateVenue() {
@@ -91,17 +94,7 @@ public class VenueStepsFacade extends BaseFacadeSteps {
 		selectedVenue.clickOnEditButton();
 	}
 
-	public void whenUserUpdatesVenue(Venue venue) {
-		String venueName = (String) getData(VENUE_NAME_KEY);
-		String updatedName = ProjectUtils.setSuffixDateOfText(venueName);
-		createVenuePage.enterVenueName(updatedName);
-		createVenuePage.enterPhoneNumber(venue.getPhoneNumber());
-		createVenuePage.enterVenueLocation(venue.getLocation());
-	}
 
-	public boolean thenCoordinatesShouldBeFilled() {
-		return createVenuePage.checkIfCoordinatesArePresent();
-	}
 
 	public void whenUserClickOnUpdateButtonOnEditPage() {
 		createVenuePage.clickOnUpdateButton();

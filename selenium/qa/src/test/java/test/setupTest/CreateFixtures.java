@@ -53,8 +53,8 @@ public class CreateFixtures extends BaseSteps {
 	@DataProvider(name = "venue_data")
 	public static Object[][] venuesData(){
 		Venue venueEST = Venue.generateVenueFromJson(DataConstants.VENUE_EST);
-		Venue venueJST = Venue.generateVenueFromJson(DataConstants.VENUE_JST);
-		Venue venueSAST = Venue.generateVenueFromJson(DataConstants.VENUE_SAST);
+		Venue venueJST = Venue.generateVenueFromJson(DataConstants.VENUE_PST);
+		Venue venueSAST = Venue.generateVenueFromJson(DataConstants.VENUE_CST);
 		User superUser = User.generateSuperUser();
 		return new Object[][] {
 			{venueEST, superUser},

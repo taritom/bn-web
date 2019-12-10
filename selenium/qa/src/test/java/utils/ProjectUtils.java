@@ -28,7 +28,8 @@ public class ProjectUtils {
 	public static final String CONCATINATED_DATE_FORMAT = "MMddyyyy";
 	public static final String ADMIN_EVENT_DATE_TIME_FORMAT = "EEEE, MMMM d yyyy h:mm a";
 	public static final String ADMIN_EVENT_MANAGE_ORDERS_ORDER_ROW = "MM/dd/yyyy h:mm a";
-	public static final String SUCCESS_PURCHASE_PAGE_DATE_FORMAT = "EEE, MMM dd, yyyy h:mm a z";
+	public static final String EVENT_RESULT_SUMMARY_DATE_TIME_FORMAT = "MMM d EEE, h:mm a";
+	public static final String SUCCESS_PURCHASE_PAGE_DATE_FORMAT = "EEE, MMM d, yyyy h:mm a z";
 	public static final String MANAGE_ORDER_HISTORY_ITEM_DATE_FORMAT = "EEE, MMM d, yyyy h:mm a";
 	public static final String REPORTS_BOX_OFFICE_TITLE_DATE_FORMAT = "MMM dd, yyyy";
 	public static final String REPORTS_BOX_OFFICE_OPERATOR_TABLE_DATE = "MM/dd/yyyy h:mm a, z";

@@ -205,7 +205,10 @@ public class EventStepsFacade extends BaseFacadeSteps {
 				"Event names on event result card and ticket purchase page not the same");
 		softAssert.assertTrue(isMonthDateTimeEqual, 
 				"Event times on event result card and ticket purchase page not the same");
-		softAssert.assertTrue(resultsVenue.getName().equals(succesPageVenue.getName()), 
+		softAssert.assertTrue(
+				resultsVenue.getName().equals(succesPageVenue.getName())
+						&& resultsVenue.getCity().equals(succesPageVenue.getCity())
+						&& resultsVenue.getState().equals(succesPageVenue.getState()),
 				"Venue names on event result card and ticket purchase page not the same");
 		softAssert.assertTrue(dataHolder.getImageUrl().equals(succesPage.getImageUrl()), 
 				"Image url on on event result card and ticket purchase page not the same");
@@ -227,8 +230,6 @@ public class EventStepsFacade extends BaseFacadeSteps {
 						succesPage.getPurchasedUser().toString() + " displayed not the same");
 		softAssert.assertTrue(succesPage.isCustomerSupportLinkCorrect(), 
 				"Customer support linke not valid");
-		softAssert.assertTrue(succesPage.isFAQLinkCorrect(), 
-				"FAQ link not valid");
 		softAssert.assertTrue(succesPage.checkValidityOfAppDownloadLinks(),
 				"App download links not valid");
 	}

@@ -9,6 +9,7 @@ import pages.components.user.EventComponent;
 import pages.mailinator.MailinatorFactory;
 import pages.mailinator.inbox.TransferCancelMailinatorPage;
 import pages.user.MyEventsPage;
+import utils.DataConstants;
 import utils.MsgConstants;
 import utils.SeleniumUtils;
 
@@ -59,7 +60,7 @@ public class TransferTicketCancelStepsIT extends BaseSteps {
 
 	@DataProvider(name = "ticket_transfer_to_new_user_data")
 	public static Object[][] data_new_user() {
-		User sender = User.generateUser();
+		User sender = User.generateUserFromJson(DataConstants.USER_STANDARD_KEY);
 		User receiver = User.generateRandomUser();
 
 		return new Object[][] { { sender, receiver } };

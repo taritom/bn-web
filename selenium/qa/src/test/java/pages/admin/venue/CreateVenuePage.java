@@ -5,9 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import pages.BaseComponent;
 import pages.BasePage;
-import pages.components.AutoCompleteInputField;
 import pages.components.GenericDropDown;
 import pages.components.ManualAddressEntryComponent;
 import pages.components.admin.UploadImageComponent;
@@ -52,9 +50,24 @@ public class CreateVenuePage extends BasePage {
 	@FindBy(xpath = "//form//div/button[@type='submit' and span[contains(text(),'Update')]]")
 	private WebElement updateButton;
 
-	@FindBy(xpath = "//form//button[span[contains(text(),'Enter Address Manually')]]")
-	private WebElement enterAddressManuallyButton;
+	@FindBy(id = "address")
+	private WebElement addressField;
+	
+	@FindBy(id = "city")
+	private WebElement cityFiled;
+	
+	@FindBy(id = "postal_code")
+	private WebElement zipField;
+	
+	@FindBy(xpath = "//form//input[@id='state']/preceding-sibling::div[@aria-haspopup='true']")
+	private WebElement stateDropDownActivate;
 
+	@FindBy(id = "menu-state")
+	private WebElement stateContainer;
+	
+	@FindBy(id = "country")
+	private WebElement countryField;
+	
 	public CreateVenuePage(WebDriver driver) {
 		super(driver);
 	}
@@ -100,35 +113,31 @@ public class CreateVenuePage extends BasePage {
 	private By dropDownListXpath(String value) {
 		return By.xpath(".//ul//li[contains(text(),'" + value + "')]");
 	}
-
-	public void enterVenueLocation(String location) {
-		SeleniumUtils.clearInputField(locationAutoSearchField, driver);
-		SeleniumUtils.jsScrollIntoView(locationAutoSearchField, driver);
-		waitForTime(1000);
-		AutoCompleteInputField inputField = new AutoCompleteInputField(driver, locationAutoSearchField);
-		inputField.selectFromAutocomplete(location);
-		checkIfCoordinatesArePresent();
+	
+	public void enterAddress(String address) {
+		waitVisibilityAndClearFieldSendKeysF(addressField, address);
 	}
 	
-	public boolean checkIfCoordinatesArePresent() {
-		waitForTime(1500);
-		clickOnEnterAddressManually();
-		ManualAddressEntryComponent addressComponent = getManualAddressComponent();
-		return addressComponent.checkIfCoordinatesAreFilled();
+	public void enterCity(String city) {
+		waitVisibilityAndClearFieldSendKeysF(cityFiled, city);
 	}
 	
-	public void clickOnEnterAddressManually() {
-		waitVisibilityAndBrowserCheckClick(enterAddressManuallyButton);
+	public void enterZip(String zip) {
+		waitVisibilityAndClearFieldSendKeysF(zipField, zip);
 	}
 	
-	private ManualAddressEntryComponent getManualAddressComponent() {
-		ManualAddressEntryComponent addressComponent = new ManualAddressEntryComponent(driver);
-		return addressComponent;
+	public void enterCountry(String country) {
+		waitVisibilityAndClearFieldSendKeysF(countryField, country);
 	}
-
+	
 	public void enterPhoneNumber(String phoneNumber) {
 		SeleniumUtils.clearInputField(phoneNumberField, driver);
 		waitVisibilityAndSendKeysSlow(phoneNumberField, phoneNumber);
+	}
+	
+	public void enterState(String state) {
+		GenericDropDown dd = new GenericDropDown(driver, stateDropDownActivate, stateContainer);
+		dd.selectElementFromDropDownHiddenInput(dropDownListXpath(state), state);
 	}
 
 	public void clickOnCreateButton() {

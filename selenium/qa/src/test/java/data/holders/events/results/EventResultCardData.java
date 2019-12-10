@@ -29,18 +29,4 @@ public class EventResultCardData implements DataHolder {
 		this.venue = venue;
 	}
 	
-	public void addEvent(String eventName, String startDate) {
-		Event ev = new Event();
-		ev.setEventName(eventName);
-		ev.setStartDate(startDate);
-		this.event = ev;
-	}
-	
-	public void addVenue(String venueName, String location) {
-		Venue ven = new Venue();
-		ven.setName(venueName);
-		ven.setLocation(location);
-		this.venue = ven;
-	}
-	
 }
