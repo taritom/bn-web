@@ -1,17 +1,22 @@
 package test.facade;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 import model.Venue;
 import pages.admin.venue.AdminVenuePage;
 import pages.admin.venue.CreateVenuePage;
+import pages.admin.venue.ValidationVenueFields;
 import pages.components.admin.AdminSideBar;
 import pages.components.admin.venues.AdminVenueComponent;
 import utils.MsgConstants;
+import utils.ProjectUtils;
 
 public class VenueStepsFacade extends BaseFacadeSteps {
 
@@ -33,22 +38,80 @@ public class VenueStepsFacade extends BaseFacadeSteps {
 	public void venueCreateSteps(Venue venue) {
 		givenUserIsOnVenuesPage();
 		givenUserIsOnCreateVenuePage();
-		whenUserFillsOutVenueInfo(venue);
+		whenUserFillsOutVenueInfo(venue, true);
 		whenUserClicksOnCreateVenue();
-		boolean isNotificationVisible = thenNotificationVenueCreatedShouldBeVisible();
-		Assert.assertTrue(isNotificationVisible, "Success venue creation notification not visible");
+		checkNotification(true);
 	}
-
-	public void venueUpdateSteps(Venue venue) {
+	
+	public void venueUpdateSteps(Venue venue, boolean randomizeName) {
 		whenUserClicksOnEditButtonOfSelectedVenue(venue.getName());
+		if (randomizeName) {
+			venue.setName(ProjectUtils.setSuffixDateOfText(venue.getName()));
+		}
 		whenUserFillsOutVenueInfo(venue, false);
 		whenUserClickOnUpdateButtonOnEditPage();
-		boolean isNotifUpdate = thenNotificationVenueUpdatedShoudBeVisible();
-		Assert.assertTrue(isNotifUpdate, "Notification for venue update not visible");
-		boolean isOnVenuePage = thenUserIsOnVenuesPage();
-		Assert.assertTrue(isOnVenuePage, "User is not redirected on venue page after venue update");
+		checkNotification(false);
 	}
-
+	
+	public void venueRequiredFieldsValidation(Venue venue, boolean randomizeName, boolean createVenue) {
+		givenUserIsOnVenuesPage();
+		if (createVenue) {
+			givenUserIsOnCreateVenuePage();
+			createVenuePage.clearCountryField();
+		} else {
+			whenUserClicksOnEditButtonOfSelectedVenue(venue.getName());
+			createVenuePage.clearFields();
+		}
+		if (randomizeName) {
+			venue.setName(ProjectUtils.setSuffixDateOfText(venue.getName()));
+		}
+		executeValidationCheck(venue, createVenue);
+	}
+	
+	private void executeValidationCheck(Venue venue, boolean createVenue) {
+		SoftAssert softAssert = new SoftAssert();
+		createVenuePage.enterTimezone(venue.getTimezone());
+		ValidationVenueFields validation = new ValidationVenueFields(driver);
+		List<Consumer<Venue>> functions = createVenuePage.getListOfRequiredFunctions(createVenue);
+		int numberOfRequiredFields = functions.size();
+		submit(createVenue);
+		for (int i = 0; i < functions.size(); i++) {
+			functions.get(i).accept(venue);
+			if (i == (functions.size()-1 )){
+				submit(createVenue);
+				checkNotification(createVenue);
+			} else {
+				int invalidFields = validation.numberOfInvalidFields(createVenue);
+				if(invalidFields != (numberOfRequiredFields - i)) {
+					softAssert.assertTrue(false, "Number of invalid fields: " + invalidFields 
+							+ " , and number of required fields: " + numberOfRequiredFields + " index: " + i);
+				}
+				submit(createVenue);
+			}
+		}
+		softAssert.assertAll();
+	}
+	
+	private void submit(boolean createVenue) {
+		if (createVenue) {
+			whenUserClicksOnCreateVenue();
+		} else {
+			whenUserClickOnUpdateButtonOnEditPage();
+		}
+	}
+	
+	private void checkNotification(boolean createVenue) {//return value here
+		if (createVenue) {
+			boolean isNotificationVisible = thenNotificationVenueCreatedShouldBeVisible();
+			Assert.assertTrue(isNotificationVisible, "Success venue creation notification not visible");
+		} else {
+			boolean isNotifUpdate = thenNotificationVenueUpdatedShoudBeVisible();
+			Assert.assertTrue(isNotifUpdate, "Notification for venue update not visible");
+			boolean isOnVenuePage = thenUserIsOnVenuesPage();
+			Assert.assertTrue(isOnVenuePage, "User is not redirected on venue page after venue update");
+		}
+	}
+	
 	public boolean isVenueAlreadyCreated(Venue venue) {
 		return venuePage.isVenueWithNamePresent(venue.getName());
 	}
@@ -63,14 +126,10 @@ public class VenueStepsFacade extends BaseFacadeSteps {
 		thenUserIsOnCreateVenuePage();
 	}
 
-	public void whenUserFillsOutVenueInfo(Venue venue) {
-		whenUserFillsOutVenueInfo(venue, true);
-	}
-
-	public void whenUserFillsOutVenueInfo(Venue venue, boolean setOrganization) {
+	public void whenUserFillsOutVenueInfo(Venue venue, boolean createVenue) {
 		createVenuePage.uploadImageUsingFilePath(venue.getImageName());
 		createVenuePage.enterVenueName(venue.getName());
-		if (setOrganization) {
+		if (createVenue) {
 			createVenuePage.enterOrganization(venue.getOrganization());
 		}
 		createVenuePage.enterTimezone(venue.getTimezone());

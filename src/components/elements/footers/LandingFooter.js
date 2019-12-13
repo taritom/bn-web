@@ -15,7 +15,17 @@ import servedImage from "../../../helpers/imagePathHelper";
 
 //TODO change external links
 const rootUrl = "";
-const aboutLink = `${rootUrl}/venues-and-promoters.html`;
+const custLinks = [];
+const aboutLinks = [
+	{
+		label: "About Us",
+		href: `${rootUrl}/venues-and-promoters.html`
+	},
+	{
+		label: "Partner With Us",
+		href: `${rootUrl}/venues-and-promoters.html#contact-chat`
+	}
+];
 const infoLinks = [
 	{
 		label: "Terms of Use",
@@ -24,12 +34,6 @@ const infoLinks = [
 	{
 		label: "Privacy Policy",
 		href: `${rootUrl}/privacy.html`
-	}
-];
-const custLinks = [
-	{
-		label: "Sell Tickets",
-		href: `${rootUrl}/venues-and-promoters.html#contact-chat`
 	}
 ];
 const smLinks = [
@@ -188,9 +192,16 @@ const LandingFooter = props => {
 									About Big Neon
 								</Typography>
 								<div className={classes.footerLinkContainer}>
-									<a className={classes.link} href={aboutLink}>
-										About Us
-									</a>
+									{aboutLinks.map(({ label, href }, index) => (
+										<a
+											key={index}
+											className={classes.link}
+											href={href}
+											target="_blank"
+										>
+											{label}
+										</a>
+									))}
 								</div>
 							</div>
 						</Grid>

@@ -860,48 +860,36 @@ const TicketDetails = observer(props => {
 				) : null}
 
 				<Collapse in={!!showPricing}>
-					{pricing
-						.slice()
-						.sort((a, b) => {
-							return a.startDate < b.startDate
-								? -1
-								: a.startDate > b.startDate
-									? 1
-									: 0;
-						})
-						.map((pricePoint, pricePointIndex) => {
-							return (
-								<div key={pricePointIndex}>
-									<FormHeading className={classes.title}>
-										Scheduled price change {pricePointIndex + 1}
-									</FormHeading>
-									<PricePoint
-										isCancelled={isCancelled}
-										updatePricePointDetails={pricePointDetails => {
-											const updatedPricePoint = {
-												...pricePoint,
-												...pricePointDetails
-											};
-											const updatedPricing = pricing;
-											updatedPricing[pricePointIndex] = updatedPricePoint;
+					{pricing.map((pricePoint, pricePointIndex) => {
+						return (
+							<div key={pricePointIndex}>
+								<FormHeading className={classes.title}>
+									Scheduled price change {pricePointIndex + 1}
+								</FormHeading>
+								<PricePoint
+									isCancelled={isCancelled}
+									updatePricePointDetails={pricePointDetails => {
+										const updatedPricePoint = {
+											...pricePoint,
+											...pricePointDetails
+										};
+										const updatedPricing = pricing;
+										updatedPricing[pricePointIndex] = updatedPricePoint;
 
-											updateTicketType(index, {
-												pricing: updatedPricing
-											});
-										}}
-										errors={pricingErrors[pricePointIndex] || {}}
-										validateFields={validateFields}
-										onDelete={() =>
-											eventUpdateStore.removeTicketPricing(
-												index,
-												pricePointIndex
-											)
-										}
-										{...pricePoint}
-									/>
-								</div>
-							);
-						})}
+										updateTicketType(index, {
+											pricing: updatedPricing
+										});
+									}}
+									errors={pricingErrors[pricePointIndex] || {}}
+									validateFields={validateFields}
+									onDelete={() =>
+										eventUpdateStore.removeTicketPricing(index, pricePointIndex)
+									}
+									{...pricePoint}
+								/>
+							</div>
+						);
+					})}
 					{!isCancelled ? (
 						<Button
 							variant="additional"

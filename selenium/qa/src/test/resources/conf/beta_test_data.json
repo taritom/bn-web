@@ -51,12 +51,12 @@
 		"first_name": "james",
 		"last_name": "kirk"
 	},
-	"super_user_std": {
+	"super_user": {
 		"email_address": "superuser@test.com",
 		"password": "password"
 	},
 	"_comment_for_box_office_user": "this box office user is tied to 'auto_test_organization_box_office_user' organization object",
-	"box_office_user_std": {
+	"box_office_user": {
 		"email_address": "boxneousera@mailinator.com",
 		"password": "test1111",
 		"confirm_password": "test1111",
@@ -71,14 +71,14 @@
 		"first_name": "orgadmn",
 		"last_name": "neouser"
 	},
-	"user_data_std": {
+	"user_data": {
 		"email_address": "bluetestneouser@mailinator.com",
 		"password": "test1111",
 		"confirm_password": "test1111",
 		"first_name": "test",
 		"last_name": "testqa"
 	},
-	"user_data_std_2":{
+	"user_data_2":{
 		"email_address": "bluetestneouser2@mailinator.com",
 		"password": "test1111",
 		"confirm_password": "test1111",
@@ -124,38 +124,11 @@
 	},
 	"_comment_for_time_format_correct_format": " is example 08:00 AM, with 30 min increments, space and : are mandatory",
 	"_comment_for_dates": "dates must be generated inside the test themself, most of the time dates are generated as span of few days from current day, and possiblly some offset for start date",
-	"event_data_std": {
-		"organization": {
-			"name": "Auto Test12",
-			"phone_number": "1111111111",
-			"time_zone": "Africa/Johannesburg",
-			"location": "Johannesburg, South Africa",
-			"other_fees": {
-				"settlement_type": {
-					"label":"Post event",
-					"value":"PostEvent"
-				},
-				"per_order_client_fee":1,
-				"per_order_big_neon_fee":0,
-				"credit_card_fee":2.75
-			},
-			"team": {
-				"org_admin_user": "organization_admin_user",
-				"box_office_users": [
-					"box_office_user_std"
-				]
-			}
-		},
+	"event_data_standard": {
+		"organization_ref": "organization_standard",
 		"artist_name": "TheTestArtistAuto",
 		"event_name": "TestNameEvent",
-		"venue_name": "MSG",
-		"venue":{
-			"name":"MSG",
-			"timezone":"Africa/Johannesburg",
-			"region":"Other",
-			"phone_number":"27728146598",
-			"location":"Madison Square Garden, Pennsylvania Plaza, New York, NY, USA"
-		},
+		"venue_ref": "venue_standard",
 		"start_time": "08:30 PM",
 		"end_time": "10:00 PM",
 		"door_time": "1",
@@ -173,24 +146,10 @@
 		]
 	},
 	"event_data_with_additional_steps_std": {
-		"organization": {
-			"name": "Auto Test12",
-			"phone_number": "1111111111",
-			"time_zone": "Africa/Johannesburg",
-			"location": "Johannesburg, South Africa",
-			"other_fees": {
-				"settlement_type": {
-					"label":"Post event",
-					"value":"PostEvent"
-				},
-				"per_order_client_fee":1,
-				"per_order_big_neon_fee":0,
-				"credit_card_fee":2.75
-			}
-		},
+		"organization_ref": "organization_standard",
 		"artist_name": "TheTestArtistAuto",
 		"event_name": "TestNameEvent",
-		"venue_name": "MSG",
+		"venue_ref": "venue_standard",
 		"start_time": "08:30 PM",
 		"end_time": "10:00 PM",
 		"door_time": "1",
@@ -257,7 +216,7 @@
 		},
 		"artist_name": "TheTestArtistAuto",
 		"event_name": "TestNameEventBO4000",
-		"venue_name": "MSG",
+		"venue_ref": "venue_standard",
 		"start_time": "08:30 PM",
 		"end_time": "10:00 PM",
 		"door_time": "1",
@@ -288,30 +247,10 @@
 		"additional_tendered_amount": 3
 	},
 	"event_PST" :{
-		"organization":{
-			"name":"Sast_Org",
-			"time_zone":"Africa/Johannesburg",
-			"phone_number":"123456789012",
-			"location":"Opera, Douglas Drive, Douglasdale, Johannesburg, South Africa",
-			"other_fees": {
-				"settlement_type": {
-					"label":"Post event",
-					"value":"PostEvent"
-				},
-				"per_order_client_fee":1,
-				"per_order_big_neon_fee":0,
-				"credit_card_fee":2.75
-			},
-			"team": {
-				"org_admin_user": "organization_admin_user",
-				"box_office_users": [
-					"box_office_user_std"
-				]
-			}
-		},
+		"organization_ref": "organization_SAST",
 		"artist_name": "TheTestArtistAuto",
 		"event_name": "TestPSTNameEvent",
-		"venue_name": "SanFranciscoOpera",
+		"venue_ref":"venue_PST",
 		"start_time": "08:30 PM",
 		"end_time": "10:00 PM",
 		"door_time": "1",
@@ -329,30 +268,10 @@
 		]
 	},
 	"event_EST" :{
-		"organization":{
-			"name":"Sast_Org",
-			"time_zone":"Africa/Johannesburg",
-			"phone_number":"123456789012",
-			"location":"Opera, Douglas Drive, Douglasdale, Johannesburg, South Africa",
-			"other_fees": {
-				"settlement_type": {
-					"label":"Post event",
-					"value":"PostEvent"
-				},
-				"per_order_client_fee":1,
-				"per_order_big_neon_fee":0,
-				"credit_card_fee":2.75
-			},
-			"team": {
-				"org_admin_user": "organization_admin_user",
-				"box_office_users": [
-					"box_office_user_std"
-				]
-			}
-		},
+		"organization_ref":"organization_SAST",
 		"artist_name": "TheTestArtistAuto",
 		"event_name": "TestESTNameEvent",
-		"venue_name": "NYOpera",
+		"venue_ref":"venue_EST",
 		"start_time": "01:30 PM",
 		"end_time": "03:00 PM",
 		"door_time": "2",
@@ -369,8 +288,51 @@
 			}
 		]
 	},
+	"event_CST":{
+		"organization_ref": "organization_SAST",
+		"artist_name": "TheTestArtistAuto",
+		"event_name": "TestCSTNameEvent",
+		"venue_ref":"venue_CST",
+		"start_time": "01:30 PM",
+		"end_time": "03:00 PM",
+		"door_time": "2",
+		"ticket_types": [
+			{
+				"ticket_type_name": "GA",
+				"capacity": "100",
+				"price": "1"
+			},
+			{
+				"ticket_type_name": "VIP",
+				"capacity": "70",
+				"price": "2"
+			}
+		]
+	},
+	"organization_standard":{
+		"name": "Auto Test12",
+			"phone_number": "1111111111",
+			"time_zone": "Africa/Johannesburg",
+			"location": "Johannesburg, South Africa",
+			"other_fees": {
+				"settlement_type": {
+					"label":"Post event",
+					"value":"PostEvent"
+				},
+				"per_order_client_fee":1,
+				"per_order_big_neon_fee":0,
+				"credit_card_fee":2.75
+			},
+			"team": {
+				"org_admin_user": "organization_admin_user",
+				"box_office_users": [
+					"box_office_user"
+				]
+			}
+
+	},
 	"organization_SAST":{
-		"name":"Sast_Org",
+		"name":"TA_TZ_Org",
 		"time_zone":"Africa/Johannesburg",
 		"phone_number":"123456789012",
 		"location":"Opera, Douglas Drive, Douglasdale, Johannesburg, South Africa",
@@ -391,8 +353,8 @@
 		}
 	},
 	"venue_CST":{
-		"name":"TopekaHall",
-		"organization_name":"Sast_Org",
+		"name":"TA_TopekaHall",
+		"organization_name":"TA_TZ_Org",
 		"timezone":"America/Indiana/Knox",
 		"region":"No Region",
 		"phone_number":"123456789012",
@@ -400,39 +362,42 @@
 		"city":"Topeka",
 		"zip":"66621",
 		"state":"Kansas",
-		"stateAbbr":"KS",
+		"state_abbr":"KS",
 		"country": "United States",
+		"country_abbr": "USA",
 		"image_name":"lorem_ipsum_img_101.jpg"
 	},
 	"venue_PST":{
-		"name":"SanFranciscoOpera",
+		"name":"TA_SF_Opera",
 		"timezone":"America/Los_Angeles",
 		"region":"No Region",
-		"organization_name":"Sast_Org",
+		"organization_name":"TA_TZ_Org",
 		"phone_number":"123456789012",
 		"address":"301 Van Ness Ave, San Francisco",
 		"city":"San Francisco",
 		"zip":"94102",
 		"state": "California",
-		"stateAbbr":"CA",
+		"state_abbr":"CA",
 		"country":"United States",
+		"country_abbr": "USA",
 		"image_name":"lorem_ipsum_img_101.jpg"
 	},
 	"venue_EST":{
-		"name":"NYOpera",
+		"name":"TA_NY_Opera",
 		"timezone":"America/New_York",
-		"organization_name":"Sast_Org",
+		"organization_name":"TA_TZ_Org",
 		"region":"No Region",
 		"phone_number":"123456789012",
 		"address":"30 Lincoln Center Plaza",
 		"city":"New York",
 		"zip": "10023",
 		"state":"New York",
-		"stateAbbr":"NY",
+		"state_abbr":"NY",
 		"country":"United States",
+		"country_abbr": "USA",
 		"image_name":"lorem_ipsum_img_101.jpg"
 	},
-	"venue_std":{
+	"venue_creational_standard":{
 		"name":"TAEVenue",
 		"organization_name":"Auto Test12",
 		"timezone":"America/Indiana/Knox",
@@ -442,8 +407,24 @@
 		"city":"Topeka",
 		"zip":"66621",
 		"state":"Kansas",
-		"stateAbbr":"KS",
+		"state_abbr":"KS",
 		"country": "United States",
+		"country_abbr": "USA",
+		"image_name":"lorem_ipsum_img_101.jpg"
+	},
+	"venue_standard":{
+		"name":"TA_Venue",
+		"organization_name":"Auto Test12",
+		"timezone":"America/Indiana/Knox",
+		"region":"No Region",
+		"phone_number":"123456789012",
+		"address":"1700 SW Jewell Ave, Topeka",
+		"city":"Topeka",
+		"zip":"66621",
+		"state":"Kansas",
+		"state_abbr":"KS",
+		"country": "United States",
+		"country_abbr": "USA",
 		"image_name":"lorem_ipsum_img_101.jpg"
 	}
 }

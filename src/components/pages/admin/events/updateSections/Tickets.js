@@ -202,7 +202,7 @@ const formatForInput = (ticket_types, event) => {
 			box_office_sales_enabled
 		} = ticket_type;
 
-		const pricing = [];
+		let pricing = [];
 		const priceAtDoor = "";
 		ticket_pricing.forEach(pricePoint => {
 			const { name, price_in_cents } = pricePoint;
@@ -270,6 +270,10 @@ const formatForInput = (ticket_types, event) => {
 			additionalFeeInDollars = `${(additional_fee_in_cents / 100).toFixed(2)}`;
 			showAdditionalFee = true;
 		}
+
+		pricing = pricing.slice().sort((a, b) => {
+			return a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0;
+		});
 
 		const ticketType = {
 			id,

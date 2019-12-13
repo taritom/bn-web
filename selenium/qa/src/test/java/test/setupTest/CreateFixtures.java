@@ -43,7 +43,7 @@ public class CreateFixtures extends BaseSteps {
 		fp.getLoginFacade().givenAdminUserIsLogedIn(user);
 		fp.getVenueFacade().givenUserIsOnVenuesPage();
 		if (fp.getVenueFacade().isVenueAlreadyCreated(venue)) {
-			fp.getVenueFacade().venueUpdateSteps(venue);
+			fp.getVenueFacade().venueUpdateSteps(venue, false);
 		} else {
 			fp.getVenueFacade().venueCreateSteps(venue);
 		}
@@ -54,12 +54,14 @@ public class CreateFixtures extends BaseSteps {
 	public static Object[][] venuesData(){
 		Venue venueEST = Venue.generateVenueFromJson(DataConstants.VENUE_EST);
 		Venue venueJST = Venue.generateVenueFromJson(DataConstants.VENUE_PST);
-		Venue venueSAST = Venue.generateVenueFromJson(DataConstants.VENUE_CST);
+		Venue venueCST = Venue.generateVenueFromJson(DataConstants.VENUE_CST);
+		Venue venueStandard = Venue.generateVenueFromJson(DataConstants.VENUE_STANDARD_KEY);
 		User superUser = User.generateSuperUser();
 		return new Object[][] {
 			{venueEST, superUser},
 			{venueJST, superUser},
-			{venueSAST, superUser}
+			{venueCST, superUser},
+			{venueStandard, superUser}
 		};
 	}
 

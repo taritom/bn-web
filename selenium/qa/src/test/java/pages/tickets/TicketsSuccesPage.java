@@ -122,9 +122,7 @@ public class TicketsSuccesPage extends BasePage implements DataHolderProvider {
 		Venue orderDetailsVenue =  getOrderDetails().getVenueInfo();
 		Venue venue = getVenueInfo();
 		return orderDetailsVenue.getName().equals(venue.getName())
-				&& orderDetailsVenue.getAddress().equals(venue.getAddress())
-				&& orderDetailsVenue.getCity().equals(venue.getCity())
-				&& orderDetailsVenue.getState().equals(venue.getState());
+				&& orderDetailsVenue.getAddress().equals(venue.getAddress());
 	}
 	
 	public Venue getVenueInfo() {
@@ -132,7 +130,7 @@ public class TicketsSuccesPage extends BasePage implements DataHolderProvider {
 		String[] venueInformation = venueInfo.getText().split("\\n");
 		String venueName = venueInformation[0];
 		String venueLocation = venueInformation[1];
-		Venue venue = new VenueFormatter("A, L, C, S").parse(venueLocation);
+		Venue venue = new VenueFormatter("A, L").parse(venueLocation);
 		venue.setName(venueName);
 		return venue;
 	}

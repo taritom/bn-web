@@ -30,8 +30,12 @@ public class Venue extends Model implements Serializable {
 	private String zip;
 	@JsonProperty("state")
 	private String state;
+	@JsonProperty("state_abbr")
+	private String stateAbbr;
 	@JsonProperty("country")
 	private String country;
+	@JsonProperty("country_abbr")
+	private String countryAbbr;
 	
 	@JsonProperty("image_name")
 	private String imageName;
@@ -90,11 +94,23 @@ public class Venue extends Model implements Serializable {
 	public void setState(String state) {
 		this.state = state;
 	}
+	public String getStateAbbr() {
+		return stateAbbr;
+	}
+	public void setStateAbbr(String stateAbbr) {
+		this.stateAbbr = stateAbbr;
+	}
 	public String getCountry() {
 		return country;
 	}
 	public void setCountry(String country) {
 		this.country = country;
+	}
+	public String getCountryAbbr() {
+		return countryAbbr;
+	}
+	public void setCountryAbbr(String countryAbbr) {
+		this.countryAbbr = countryAbbr;
 	}
 	public String getImageName() {
 		return imageName;

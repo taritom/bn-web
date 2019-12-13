@@ -246,9 +246,7 @@ public class OrderManageFacade extends BaseFacadeSteps{
 					expandedContent.getEventDateAndTime());
 			softAssert.assertTrue(eventStartDateTime.equals(itemDate), 
 					"Entered time at event creation and event in activity item not the same");
-			softAssert.assertTrue(dataVenue.getAddress().equals(expandedContentVenue.getAddress()) 
-					&& dataVenue.getCity().equals(expandedContentVenue.getCity()) 
-					&& dataVenue.getState().equals(expandedContentVenue.getState()),
+			softAssert.assertTrue(dataVenue.getAddress().equals(expandedContentVenue.getAddress()),					
 					"Venue information from data fixture and expanded content is not the same");
 			softAssert.assertTrue(quantity.equals(expandedContent.getQuantity()),
 					"Purchase quantity from data fixture and expanded content is not the same");

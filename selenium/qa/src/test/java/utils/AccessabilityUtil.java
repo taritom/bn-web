@@ -165,6 +165,12 @@ public class AccessabilityUtil {
 		}
 		return retVal;
 	}
+	
+	public void clearInputFields(WebElement... inputFields) {
+		for(WebElement el : inputFields) {
+			clearInputField(el);
+		}
+	}
 
 	public void clearInputField(WebElement inputField) {
 		new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(inputField));

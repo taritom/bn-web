@@ -179,7 +179,7 @@ public class ReportBoxOfficeStepsIT extends BaseSteps {
 	public static Object[][] prepareBoxOffceReportDataFixture() {
 		Event estTzEvent = Event.generateEventFromJson(DataConstants.EVENT_EST_TZ_KEY, true, 1, 1);
 		Event pstTzEvent = Event.generateEventFromJson(DataConstants.EVENT_PST_TZ_KEY, true, 1, 1);
-		Event cstTzEvent = Event.generateEventFromJson(DataConstants.EVENT_DATA_STANARD_KEY, true, 1, 1);
+		Event cstTzEvent = Event.generateEventFromJson(DataConstants.EVENT_CST_TZ_KEY, true, 1, 1);
 		Purchase prchEST = Purchase.generatePurchaseFromJson(DataConstants.REGULAR_USER_PURCHASE_KEY);
 		prchEST.setEvent(estTzEvent);
 		prchEST.setNumberOfTickets(2);

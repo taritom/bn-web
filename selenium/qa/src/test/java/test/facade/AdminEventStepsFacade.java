@@ -110,6 +110,7 @@ public class AdminEventStepsFacade extends BaseFacadeSteps {
 	
 	public void whenUserUpdatesDataOfEvent(Event event) {
 		createEventPage.enterEventName(event.getEventName());
+		createEventPage.selectVenue(event.getVenue().getName());
 		createEventPage.enterDatesAndTimes(event.getStartDate(), event.getEndDate(), null, null, null);
 		createEventPage.waitForTime(1000);
 	}
@@ -181,7 +182,7 @@ public class AdminEventStepsFacade extends BaseFacadeSteps {
 	private void createEventFillData(Event event) {
 		createEventPage.enterArtistName(event.getArtistName());
 		createEventPage.enterEventName(event.getEventName());
-		createEventPage.selectVenue(event.getVenueName());
+		createEventPage.selectVenue(event.getVenue().getName());
 		createEventPage.enterDatesAndTimes(event.getStartDate(), event.getEndDate(), event.getStartTime(),
 				event.getEndTime(), event.getDoorTime());
 		createEventPage.addTicketTypes(event.getTicketTypes());

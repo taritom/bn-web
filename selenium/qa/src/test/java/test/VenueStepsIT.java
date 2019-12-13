@@ -23,10 +23,29 @@ public class VenueStepsIT extends BaseSteps {
 		venueStepsFacade.venueCreateSteps(venue);
 		loginFacade.logOut();
 	}
+	
+	@Test(dataProvider = "create_venue_data", priority = 22, retryAnalyzer = utils.RetryAnalizer.class )
+	public void requiredFieldsCheckCreate(Venue venue, User superuser) {
+		FacadeProvider fp = new FacadeProvider(driver);
+		maximizeWindow();
+		fp.getLoginFacade().givenAdminUserIsLogedIn(superuser);
+		fp.getVenueFacade().venueRequiredFieldsValidation(venue, true, true);
+		fp.getVenueFacade().thenUserIsOnVenuesPage();
+		fp.getLoginFacade().logOut();
+	}
+	
+	@Test(dataProvider = "create_venue_data", priority = 22)
+	public void requiredFieldsCheckUpdate(Venue venue, User superuser) {
+		FacadeProvider fp = new FacadeProvider(driver);
+		maximizeWindow();
+		fp.getLoginFacade().givenAdminUserIsLogedIn(superuser);
+		fp.getVenueFacade().venueRequiredFieldsValidation(venue, true, false);
+		fp.getLoginFacade().logOut();
+	}
 
 	@DataProvider(name = "create_venue_data")
 	private static Object[][] createVenueData() {
-		Venue venue = Venue.generateVenueFromJson(DataConstants.VENUE_STANDARD_KEY);
+		Venue venue = Venue.generateVenueFromJson(DataConstants.VENUE_CREATIONAL_KEY);
 		User superuser = User.generateSuperUser();
 		return new Object[][] { { venue, superuser } };
 	}
@@ -40,15 +59,14 @@ public class VenueStepsIT extends BaseSteps {
 
 		loginStepsFacade.givenAdminUserIsLogedIn(superuser);
 		venueStepsFacade.givenUserIsOnVenuesPage();
-		venueStepsFacade.venueUpdateSteps(venue);
+		venueStepsFacade.venueUpdateSteps(venue, true);
 		
 		loginStepsFacade.logOut();
-
 	}
 
 	@DataProvider(name = "edit_venue_data")
 	private static Object[][] editVenueData() {
-		Venue venue = Venue.generateVenueFromJson(DataConstants.VENUE_STANDARD_KEY);
+		Venue venue = Venue.generateVenueFromJson(DataConstants.VENUE_CREATIONAL_KEY);
 		User superuser = User.generateSuperUser();
 		return new Object[][] { { venue, superuser } };
 	}

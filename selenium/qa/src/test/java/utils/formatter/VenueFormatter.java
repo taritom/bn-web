@@ -17,7 +17,8 @@ import model.Venue;
 public class VenueFormatter {
 
 	public enum VenueParsePattern {
-		VENUE_NAME("N"), ADDRESS_NAME("A"), ADDRESS_LOCACTION("L"), CITY("C"), STATE("S"), COUNTRY("CT");
+		VENUE_NAME("N"), ADDRESS_NAME("A"), ADDRESS_LOCACTION("L"), CITY("C"), STATE("S"), 
+		STATE_ABBR("Sa"), COUNTRY("CT"), COUNTRY_ABBR("CTa");
 
 		private String value;
 
@@ -64,6 +65,9 @@ public class VenueFormatter {
 		String separator = ",";
 		VenueParsePattern[] patterns = VenueParsePattern.getVenueParseValues(pattern.split(separator));
 		String[] values = text.split(",");
+		if (patterns.length != values.length) {
+			throw new IllegalArgumentException("Number of pattern elements is: " + patterns.length + " and number of text elements is: " + values.length);
+		}
 		return parse(patterns, values);
 	}
 
@@ -124,8 +128,14 @@ public class VenueFormatter {
 			case STATE:
 				venue.setState(val);
 				break;
+			case STATE_ABBR:
+				venue.setStateAbbr(val);
+				break;
 			case COUNTRY:
 				venue.setState(val);
+				break;
+			case COUNTRY_ABBR:
+				venue.setCountryAbbr(val);
 				break;
 			default:
 				break;

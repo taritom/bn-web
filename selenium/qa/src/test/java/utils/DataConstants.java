@@ -25,20 +25,21 @@ public class DataConstants {
 	public static final String REGULAR_USER_PURCHASE_KEY = "regular_user_purchase_std";
 	public static final String CREDIT_CARD_STANDARD = "credit_card_data_std";
 	
-	public static final String USER_STANDARD_KEY = "user_data_std_2";
-	public static final String EVENT_DATA_STANARD_KEY = "event_data_std";
-	public static final String SUPERUSER_DATA_KEY = "super_user_std" ;
+	public static final String USER_STANDARD_KEY = "user_data_2";
+	public static final String EVENT_DATA_STANARD_KEY = "event_data_standard";
+	public static final String SUPERUSER_DATA_KEY = "super_user" ;
 	public static final String EVENT_PST_TZ_KEY = "event_PST";
 	public static final String EVENT_EST_TZ_KEY = "event_EST";
+	public static final String EVENT_CST_TZ_KEY = "event_CST";
 	
 	public static final String BOX_OFFICE_USER_EVENTS_KEY = "box_office_sell_event_std";
 	public static final String BOX_OFFICE_SELL_PURCHASE_STD_KEY = "box_office_sell_purchase_std";
-	public static final String BOX_OFFICE_USER_KEY = "box_office_user_std";
+	public static final String BOX_OFFICE_USER_KEY = "box_office_user";
 	
-	public static final String VENUE_STANDARD_KEY = "venue_std";
+	public static final String VENUE_STANDARD_KEY = "venue_standard";
+	public static final String VENUE_CREATIONAL_KEY = "venue_creational_standard";
 	public static final String VENUE_JST = "venue_JST";
 	public static final String VENUE_EST = "venue_EST";
-	public static final String VENUE_SAST = "venue_SAST";
 	public static final String VENUE_CST = "venue_CST";
 	public static final String VENUE_PST = "venue_PST";
 	

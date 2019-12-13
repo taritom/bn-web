@@ -206,9 +206,7 @@ public class EventStepsFacade extends BaseFacadeSteps {
 		softAssert.assertTrue(isMonthDateTimeEqual, 
 				"Event times on event result card and ticket purchase page not the same");
 		softAssert.assertTrue(
-				resultsVenue.getName().equals(succesPageVenue.getName())
-						&& resultsVenue.getCity().equals(succesPageVenue.getCity())
-						&& resultsVenue.getState().equals(succesPageVenue.getState()),
+				resultsVenue.getName().equals(succesPageVenue.getName()),
 				"Venue names on event result card and ticket purchase page not the same");
 		softAssert.assertTrue(dataHolder.getImageUrl().equals(succesPage.getImageUrl()), 
 				"Image url on on event result card and ticket purchase page not the same");

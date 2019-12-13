@@ -84,7 +84,7 @@ public class OrderDetailsComponent extends BaseComponent implements DataHolderPr
 	public Venue getVenueInfo() {
 		 WebElement location = getAccessUtils().getChildElementFromParentLocatedBy(container, By.xpath(relativeVenueLocationXpath));
 		 WebElement name= getAccessUtils().getChildElementFromParentLocatedBy(container, By.xpath(relativeVenueNameXpath));
-		 Venue venue = new VenueFormatter("A, L, C, S").parse(location.getText().trim());
+		 Venue venue = new VenueFormatter("A, L").parse(location.getText().trim());
 		 venue.setName(name.getText().trim());
 		 return venue;
 	}

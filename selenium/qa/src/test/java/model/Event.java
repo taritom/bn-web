@@ -15,16 +15,16 @@ import utils.ProjectUtils;
 public class Event implements Serializable {
 
 	private static final long serialVersionUID = 6081396679346519203L;
+	@JsonProperty("organization_ref")
+	private String organizationRef;
 	@JsonProperty("organization")
 	private Organization organization;
 	@JsonProperty("artist_name")
 	private String artistName;
 	@JsonProperty("event_name")
 	private String eventName;
-	@JsonProperty("venue_name")
-	private String venueName;
-	@JsonProperty("venue")
-	private Venue venue;
+	@JsonProperty("venue_ref")
+	private String venueRef;
 	@JsonProperty("start_date")
 	private String startDate;
 	@JsonProperty("end_date")
@@ -38,9 +38,26 @@ public class Event implements Serializable {
 	@JsonProperty("ticket_types")
 	private List<TicketType> ticketTypes = new ArrayList<>();
 	
+	private Venue venue;
+	
 	private LocalDateTime date;
 
+	public String getOrganizationRef() {
+		return organizationRef;
+	}
+
+	public void setOrganizationRef(String organizationRef) {
+		this.organizationRef = organizationRef;
+	}
+
 	public Organization getOrganization() {
+		if (this.organization == null) {
+			if (this.organizationRef != null && !this.organizationRef.isEmpty()) {
+				this.organization = Organization.generateOrganizationFromJson(this.organizationRef);
+			}else {
+				throw new NullPointerException("No organization reference provided");
+			}
+		}
 		return organization;
 	}
 
@@ -63,16 +80,23 @@ public class Event implements Serializable {
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
-
-	public String getVenueName() {
-		return venueName;
-	}
-
-	public void setVenueName(String venueName) {
-		this.venueName = venueName;
-	}
 	
+	public String getVenueRef() {
+		return venueRef;
+	}
+
+	public void setVenueRef(String venueRef) {
+		this.venueRef = venueRef;
+	}
+
 	public Venue getVenue() {
+		if(this.venue == null) {
+			if (this.venueRef != null && !this.venueRef.isEmpty()) {
+				this.venue = Venue.generateVenueFromJson(this.venueRef);
+			}else {
+				throw new NullPointerException("No venue reference provided");
+			}
+		}
 		return this.venue;
 	}
 	
@@ -153,7 +177,7 @@ public class Event implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		String[] fields = { this.eventName, this.artistName, this.venueName, this.startDate, this.endDate,
+		String[] fields = { this.eventName, this.artistName, this.getVenue().getName(), this.startDate, this.endDate,
 				this.startTime, this.endDate,
 				this.getOrganization() != null ? this.getOrganization().getName() : null };
 		ProjectUtils.appendFields(fields, sb);

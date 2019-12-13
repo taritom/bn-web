@@ -96,6 +96,10 @@ public class Organization implements Serializable {
 		};
 	}
 	
+	public static Organization generateOrganizationFromJson(String key) {
+		return generateOrganizationFromJson(key, false);
+	}
+	
 	public static Organization generateOrganizationFromJson(String key, boolean randomizeName) {
 		Organization organization = (Organization) DataReader.getInstance().getObject(key, getTypeReference());
 		if (randomizeName) {
