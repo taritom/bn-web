@@ -218,8 +218,8 @@ public class ActivityItem extends BaseComponent {
 		public boolean isDataVisible() {
 			BigDecimal totalRefundMoney = getTotalRefundMoneyAmount();
 			BigDecimal perTicketFee = getPerTicketFee();
-//			RefundReason refundReason = getRefundReason(); currently no value is returned
-			return totalRefundMoney != null && perTicketFee != null;
+			RefundReason refundReason = getRefundReason();
+			return totalRefundMoney != null && perTicketFee != null && refundReason != null;
 		}
 
 		public BigDecimal getTotalRefundMoneyAmount() {

@@ -284,4 +284,10 @@ public class ProjectUtils {
 		
 		return retVal;
 	}
+	
+	public static boolean isMatch(String pattern, String text) {
+		Pattern p = Pattern.compile(pattern);
+		Matcher matcher = p.matcher(text);
+		return matcher.find();
+	}
 }

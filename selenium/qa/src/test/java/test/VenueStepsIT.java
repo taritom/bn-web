@@ -2,6 +2,7 @@ package test;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import model.User;
 import model.Venue;
@@ -62,6 +63,21 @@ public class VenueStepsIT extends BaseSteps {
 		venueStepsFacade.venueUpdateSteps(venue, true);
 		
 		loginStepsFacade.logOut();
+	}
+	
+	@Test(dataProvider = "create_venue_data", priority = 23, retryAnalyzer = utils.RetryAnalizer.class)
+	public void checkIfStatesHaveAbbreviatedNamesInBrackets(Venue venue, User superuser) {
+		maximizeWindow();
+		SoftAssert softAssert = new SoftAssert();
+		FacadeProvider fp = new FacadeProvider(driver);
+		fp.getLoginFacade().givenAdminUserIsLogedIn(superuser);
+		fp.getVenueFacade().givenUserIsOnVenuesPage();
+		fp.getVenueFacade().givenUserIsOnCreateVenuePage();
+		fp.getVenueFacade().checkStatesIfStatesAreAbbreviated(softAssert);
+		fp.getVenueFacade().givenUserIsOnVenuesPage();
+		fp.getVenueFacade().whenUserClicksOnEditButtonOfSelectedVenue(venue.getName());
+		fp.getVenueFacade().checkStatesIfStatesAreAbbreviated(softAssert);
+		softAssert.assertAll();
 	}
 
 	@DataProvider(name = "edit_venue_data")

@@ -35,6 +35,17 @@ public class AccessabilityUtil {
 		return text.trim();
 	}
 	
+	public List<String> getTextOfElements(List<WebElement> elements){
+		if (elements == null) {
+			throw new IllegalArgumentException("List passed to getTextOfElements method is null");
+		}
+		List<String> retVal = new ArrayList<>(elements.size());
+		for(WebElement el : elements) {
+			retVal.add(getTextOfElement(el));
+		}
+		return retVal;
+	}
+	
 	public String getTextOfElement(WebElement element) {
 		return element.getText().trim();
 	}

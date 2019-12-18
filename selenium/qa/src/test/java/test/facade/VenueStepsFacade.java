@@ -13,6 +13,7 @@ import model.Venue;
 import pages.admin.venue.AdminVenuePage;
 import pages.admin.venue.CreateVenuePage;
 import pages.admin.venue.ValidationVenueFields;
+import pages.components.GenericDropDown;
 import pages.components.admin.AdminSideBar;
 import pages.components.admin.venues.AdminVenueComponent;
 import utils.MsgConstants;
@@ -140,6 +141,16 @@ public class VenueStepsFacade extends BaseFacadeSteps {
 		createVenuePage.enterZip(venue.getZip());
 		createVenuePage.enterState(venue.getState());
 		createVenuePage.enterCountry(venue.getCountry());
+	}
+	
+	public void checkStatesIfStatesAreAbbreviated(SoftAssert softAssert) {
+		List<String> dropDownList = createVenuePage.getListOfStatesInDropDown();
+		
+		for(String st  : dropDownList) {
+			if (!ProjectUtils.isMatch("\\([A-Z]{2}\\)", st)){
+				softAssert.fail("No state abbriviation match for: " + st);
+			}
+		}
 	}
 
 	public void whenUserClicksOnCreateVenue() {

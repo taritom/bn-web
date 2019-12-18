@@ -99,6 +99,11 @@ public class CreateVenuePage extends BasePage {
 		getAccessUtils().clearInputField(countryField);
 	}
 	
+	public List<String> getListOfStatesInDropDown(){
+		GenericDropDown dropDown = new GenericDropDown(driver, stateDropDownActivate, stateContainer);
+		return dropDown.getDropDownList();
+	}
+	
 	public void uploadImageUsingLink(String imageUrl) {
 		UploadImageComponent uploadImageComponent = new UploadImageComponent(driver);
 		uploadImageComponent.uploadImageViaExternalLink(imageUrl, uploadImageButton);

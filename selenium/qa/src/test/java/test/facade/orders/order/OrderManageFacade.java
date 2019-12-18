@@ -274,15 +274,17 @@ public class OrderManageFacade extends BaseFacadeSteps{
 	}
 
 	public boolean whenUserExpandsRefundedHistoryItemAndChecksData(Purchase purchase, Integer quantity,
-			TicketType ticketType) {
+			TicketType ticketType, RefundReason refundReason) {
 		SelectedOrderPage selectedOrderPage = (SelectedOrderPage) getData(SELECTED_ORDER_PAGE_KEY);
 		ActivityItem activityItem = selectedOrderPage.getHistoryActivityItem(aitem -> aitem.isRefunded());
 		if (activityItem != null) {
 			activityItem.clickOnShowDetailsLink();
 			RefundedExpandedContent refundedContent = activityItem.getRefundedExpandedContent();
+			RefundReason retreivedRefundReason =  refundedContent.getRefundReason();
 			BigDecimal ticketPrice = new BigDecimal(ticketType.getPrice());
 			BigDecimal totalMoneyAmount = ticketPrice.multiply(new BigDecimal(quantity));
 			boolean retVal = true;
+			retVal = retVal && refundReason.equals(retreivedRefundReason);
 			retVal = retVal && ticketPrice.compareTo(refundedContent.getPerTicketFee()) == 0;
 			retVal = retVal && totalMoneyAmount.compareTo(refundedContent.getTotalRefundMoneyAmount()) == 0;
 			return retVal;

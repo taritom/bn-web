@@ -1,5 +1,8 @@
 package pages.components;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -65,6 +68,16 @@ public class GenericDropDown extends BaseComponent {
 		explicitWaitForClickable(selectedElement);
 		waitForTime(500);
 		explicitWaitForVisibilityAndClickableWithClick(selectedElement);
+	}
+	
+	public List<String> getDropDownList(){
+		waitForTime(500);
+		waitVisibilityAndBrowserCheckClick(activateDropDown);
+		explicitWaitForVisiblity(dropDownContainer);
+		List<WebElement> list = getAccessUtils().getChildElementsFromParentLocatedBy(dropDownContainer, By.xpath(".//li"));
+		List<String> retVal = getAccessUtils().getTextOfElements(list);
+		waitVisibilityAndBrowserCheckClick(dropDownContainer);
+		return retVal; 
 	}
 
 }

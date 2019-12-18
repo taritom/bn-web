@@ -527,6 +527,9 @@ class Venue extends Component {
 											/>
 										</Grid>
 										<Grid item xs={12} sm={3}>
+											{this.renderStates()}
+										</Grid>
+										<Grid item xs={12} sm={3}>
 											<InputGroup
 												error={errors.postal_code}
 												value={postal_code}
@@ -536,9 +539,6 @@ class Venue extends Component {
 												onChange={e => this.setState({ postal_code: e.target.value })}
 												onBlur={this.validateFields.bind(this)}
 											/>
-										</Grid>
-										<Grid item xs={12} sm={3}>
-											{this.renderStates()}
 										</Grid>
 										<Grid item xs={12} sm={3}>
 											<InputGroup
