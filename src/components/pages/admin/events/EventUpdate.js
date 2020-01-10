@@ -443,7 +443,7 @@ class Event extends Component {
 							})
 						}
 					>
-						{moment.utc(event.publishDate).isBefore(moment.utc()) ? "Published" : "Draft"}
+						Published
 					</RadioButton>
 					<RadioButton
 						active={shouldUnpublish}
