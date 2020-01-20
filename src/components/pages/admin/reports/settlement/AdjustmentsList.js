@@ -5,6 +5,7 @@ import { Typography, withStyles } from "@material-ui/core";
 
 import { dollars } from "../../../../../helpers/money";
 import { fontFamilyDemiBold } from "../../../../../config/theme";
+import Delete from "@material-ui/icons/Delete";
 
 const styles = theme => ({
 	root: {
@@ -29,7 +30,7 @@ const styles = theme => ({
 const typeEnums = Bn.Enums.ADJUSTMENT_TYPES;
 
 const AdjustmentsList = props => {
-	const { classes, adjustments } = props;
+	const { classes, adjustments, deleteDialog } = props;
 
 	return (
 		<div className={classes.root}>
@@ -49,7 +50,8 @@ const AdjustmentsList = props => {
 							<span className={classes.boldText}>
 								{typeEnums[settlement_adjustment_type]}
 							</span>{" "}
-							- {displayCreatedAt}
+							- {displayCreatedAt} 
+							<Delete onClick={deleteDialog}></Delete>
 						</Typography>
 						<Typography className={classes.text}>
 							Value: {dollars(amount_in_cents)}
@@ -67,7 +69,8 @@ const AdjustmentsList = props => {
 
 AdjustmentsList.propTypes = {
 	classes: PropTypes.object.isRequired,
-	adjustments: PropTypes.array.isRequired
+	adjustments: PropTypes.array.isRequired,
+	deleteDialog: PropTypes.func
 };
 
 export default withStyles(styles)(AdjustmentsList);

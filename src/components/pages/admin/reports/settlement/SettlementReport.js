@@ -20,6 +20,7 @@ import splitByCamelCase from "../../../../../helpers/splitByCamelCase";
 import downloadCSV from "../../../../../helpers/downloadCSV";
 import { dollars } from "../../../../../helpers/money";
 import user from "../../../../../stores/user";
+import DeleteDialog from "./DeleteDialog";
 
 const statusEnums = Bn.Enums.SETTLEMENT_STATUS;
 const typeEnums = Bn.Enums.ADJUSTMENT_TYPES;
@@ -62,7 +63,8 @@ class SettlementReport extends Component {
 			settlement: null,
 			grandTotals: null,
 
-			showAdjustmentDialog: false
+			showAdjustmentDialog: false,
+			showDeleteDialog: false
 		};
 	}
 
@@ -405,6 +407,14 @@ class SettlementReport extends Component {
 		);
 	}
 
+	onDeleteDialogClose() {
+		this.setState({ showDeleteDialog: null });
+	}
+
+	handleDelete() {
+		this.setState({ showDeleteDialog: true });
+	}
+
 	renderReportContent() {
 		const { classes, printVersion } = this.props;
 
@@ -430,7 +440,7 @@ class SettlementReport extends Component {
 
 				{adjustments && adjustments.length > 0 ? (
 					<React.Fragment>
-						<AdjustmentsList adjustments={adjustments}/> <br/>
+						<AdjustmentsList adjustments={adjustments} deleteDialog={this.handleDelete.bind(this)}/> <br/>
 						<br/>
 					</React.Fragment>
 				) : null}
@@ -466,7 +476,7 @@ class SettlementReport extends Component {
 
 	render() {
 		const { classes, printVersion } = this.props;
-		const { settlement, showAdjustmentDialog, settlementId } = this.state;
+		const { settlement, showAdjustmentDialog, settlementId, showDeleteDialog } = this.state;
 
 		if (!settlement) {
 			return <Loader>Loading settlement report...</Loader>;
@@ -491,6 +501,10 @@ class SettlementReport extends Component {
 						onSuccess={this.onAdjustmentAdded.bind(this)}
 					/>
 				) : null}
+				<DeleteDialog
+					open={!!showDeleteDialog}
+					onClose={this.onDeleteDialogClose.bind(this)}
+				/>
 				<div className={classes.root}>
 					<div
 						style={{
