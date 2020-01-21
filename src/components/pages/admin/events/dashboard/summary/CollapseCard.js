@@ -5,8 +5,12 @@ import Hidden from "@material-ui/core/Hidden";
 import PropTypes from "prop-types";
 
 import Card from "../../../../../elements/Card";
-import { fontFamilyDemiBold } from "../../../../../../config/theme";
+import {
+	fontFamilyDemiBold,
+	secondaryHex
+} from "../../../../../../config/theme";
 import servedImage from "../../../../../../helpers/imagePathHelper.js";
+import Divider from "../../../../../common/Divider";
 
 const styles = theme => {
 	return {
@@ -15,6 +19,17 @@ const styles = theme => {
 
 			[theme.breakpoints.up("md")]: {
 				padding: 40
+			}
+		},
+		footer: {
+			paddingLeft: 20,
+			paddingRight: 20,
+			paddingBottom: 16,
+			paddingTop: 16,
+
+			[theme.breakpoints.up("md")]: {
+				paddingLeft: 40,
+				paddingRight: 40
 			}
 		},
 		topRow: {
@@ -69,32 +84,40 @@ class CollapseCard extends Component {
 	}
 
 	render() {
-		const { classes, title, iconPath, children } = this.props;
+		const { classes, title, iconPath, children, footerContent } = this.props;
 		const { expanded } = this.state;
 
 		return (
-			<Card className={classes.root}>
-				<Hidden smDown>
-					<div className={classes.desktopContainer}>
-						<div className={classes.iconContainer}>
-							{iconPath ? (
-								<img className={classes.icon} src={servedImage(iconPath)}/>
-							) : null}
+			<Card>
+				<div className={classes.root}>
+					<Hidden smDown>
+						<div className={classes.desktopContainer}>
+							<div className={classes.iconContainer}>
+								{iconPath ? (
+									<img className={classes.icon} src={servedImage(iconPath)}/>
+								) : null}
+							</div>
+							<div style={{ flex: 1 }}>{children}</div>
+							<div className={classes.iconContainer}/>
 						</div>
-						<div style={{ flex: 1 }}>{children}</div>
-						<div className={classes.iconContainer}/>
-					</div>
-				</Hidden>
-				<Hidden mdUp>
-					<div className={classes.topRow} onClick={this.toggle}>
-						<Typography className={classes.titleText}>{title}</Typography>
-						<img
-							src={`/icons/${expanded ? "up" : "down"}-active.svg`}
-							className={classes.dropDownIcon}
-						/>
-					</div>
-					<Collapse in={expanded}>{children}</Collapse>
-				</Hidden>
+					</Hidden>
+					<Hidden mdUp>
+						<div className={classes.topRow} onClick={this.toggle}>
+							<Typography className={classes.titleText}>{title}</Typography>
+							<img
+								src={`/icons/${expanded ? "up" : "down"}-active.svg`}
+								className={classes.dropDownIcon}
+							/>
+						</div>
+						<Collapse in={expanded}>{children}</Collapse>
+					</Hidden>
+				</div>
+				{footerContent ? (
+					<React.Fragment>
+						<Divider/>
+						<div className={classes.footer}>{footerContent}</div>
+					</React.Fragment>
+				) : null}
 			</Card>
 		);
 	}
@@ -104,7 +127,8 @@ CollapseCard.propTypes = {
 	classes: PropTypes.object.isRequired,
 	title: PropTypes.string.isRequired,
 	children: PropTypes.any.isRequired,
-	iconPath: PropTypes.string
+	iconPath: PropTypes.string,
+	footerContent: PropTypes.any
 };
 
 export default withStyles(styles)(CollapseCard);

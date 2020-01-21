@@ -1,32 +1,43 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography, Hidden } from "@material-ui/core";
+import { Typography, Hidden, Collapse } from "@material-ui/core";
 import PropTypes from "prop-types";
 
 import CollapseCard from "./CollapseCard";
-import { fontFamilyDemiBold } from "../../../../../../config/theme";
+import {
+	fontFamilyDemiBold,
+	secondaryHex
+} from "../../../../../../config/theme";
 import TicketSalesChart from "./charts/TicketSalesChart";
 import ticketCountReport from "../../../../../../stores/reports/ticketCountReport";
 import EventTicketCountTable from "../../../reports/counts/EventTicketCountTable";
 import moment from "moment";
+import Loader from "../../../../../elements/loaders/Loader";
 
 const styles = theme => {
 	return {
-		root: {
-			// [theme.breakpoints.up("sm")]: {
-			// 	padding: 30
-			// },
-			// [theme.breakpoints.down("md")]: {
-			// 	padding: 10
-			// },
-			// [theme.breakpoints.down("sm")]: {
-			// 	padding: 0
-			// }
-		},
+		root: {},
 		titleText: {
 			fontFamily: fontFamilyDemiBold,
 			fontSize: 19,
 			marginBottom: 20
+		},
+		showHideLink: {
+			fontSize: 14,
+			color: secondaryHex,
+			fontFamily: fontFamilyDemiBold,
+			textAlign: "center",
+			cursor: "pointer"
+		},
+		tableContainer: {
+			paddingBottom: 20,
+			paddingTop: 20
+		},
+		dropDownIcon: {
+			height: "auto",
+			width: 9,
+			marginLeft: 8,
+			marginBottom: 1
 		}
 	};
 };
@@ -34,7 +45,11 @@ const styles = theme => {
 class TicketSalesCard extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { ticketCounts: null };
+
+		this.state = {
+			ticketCounts: null,
+			showTicketCounts: false
+		};
 	}
 
 	refreshData() {
@@ -65,16 +80,44 @@ class TicketSalesCard extends Component {
 
 		const title = "Ticket Sales";
 
-		const { ticketCounts } = this.state;
+		const { ticketCounts, showTicketCounts } = this.state;
 		if (!ticketCounts) {
 			this.refreshData();
 		}
+
+		const footerContent = (
+			<React.Fragment>
+				<Typography
+					className={classes.showHideLink}
+					onClick={() => this.setState({ showTicketCounts: !showTicketCounts })}
+				>
+					{showTicketCounts ? "Hide" : "Show"} Ticket Type Breakdown
+					<img
+						src={`/icons/${showTicketCounts ? "up" : "down"}-active.svg`}
+						className={classes.dropDownIcon}
+					/>
+				</Typography>
+				<Collapse in={showTicketCounts}>
+					{ticketCounts ? (
+						<div className={classes.tableContainer}>
+							<EventTicketCountTable
+								ticketCounts={ticketCounts}
+								hideDetails={true}
+							/>
+						</div>
+					) : (
+						<Loader>Loading Ticket Type Breakdown</Loader>
+					)}
+				</Collapse>
+			</React.Fragment>
+		);
 
 		return (
 			<CollapseCard
 				title={title}
 				className={classes.root}
 				iconPath={"/icons/graph.png"}
+				footerContent={footerContent}
 			>
 				<div className={classes.root}>
 					<Hidden smDown>
@@ -89,16 +132,6 @@ class TicketSalesCard extends Component {
 						endDate={event_end}
 					/>
 				</div>
-				{ticketCounts ? (
-					<div className={classes.root}>
-						<EventTicketCountTable
-							ticketCounts={ticketCounts}
-							hideDetails={true}
-						/>
-					</div>
-				) : (
-					<div>Loading</div>
-				)}
 			</CollapseCard>
 		);
 	}
