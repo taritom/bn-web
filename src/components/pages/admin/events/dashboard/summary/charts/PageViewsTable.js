@@ -23,7 +23,7 @@ const formatValueFunctions = {
 	"PageViews.uniqueViews": (row, classes, totalUniquePageViews) => {
 		const value = Number(row["PageViews.uniqueViews"]);
 
-		const percent = `${Math.round((value / totalUniquePageViews) * 100) /
+		const percent = `${Math.round((value / totalUniquePageViews) * 100 * 100) /
 			100}%`;
 
 		return (
