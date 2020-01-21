@@ -6,6 +6,7 @@ import { Typography, withStyles } from "@material-ui/core";
 import { dollars } from "../../../../../helpers/money";
 import { fontFamilyDemiBold } from "../../../../../config/theme";
 import Delete from "@material-ui/icons/Delete";
+import IconButton from "../../../../elements/IconButton";
 
 const styles = theme => ({
 	root: {
@@ -24,6 +25,10 @@ const styles = theme => ({
 	},
 	boldText: {
 		fontFamily: fontFamilyDemiBold
+	},
+	icon: {
+		marginLeft: 30,
+		marginBottom: 5
 	}
 });
 
@@ -50,8 +55,10 @@ const AdjustmentsList = props => {
 							<span className={classes.boldText}>
 								{typeEnums[settlement_adjustment_type]}
 							</span>{" "}
-							- {displayCreatedAt} 
-							<Delete onClick={deleteDialog}></Delete>
+							- {displayCreatedAt}
+							<IconButton className={classes.icon} onClick={deleteDialog} iconUrl="/icons/delete-gray.svg">
+								Delete
+							</IconButton>
 						</Typography>
 						<Typography className={classes.text}>
 							Value: {dollars(amount_in_cents)}
