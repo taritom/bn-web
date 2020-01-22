@@ -182,6 +182,30 @@ const ga = {
 	}
 };
 
+const gtag = {
+	name: "gtag",
+	gtag: null,
+	key: "",
+	campaign: "",
+	addTrackingKey(providerOptions) {
+		window.dataLayer = window.dataLayer || [];
+		this.gtag = function() {
+			window.dataLayer.push(arguments);
+		};
+		this.gtag("js", new Date());
+
+		this.gtag("config", providerOptions.key);
+		this.key = providerOptions.key;
+		this.campaign = providerOptions.campaign;
+	},
+
+	pageView() {
+		this.gtag("event", "conversion", {
+			send_to: `${this.key}/${this.campaign}`
+		});
+	}
+};
+
 const bigneon = {
 	name: "bigneon",
 	enabled: true,
@@ -211,12 +235,14 @@ const bigneon = {
 			ReactGA.ga()(function(tracker) {
 				clientId = tracker.get("clientId") || clientId;
 				source = source || tracker.get("source") || "";
-				medium = medium  || tracker.get("medium") || "";
+				medium = medium || tracker.get("medium") || "";
 			});
 		}
 
 		const referrer = trackingData.referrer || document.referrer;
-		const nonce = Math.random().toString(36).substr(2, 5);
+		const nonce = Math.random()
+			.toString(36)
+			.substr(2, 5);
 		img.src =
 			baseUrl +
 			`/a/t?n=${nonce}&url=${uri}&client_id=${clientId}&source=${source}&medium=${medium}&referrer=${referrer}&` +
@@ -477,13 +503,17 @@ const segment = {
 	}
 };
 
-const providers = [facebook, ga, segment, bigneon];
+const providers = [facebook, ga, segment, bigneon, gtag];
 
 const init = () => {
 	const providerOptions = {
 		ga: process.env.REACT_APP_GOOGLE_ANALYTICS_KEY,
 		segment: process.env.REACT_APP_SEGMENT_KEY,
-		bigneon: process.env.REACT_APP_BIGNEON_ANALYTICS_URL
+		bigneon: process.env.REACT_APP_BIGNEON_ANALYTICS_URL,
+		gtag: {
+			key: "AW-866267805",
+			campaign: "OXQXCM-8-bwBEJ3liJ0D"
+		}
 	};
 
 	Object.keys(providerOptions).forEach(k => {
