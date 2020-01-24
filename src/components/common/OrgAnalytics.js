@@ -34,6 +34,13 @@ class OrgAnalytics extends React.Component {
 				this.initialized = true;
 			}
 
+			if (keys.google_ads_conversion_id) {
+				analytics.addTrackingKey("gtag", {
+					id: keys.google_ads_conversion_id,
+					labels: keys.google_ads_conversion_labels
+				});
+			}
+
 			//analytics.page();
 		}
 	}
@@ -46,6 +53,10 @@ class OrgAnalytics extends React.Component {
 
 			if (keys.facebook_pixel_key) {
 				analytics.removeTrackingKey("facebook", keys.facebook_pixel_key);
+			}
+
+			if (keys.google_ads_conversion_id){
+				analytics.removeTrackingKey("gtag", keys.google_ads_conversion_id);
 			}
 			this.initialized = false;
 		}

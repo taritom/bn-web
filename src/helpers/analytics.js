@@ -198,17 +198,22 @@ const gtag = {
 		this.gtag("config", providerOptions.id);
 		this.id = providerOptions.id;
 		this.labels = providerOptions.labels;
+		this.enabled = true;
 	},
-	pageView() {
-		this.sendEvent("conversion");
+	removeTrackingKey(id) {
+		this.id = null;
+		this.labels = [];
+		this.enabled = false;
+		this.gtag = null;
 	},
 	purchaseCompleted(ids, urlParams, currency, items, value) {
-		this.sendEvent("conversion");
-	},
-	sendEvent(eventType) {
 		this.labels.forEach(label => {
-			this.gtag("event", eventType, {
-				send_to: `${this.key}/${label}`
+			this.gtag("event", "conversion", {
+				send_to: `${this.key}/${label}`,
+				value,
+				currency,
+				transaction_id: ids
+
 			});
 		});
 	}
@@ -518,10 +523,7 @@ const init = () => {
 		ga: process.env.REACT_APP_GOOGLE_ANALYTICS_KEY,
 		segment: process.env.REACT_APP_SEGMENT_KEY,
 		bigneon: process.env.REACT_APP_BIGNEON_ANALYTICS_URL,
-		gtag: {
-			id: "AW-866267805",
-			labels: ["OXQXCM-8-bwBEJ3liJ0D"]
-		}
+		gtag: null
 	};
 
 	Object.keys(providerOptions).forEach(k => {
@@ -564,7 +566,7 @@ const getProvider = name => providers.find(p => p.name === name);
 
 const page = (...args) => {
 	const enabledProviders = providers.filter(p => p.enabled);
-	enabledProviders.forEach(p => p.pageView(...args));
+	enabledProviders.forEach(p => p.pageView ? p.pageView(...args) : {});
 };
 
 // Identify for all enabled analytics providers
