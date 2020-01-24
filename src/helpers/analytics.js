@@ -185,8 +185,9 @@ const ga = {
 const gtag = {
 	name: "gtag",
 	gtag: null,
-	key: "",
-	campaign: "",
+	enabled: true,
+	id: "",
+	labels: [],
 	addTrackingKey(providerOptions) {
 		window.dataLayer = window.dataLayer || [];
 		this.gtag = function() {
@@ -194,14 +195,21 @@ const gtag = {
 		};
 		this.gtag("js", new Date());
 
-		this.gtag("config", providerOptions.key);
-		this.key = providerOptions.key;
-		this.campaign = providerOptions.campaign;
+		this.gtag("config", providerOptions.id);
+		this.id = providerOptions.id;
+		this.labels = providerOptions.labels;
 	},
-
 	pageView() {
-		this.gtag("event", "conversion", {
-			send_to: `${this.key}/${this.campaign}`
+		this.sendEvent("conversion");
+	},
+	purchaseCompleted(ids, urlParams, currency, items, value) {
+		this.sendEvent("conversion");
+	},
+	sendEvent(eventType) {
+		this.labels.forEach(label => {
+			this.gtag("event", eventType, {
+				send_to: `${this.key}/${label}`
+			});
 		});
 	}
 };
@@ -511,8 +519,8 @@ const init = () => {
 		segment: process.env.REACT_APP_SEGMENT_KEY,
 		bigneon: process.env.REACT_APP_BIGNEON_ANALYTICS_URL,
 		gtag: {
-			key: "AW-866267805",
-			campaign: "OXQXCM-8-bwBEJ3liJ0D"
+			id: "AW-866267805",
+			labels: ["OXQXCM-8-bwBEJ3liJ0D"]
 		}
 	};
 
@@ -552,7 +560,7 @@ const removeTrackingKey = (providerName, key) => {
 	provider.removeTrackingKey(key);
 };
 
-const getProvider = name => providers.find(p => p.name == name);
+const getProvider = name => providers.find(p => p.name === name);
 
 const page = (...args) => {
 	const enabledProviders = providers.filter(p => p.enabled);
@@ -623,7 +631,6 @@ export default {
 	addTrackingKey,
 	addImpressions,
 	eventClick,
-	getProvider,
 	removeTrackingKey,
 	page,
 	identify,
