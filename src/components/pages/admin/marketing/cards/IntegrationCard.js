@@ -25,6 +25,8 @@ class OrganizationUpdateCard extends Component {
 		this.state = {
 			google_ga_key: "",
 			facebook_pixel_key: "",
+			google_ads_conversion_id: "",
+			google_ads_conversion_labels: [],
 			errors: {},
 			isSubmitting: false,
 			showApiKeys: true
@@ -44,13 +46,17 @@ class OrganizationUpdateCard extends Component {
 					const {
 						owner_user_id,
 						google_ga_key,
-						facebook_pixel_key
+						facebook_pixel_key,
+						google_ads_conversion_id,
+						google_ads_conversion_labels
 					} = response.data;
 
 					this.setState({
 						owner_user_id: owner_user_id || "",
 						google_ga_key: google_ga_key || "",
-						facebook_pixel_key: facebook_pixel_key || ""
+						facebook_pixel_key: facebook_pixel_key || "",
+						google_ads_conversion_id: google_ads_conversion_id || "",
+						google_ads_conversion_labels: google_ads_conversion_labels || []
 					});
 				})
 				.catch(error => {
@@ -128,12 +134,13 @@ class OrganizationUpdateCard extends Component {
 			return false;
 		}
 
-		const { owner_user_id, google_ga_key, facebook_pixel_key } = this.state;
+		const {  google_ga_key, facebook_pixel_key, google_ads_conversion_id, google_ads_conversion_labels } = this.state;
 		const { organizationId } = this.props;
 
 		const orgDetails = {
 			google_ga_key,
-			facebook_pixel_key
+			facebook_pixel_key,
+			google_ads_conversion_id, google_ads_conversion_labels
 		};
 
 		//If we're updating an existing org
@@ -157,6 +164,8 @@ class OrganizationUpdateCard extends Component {
 			errors,
 			google_ga_key,
 			facebook_pixel_key,
+			google_ads_conversion_id,
+			google_ads_conversion_labels,
 			isSubmitting
 		} = this.state;
 
@@ -165,7 +174,6 @@ class OrganizationUpdateCard extends Component {
 		const { classes } = this.props;
 
 		//If a OrgOwner is editing his own organization don't allow him to change the owner email
-		const isCurrentOwner = !!(owner_user_id && owner_user_id === user.id);
 
 		return (
 			<Card className={classes.paper}>
@@ -197,6 +205,24 @@ class OrganizationUpdateCard extends Component {
 							onChange={e =>
 								this.setState({ facebook_pixel_key: e.target.value })
 							}
+							onBlur={this.validateFields.bind(this)}
+						/>
+						<InputGroup
+							error={errors.google_ads_conversion_id}
+							value={google_ads_conversion_id}
+							name="google_ads_conversion_id"
+							label="Google Ads Conversion ID (e.g. 866267811)"
+							type="text"
+							onChange={e => this.setState({ google_ads_conversion_id: e.target.value })}
+							onBlur={this.validateFields.bind(this)}
+						/>
+						<InputGroup
+							error={errors.google_ads_conversion_labels}
+							value={google_ads_conversion_labels.join()}
+							name="google_ads_conversion_labels"
+							label="Google Ads Conversion Labels (e.g. OXQXCM-8-bwBEJ3liL8X, OXQXCM-8-bwBEJ3liK9D)"
+							type="text"
+							onChange={e => this.setState({ google_ads_conversion_labels: e.target.value.split(",") })}
 							onBlur={this.validateFields.bind(this)}
 						/>
 					</CardContent>
