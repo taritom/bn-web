@@ -55,7 +55,8 @@ const styles = theme => {
 			fontFamily: fontFamilyBold,
 			marginBottom: theme.spacing.unit,
 			fontSize: theme.typography.fontSize * 3,
-			lineHeight: 0.9
+			lineHeight: 0.9,
+			paddingRight: 20
 		},
 		eventNameTextLong: {
 			fontSize: theme.typography.fontSize * 1.8,
@@ -73,7 +74,8 @@ const styles = theme => {
 		withArtistsText: {
 			color: "#BFC4D2",
 			fontSize: 19,
-			lineHeight: "31px"
+			lineHeight: "31px",
+			paddingRight: 20
 		}
 	};
 };

@@ -663,22 +663,12 @@ class EventDashboardContainer extends Component {
 					<div className={classes.menuContainer}>
 						<Typography className={classes.menuText}>
 							<StyledLink
-								underlined={subheading === "summary_old"}
+								underlined={subheading === "summary"}
 								to={`/admin/events/${event.id}/dashboard`}
 							>
 								Dashboard
 							</StyledLink>
 						</Typography>
-						{user.isAdmin ? (
-							<Typography className={classes.menuText}>
-								<StyledLink
-									underlined={subheading === "summary"}
-									to={`/admin/events/${event.id}/dashboard_v2`}
-								>
-									Dashboard V2
-								</StyledLink>
-							</Typography>
-						) : null}
 
 						{!event.is_external ? (
 							<React.Fragment>

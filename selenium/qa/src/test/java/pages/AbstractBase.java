@@ -230,7 +230,7 @@ public class AbstractBase implements Serializable {
 	public void waitForTime(long mills) {
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(mills, TimeUnit.MILLISECONDS)
-					.pollingEvery(mills, TimeUnit.MICROSECONDS).ignoring(NoSuchElementException.class)
+					.pollingEvery(mills, TimeUnit.MILLISECONDS).ignoring(NoSuchElementException.class)
 					.ignoring(NotFoundException.class).ignoring(Exception.class);
 			wait.until(new Function<WebDriver, WebElement>() {
 

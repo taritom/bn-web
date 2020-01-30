@@ -27,8 +27,7 @@ public class EditEventInformationStepsIT extends BaseSteps {
 		organizationFacade.givenOrganizationExist(event.getOrganization());
 
 		adminEventFacade.givenUserIsOnAdminEventsPage();
-		EventSummaryComponent eventComp = adminEventFacade.givenEventWithNameAndPredicateExists(event,
-				component -> !component.isEventDrafted());
+		EventSummaryComponent eventComp = adminEventFacade.givenEventWithNameAndPredicateExists(event, comp -> !comp.isEventCanceled());
 
 		eventComp.editEvent(event);//userIsOnEventPage
 		event.setEventName("Updated" + event.getEventName());

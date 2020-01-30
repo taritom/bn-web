@@ -13,7 +13,8 @@ import Loader from "../../../../elements/loaders/Loader";
 import servedImage from "../../../../../helpers/imagePathHelper";
 import EventSummaryCard from "./summary/EventSummaryCard";
 import EventAtAGlanceCard from "./summary/EventAtAGlanceCard";
-import TicketSalesCard from "./summary/TicketSalesCard";
+import TicketSalesBreakdownCard from "./summary/TicketSalesBreakdownCard";
+import TicketSalesChartCard from "./summary/TicketSalesChartCard";
 import SalesSourceCard from "./summary/SalesSourceCard";
 import settings from "../../../../../config/settings";
 
@@ -82,15 +83,18 @@ class Summary extends Component {
 						...this.state.event,
 						artists,
 						venue,
-						displayEventDate: moment(event_start)
+						displayEventDate: moment
+							.utc(event_start)
 							.tz(venue.timezone)
-							.format("MMM, D, YYYY"),
-						displayDoorsOpenTime: moment(door_time)
+							.format("MMM D, YYYY"),
+						displayDoorsOpenTime: moment
+							.utc(door_time)
 							.tz(venue.timezone)
-							.format("MMM, D, YYYY"),
-						displayShowStartTime: moment(event_start)
+							.format("h:mm A"),
+						displayShowStartTime: moment
+							.utc(event_start)
 							.tz(venue.timezone)
-							.format("MMM, D, YYYY")
+							.format("h:mm A")
 					}
 				});
 			})
@@ -128,6 +132,8 @@ class Summary extends Component {
 		if (!event) {
 			return <Loader/>;
 		}
+
+		const cutOffDateString = "2020-01-09T00:00:00";
 
 		if (event.is_external) {
 			return (
@@ -168,16 +174,24 @@ class Summary extends Component {
 						token={cube_js_token}
 					/>
 					<div className={classes.spacer}/>
-					<TicketSalesCard
+					<TicketSalesChartCard
 						cubeApiUrl={CUBE_API_URL}
 						{...event}
 						token={cube_js_token}
+						cutOffDateString={cutOffDateString}
+					/>
+					<TicketSalesBreakdownCard
+						cubeApiUrl={CUBE_API_URL}
+						{...event}
+						token={cube_js_token}
+						cutOffDateString={cutOffDateString}
 					/>
 					<div className={classes.spacer}/>
 					<SalesSourceCard
 						cubeApiUrl={CUBE_API_URL}
 						{...event}
 						token={cube_js_token}
+						cutOffDateString={cutOffDateString}
 					/>
 				</Container>
 			);

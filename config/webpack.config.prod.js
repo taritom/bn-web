@@ -354,7 +354,7 @@ module.exports = {
 				transform(content, path) {
 					const strBuf = content.toString("utf8");
 					return Buffer.from(
-						strBuf.replace("[api_url]", process.env.NETLIFY_REDIRECT_API_URL)
+						strBuf.replace(/\[api_url\]/g, process.env.NETLIFY_REDIRECT_API_URL)
 					);
 				}
 			},

@@ -288,64 +288,8 @@ const EventSummaryCard = props => {
 								/>
 							</div>
 						) : null}
-						{isExternal ? (
-							<div className={classes.expandIconRowPlaceholder}>&nbsp;</div>
-						) : !isExpanded ? (
-							<div
-								className={classes.expandIconRow}
-								onClick={() => onExpandClick(id)}
-							>
-								<img src={servedImage("/icons/down-active.svg")}/>
-							</div>
-						) : (
-							<div className={classes.expandIconRowPlaceholder}>&nbsp;</div>
-						)}
+						<div className={classes.expandIconRowPlaceholder}>&nbsp;</div>
 					</div>
-				</Grid>
-
-				<Grid item xs={12} sm={12} lg={12}>
-					<Collapse in={isExpanded}>
-						<div className={classes.expandedViewContent}>
-							<Grid container spacing={32}>
-								{ticketTypes
-									.filter(
-										ticketType =>
-											ticketType.sales_total_in_cents !== null &&
-											ticketType.sold_held !== null &&
-											ticketType.sold_unreserved !== null
-									)
-									.map((ticketType, index) => {
-										const remainingHeld =
-											ticketType.held - ticketType.sold_held;
-										// const valueDisplay = ticketType.held > 0 ? `${remainingHeld} / ${ticketType.held}` : "";
-										return (
-											<Grid key={index} item xs={12} sm={12} md={6} lg={4}>
-												<TicketTypeSalesBarChart
-													name={ticketType.name}
-													totalRevenueInCents={ticketType.sales_total_in_cents}
-													values={[
-														{
-															label: "Sold",
-															value:
-																ticketType.sold_held +
-																ticketType.sold_unreserved
-														},
-														{ label: "Open", value: ticketType.open },
-														{ label: "Held", value: remainingHeld }
-													]}
-												/>
-											</Grid>
-										);
-									})}
-							</Grid>
-							<div
-								className={classes.expandIconRow}
-								onClick={() => onExpandClick(null)}
-							>
-								<img src={servedImage("/icons/up-active.svg")}/>
-							</div>
-						</div>
-					</Collapse>
 				</Grid>
 			</Grid>
 		</Card>

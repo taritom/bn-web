@@ -583,10 +583,9 @@ class User {
 
 	@computed
 	get hasEventPromoCodesReport() {
-		if (this.isAdmin) {
+		if (this.isAdmin || this.isOrgOwner || this.isOrgAdmin) {
 			return true;
 		}
-
 		return false;
 	}
 

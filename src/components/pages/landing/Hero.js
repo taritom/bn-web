@@ -8,6 +8,7 @@ import SearchToolBarInput from "../../elements/header/SearchToolBarInput";
 import getPhoneOS from "../../../helpers/getPhoneOS";
 import AppButton from "../../elements/AppButton";
 import Settings from "../../../config/settings";
+import { isReactNative } from "../../../helpers/reactNative";
 
 const styles = theme => ({
 	root: {
@@ -135,7 +136,8 @@ class Hero extends Component {
 		this.state = {
 			query: "",
 			isSearching: false,
-			phoneOS: getPhoneOS()
+			phoneOS: getPhoneOS(),
+			isReactNative: isReactNative()
 		};
 	}
 
@@ -161,9 +163,8 @@ class Hero extends Component {
 
 	render() {
 		const { history, classes } = this.props;
-		const { phoneOS } = this.state;
-
-		return (
+		const { phoneOS, isReactNative } = this.state;
+		return isReactNative ? null : (
 			<div className={classes.root}>
 				{/*<Hidden smDown>*/}
 				{/*	<div className={classes.toolBar}>*/}

@@ -56,6 +56,9 @@ const AdminVenue = asyncComponent(() => import("../pages/admin/venues/Venue"));
 const AdminRegionsList = asyncComponent(() =>
 	import("../pages/admin/regions/List")
 );
+const AdminSlugsList = asyncComponent(() =>
+	import("../pages/admin/slugs/List")
+);
 const AdminArtistsList = asyncComponent(() =>
 	import("../pages/admin/artists/List")
 );
@@ -66,9 +69,6 @@ const AdminEventsList = asyncComponent(() =>
 	import("../pages/admin/events/List")
 );
 const AdminEventDashboardSummary = asyncComponent(() =>
-	import("../pages/admin/events/dashboard/Summary")
-);
-const AdminEventDashboardSummaryV2 = asyncComponent(() =>
 	import("../pages/admin/events/dashboard/Summary_V2")
 );
 const AdminEventDashboardHolds = asyncComponent(() =>
@@ -189,10 +189,9 @@ class Routes extends Component {
 				localStorage.setItem("access_token", access_token);
 				localStorage.setItem("refresh_token", refresh_token);
 				user.refreshUser();
-			}catch(e) {
+			} catch (e) {
 				console.error("Invalid access / refresh token provided");
 			}
-
 		}
 		// store url params data for campaign tracking
 		user.setCampaignTrackingData({
@@ -233,21 +232,13 @@ class Routes extends Component {
 								/>
 								<Route exact path="/sign-up" component={Signup}/>
 								<Route exact path="/login" component={Login}/>
-								<Route
-									exact
-									path="/password-reset"
-									component={PasswordReset}
-								/>
+								<Route exact path="/password-reset" component={PasswordReset}/>
 								<Route
 									exact
 									path="/invites/decline"
 									component={InviteDecline}
 								/>
-								<Route
-									exact
-									path="/invites/accept"
-									component={InviteAccept}
-								/>
+								<Route exact path="/invites/accept" component={InviteAccept}/>
 								<Route
 									exact
 									path="/tickets/receive" //TODO remove this route
@@ -352,9 +343,9 @@ class Routes extends Component {
 									path="/events/:id/tickets/success"
 									component={props => (
 										<Redirect
-											to={`/tickets/${
-												props.match.params.id
-											}/tickets/success${window.location.search}`}
+											to={`/tickets/${props.match.params.id}/tickets/success${
+												window.location.search
+											}`}
 										/>
 									)}
 									isAuthenticated={isAuthenticated}
@@ -439,6 +430,12 @@ class Routes extends Component {
 								/>
 								<PrivateRoute
 									exact
+									path="/admin/slugs"
+									component={AdminSlugsList}
+									isAuthenticated={isAuthenticated}
+								/>
+								<PrivateRoute
+									exact
 									path="/admin/artists"
 									component={AdminArtistsList}
 									isAuthenticated={isAuthenticated}
@@ -459,12 +456,6 @@ class Routes extends Component {
 									exact
 									path="/admin/events/:id/dashboard"
 									component={AdminEventDashboardSummary}
-									isAuthenticated={isAuthenticated}
-								/>
-								<PrivateRoute
-									exact
-									path="/admin/events/:id/dashboard_v2"
-									component={AdminEventDashboardSummaryV2}
 									isAuthenticated={isAuthenticated}
 								/>
 								<PrivateRoute

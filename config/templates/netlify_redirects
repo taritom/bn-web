@@ -1,2 +1,3 @@
+/sitemap.xml [api_url]/sitemap.xml 200
 /api/* [api_url]/:splat 200!
 /* /index.html 200

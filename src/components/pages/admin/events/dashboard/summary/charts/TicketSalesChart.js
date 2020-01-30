@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import moment from "moment-timezone";
 import Loader from "../../../../../../elements/loaders/Loader";
 import TicketSalesTooltip from "./TicketSalesTooltip";
+import getScreenWidth from "../../../../../../../helpers/getScreenWidth";
 
 const COLORS_SERIES = ["#707CED"];
 const FILL_SERIES = ["rgba(112,124,237,0.06)"];
@@ -61,8 +62,18 @@ class SalesLine extends Component {
 			endDate,
 			token,
 			cubeApiUrl,
-			timezone
+			timezone,
+			cutOffDateString
 		} = this.props;
+
+		let borderWidth = 2;
+		if (getScreenWidth() < 500) {
+			borderWidth = 1;
+		}
+
+		const chartEnd =  moment.utc(endDate).isAfter(moment()) ? moment().add(1, "days") :  endDate;
+
+		resultSet.categories().forEach( c => c.category = moment.utc(c.category).startOf("week").weekday(0));
 
 		const data = {
 			labels: resultSet.categories().map(c => c.category),
@@ -75,10 +86,10 @@ class SalesLine extends Component {
 				lineTension: 0,
 
 				pointHitRadius: 20,
-				//pointRadius: 4,
-				// borderWidth: 3,
-				pointHoverRadius: 5
-				// pointHoverBorderWidth: 2
+				pointRadius: 4,
+				borderWidth,
+				pointHoverRadius: 5,
+				pointHoverBorderWidth: 2
 			}))
 		};
 		const options = {
@@ -103,7 +114,7 @@ class SalesLine extends Component {
 				custom: tooltipModel => {
 					// hide the tooltip
 					if (tooltipModel.opacity === 0) {
-						this.hideTooltip();
+						//this.hideTooltip();
 						return;
 					}
 
@@ -134,7 +145,7 @@ class SalesLine extends Component {
 						},
 						ticks: {
 							min: startDate,
-							max: endDate,
+							max: chartEnd,
 							lineHeight: "14px",
 							fontColor: "#2C3136",
 							fontSize: "12px"
@@ -143,6 +154,9 @@ class SalesLine extends Component {
 							// 	const { value } = labels[0];
 							// 	return moment(value).format("MMM YYYY");
 							// }
+						},
+						time: {
+							unit: "week"
 						}
 					}
 				],
@@ -156,12 +170,20 @@ class SalesLine extends Component {
 						ticks: {
 							min: 0,
 							callback: function(label, index, labels) {
-								return label;
+								if (Number(label) % 1 != 0) {
+									return "";
+								} else {
+									return label;
+								}
 							}
 						}
 					}
 				]
-			}
+			},
+			animation: {
+				duration: 0
+			},
+			responsive: "true"
 		};
 
 		const {
@@ -182,6 +204,8 @@ class SalesLine extends Component {
 						top={tooltipTop}
 						left={tooltipLeft}
 						timezone={timezone}
+						closeToolTip={this.hideTooltip.bind(this)}
+						cutOffDateString={cutOffDateString}
 					/>
 				) : null}
 			</div>
@@ -205,7 +229,7 @@ class TicketSalesChart extends Component {
 
 	render() {
 		const { cubeJsApi } = this.state;
-		const { startDate, endDate, timezone, token, cubeApiUrl } = this.props;
+		const { startDate, endDate, timezone, token, cubeApiUrl, cutOffDateString } = this.props;
 
 		return (
 			<QueryRenderer
@@ -235,6 +259,7 @@ class TicketSalesChart extends Component {
 						token={token}
 						cubeApiUrl={cubeApiUrl}
 						timezone={timezone}
+						cutOffDateString={cutOffDateString}
 					/>
 				))}
 			/>
@@ -244,10 +269,11 @@ class TicketSalesChart extends Component {
 
 TicketSalesChart.propTypes = {
 	token: PropTypes.string.isRequired,
-	startDate: PropTypes.string,
+	startDate: PropTypes.string.isRequired,
 	endDate: PropTypes.string.isRequired,
 	cubeApiUrl: PropTypes.string.isRequired,
-	timezone: PropTypes.string.isRequired
+	timezone: PropTypes.string.isRequired,
+	cutOffDateString: PropTypes.string
 };
 
 export default TicketSalesChart;
