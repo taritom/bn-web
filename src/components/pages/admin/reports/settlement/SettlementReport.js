@@ -407,14 +407,6 @@ class SettlementReport extends Component {
 		);
 	}
 
-	onDeleteDialogClose() {
-		this.setState({ showDeleteDialog: null });
-	}
-
-	handleDelete() {
-		this.setState({ showDeleteDialog: true });
-	}
-
 	renderReportContent() {
 		const { classes, printVersion } = this.props;
 
@@ -474,6 +466,18 @@ class SettlementReport extends Component {
 		);
 	}
 
+	onDeleteDialogClose() {
+		this.setState({ showDeleteDialog: null });
+	}
+
+	handleDelete() {
+		this.setState({ showDeleteDialog: true });
+	}
+
+	onDeleteAdjustment() {
+
+	}
+
 	render() {
 		const { classes, printVersion } = this.props;
 		const { settlement, showAdjustmentDialog, settlementId, showDeleteDialog } = this.state;
@@ -503,7 +507,9 @@ class SettlementReport extends Component {
 				) : null}
 				<DeleteDialog
 					open={!!showDeleteDialog}
+
 					onClose={this.onDeleteDialogClose.bind(this)}
+					onDelete={this.onDeleteAdjustment.bind(this)}
 				/>
 				<div className={classes.root}>
 					<div
