@@ -23,8 +23,7 @@ import { isReactNative } from "../../helpers/reactNative";
 import BoxOfficeAppBar from "./header/BoxOfficeAppBar";
 import Footer from "./footers/FooterOne";
 import CaptureMissingEmail from "../pages/authentication/social/FacebookButton";
-import CaptureMissingEmailDialog
-	from "../pages/authentication/CaptureMissingEmailDialog";
+import CaptureMissingEmailDialog from "../pages/authentication/CaptureMissingEmailDialog";
 import LandingFooter from "./footers/LandingFooter";
 
 const drawerWidth = 240;
@@ -243,7 +242,6 @@ class Container extends React.Component {
 							onSuccess={() => user.refreshUser()}
 						/>
 						<Notification/>
-
 						{isReactNative ? null : (
 							<React.Fragment>
 								{layout.showFooter ? (
@@ -257,7 +255,6 @@ class Container extends React.Component {
 								) : null}
 							</React.Fragment>
 						)}
-
 					</main>
 				</div>
 				<CartMobileBottomBar/>

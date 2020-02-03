@@ -24,6 +24,7 @@ import { Pagination, urlPageParam } from "../../../elements/pagination";
 import Hidden from "@material-ui/core/Hidden";
 import ellipsis from "../../../../helpers/ellipsis";
 import { Link } from "react-router-dom";
+import SelectGroup from "../../../common/form/SelectGroup";
 
 const styles = theme => ({
 	paper: {
@@ -85,7 +86,8 @@ class SlugsList extends Component {
 			slugId: null,
 			title: "",
 			description: "",
-			isSubmitting: false
+			isSubmitting: false,
+			slugType: "Genre"
 		};
 	}
 
@@ -94,10 +96,11 @@ class SlugsList extends Component {
 	}
 
 	refreshSlugs(query = "", page = urlPageParam()) {
+		const { slugType } = this.state;
 		this.setState({ paging: null });
 
 		Bigneon()
-			.slugs.index({ type: "Genre", page, limit: 20 })
+			.slugs.index({ type: slugType, page, limit: 20 })
 			.then(response => {
 				const { data, paging } = response.data;
 				this.setState({ slugs: data, paging });
@@ -169,9 +172,15 @@ class SlugsList extends Component {
 	}
 
 	renderSlugs() {
-		const { slugs, paging, isLoading } = this.state;
+		const { slugs, paging, isLoading, slugType } = this.state;
 		const { classes } = this.props;
 
+		const slugTypes = [
+			// { value: "City", label: "City" },
+			{ value: "Genre", label: "Genre" },
+			{ value: "Organization", label: "Organization" },
+			{ value: "Venue", label: "Venue" }
+		];
 		if (slugs === null) {
 			return <Loader/>;
 		}
@@ -183,6 +192,17 @@ class SlugsList extends Component {
 		return (
 			<Card>
 				<div className={classes.content}>
+					<SelectGroup
+						value={slugType}
+						items={slugTypes}
+						name={"slug-type"}
+						label={"Slug Type"}
+						onChange={e => {
+							this.setState({ slugType: e.target.value }, () => {
+								this.refreshSlugs("", 0);
+							});
+						}}
+					/>
 					<Hidden smDown>
 						<SlugRow>
 							<Typography className={classes.heading}>Slug</Typography>

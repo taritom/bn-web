@@ -203,7 +203,7 @@ class ArtistSummary extends Component {
 						</div>
 					</Grid>
 					<Grid item xs={9}>
-						{ headliner ? <h6 className={classes.headline}>HEADLINER</h6> : "" }
+						<h6 className={classes.headline}>{headliner ? "HEADLINER" : "SUPPORTING ACT"}</h6>
 						<Typography className={classes.nameHeading}>
 							{name}
 						</Typography>

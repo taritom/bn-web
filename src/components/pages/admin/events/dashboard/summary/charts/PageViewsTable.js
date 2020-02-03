@@ -127,7 +127,7 @@ const styles = theme => {
 		},
 		pageViewsTable: {
 			[theme.breakpoints.down("xs")]: {
-				minWidth: "400vw"
+				minWidth: "200vw"
 			}
 		}
 	};

@@ -15,6 +15,7 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import EditIcon from "@material-ui/icons/Edit";
 import ViewIcon from "@material-ui/icons/Link";
 import CancelIcon from "@material-ui/icons/Cancel";
+import RemoveRedEye from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
 
 import notifications from "../../../../stores/notifications";
@@ -197,6 +198,15 @@ class EventsList extends Component {
 						// onClick: () =>
 						// 	this.props.history.push(`/events/${eventMenuSelected}`),
 						MenuOptionIcon: ViewIcon
+					},
+					{
+						text: "Event overview",
+						disabled: !user.hasScope("event:write"),
+						onClick: () =>
+							this.props.history.push(
+								`/admin/events/${eventMenuSelected}/event-overview`
+							),
+						MenuOptionIcon: RemoveRedEye
 					},
 					{
 						text: "Clone event",

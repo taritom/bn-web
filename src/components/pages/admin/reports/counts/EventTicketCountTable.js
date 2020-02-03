@@ -8,7 +8,7 @@ const styles = theme => {
 	return {
 		root: {
 			[theme.breakpoints.down("xs")]: {
-				minWidth: "400vw"
+				minWidth: "200vw"
 			}
 		}
 	};

@@ -6,6 +6,8 @@ export const TIME_FORMAT_FULL_DESCRIPTION = "llll";
 export const TIME_FORMAT_MM_DD_YYYY_NO_TIMEZONE = "MM/DD/YYYY h:mm A";
 // 12/31/2019 10:35 PM PST
 export const TIME_FORMAT_MM_DD_YYYY_WITH_TIMEZONE = "MM/DD/YYYY h:mm A z";
+// 2019/12/31 10:35 PM
+export const TIME_FORMAT_YYYY_MM_DD_NO_TIMEZONE = "YYYY/MM/DD h:mm A";
 /**
  * Accepts an object, iterates through elements and if it's an
  * instance of moment then update the timezone

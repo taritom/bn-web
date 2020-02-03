@@ -29,7 +29,7 @@ const styles = theme => {
 			width: CARD_WIDTH,
 			position: "fixed",
 			minHeight: CARD_HEIGHT,
-			padding: 39,
+			padding: 33,
 			boxShadow: "10px 10px 25px 2px rgba(43,43,43,0.12)",
 			zIndex: 10,
 
@@ -161,7 +161,7 @@ const DataRenderer = ({ resultSet, displayDate, classes, closeToolTip }) => {
 								<LegendRow
 									key={index}
 									color={COLORS[index]}
-									label={`${medium} - ${source}`}
+									label={`${source} - ${medium}`}
 									valueLabel={`${tickets}`}
 								/>
 							);
@@ -286,7 +286,7 @@ class TicketSalesTooltip extends Component {
 			left = left - CARD_WIDTH / 2;
 		}
 
-		top = top - CARD_HEIGHT - 20;
+		top = top - CARD_HEIGHT - 50;
 
 		return (
 			<Card
