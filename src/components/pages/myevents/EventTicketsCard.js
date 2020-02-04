@@ -510,7 +510,7 @@ class EventTicketsCard extends Component {
 								{!expanded ? (
 									<Typography>
 										<StyledLink onClick={onExpand} underlined>
-											View my tickets
+											View Order
 										</StyledLink>
 									</Typography>
 								) : null}

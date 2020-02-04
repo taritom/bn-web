@@ -13,7 +13,8 @@ class ActionButton extends Component {
 			isEventEnded,
 			isCustom,
 			onAction,
-			notificationTriggered
+			broadcastSent,
+			onSendNow
 		} = this.props;
 
 		this.defaultState = {
@@ -23,7 +24,8 @@ class ActionButton extends Component {
 			isEventEnded,
 			isCustom,
 			onAction,
-			notificationTriggered
+			broadcastSent,
+			onSendNow
 		};
 
 		this.state = this.defaultState;
@@ -36,7 +38,8 @@ class ActionButton extends Component {
 			isNotificationAfter,
 			isEventEnded,
 			onAction,
-			notificationTriggered
+			broadcastSent,
+			onSendNow
 		} = props;
 
 		return {
@@ -45,32 +48,45 @@ class ActionButton extends Component {
 			isNotificationAfter,
 			isEventEnded,
 			onAction,
-			notificationTriggered
+			broadcastSent,
+			onSendNow
 		};
 	}
 
 	render() {
 		const {
 			scheduledAt,
-			isSending,
 			isNotificationAfter,
 			isEventEnded,
 			onAction,
-			notificationTriggered
+			broadcastSent,
+			onSendNow
 		} = this.props;
 
-		if (isSending) {
-			return <Button disabled>Sending...</Button>;
-		} else {
-			return (notificationTriggered || isNotificationAfter || isEventEnded) ? null : (
+		if (scheduledAt && !broadcastSent && isNotificationAfter) {
+			return (
 				<Button
 					variant={"whiteCTA"}
 					size={"large"}
 					onClick={onAction}
+					disabled={isEventEnded}
 				>
-					{scheduledAt || notificationTriggered ? "Change" : "Send now"}
+					Change
 				</Button>
 			);
+		} else if(isNotificationAfter) {
+			return (
+				<Button
+					variant={"whiteCTA"}
+					size={"large"}
+					onClick={onSendNow}
+					disabled={isEventEnded}
+				>
+					Send now
+				</Button>
+			);
+		} else {
+			return null;
 		}
 	}
 }
@@ -81,8 +97,9 @@ ActionButton.propTypes = {
 	isSending: PropTypes.bool.isRequired,
 	isNotificationAfter: PropTypes.bool.isRequired,
 	isEventEnded: PropTypes.bool.isRequired,
-	notificationTriggered: PropTypes.bool,
-	onAction: PropTypes.func.isRequired
+	broadcastSent: PropTypes.bool,
+	onAction: PropTypes.func.isRequired,
+	onSendNow: PropTypes.func.isRequired
 };
 
 export default ActionButton;

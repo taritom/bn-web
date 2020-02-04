@@ -10,9 +10,9 @@ class NotificationProgress extends Component {
 
 		const {
 			classes,
-			notificationTriggered,
+			broadcastSent,
 			scheduleProgress,
-			scheduleAt,
+			scheduledAt,
 			eventStart,
 			eventEnd,
 			timezone,
@@ -24,9 +24,9 @@ class NotificationProgress extends Component {
 
 		this.defaultState = {
 			classes,
-			notificationTriggered,
+			broadcastSent,
 			scheduleProgress,
-			scheduleAt,
+			scheduledAt,
 			eventStart,
 			eventEnd,
 			timezone,
@@ -42,9 +42,9 @@ class NotificationProgress extends Component {
 	static getDerivedStateFromProps(props, state) {
 		const {
 			classes,
-			notificationTriggered,
+			broadcastSent,
 			scheduleProgress,
-			scheduleAt,
+			scheduledAt,
 			eventStart,
 			eventEnd,
 			timezone,
@@ -56,9 +56,9 @@ class NotificationProgress extends Component {
 
 		return {
 			classes,
-			notificationTriggered,
+			broadcastSent,
 			scheduleProgress,
-			scheduleAt,
+			scheduledAt,
 			eventStart,
 			eventEnd,
 			timezone,
@@ -72,9 +72,9 @@ class NotificationProgress extends Component {
 	render() {
 		const {
 			classes,
-			notificationTriggered,
+			broadcastSent,
 			scheduleProgress,
-			scheduleAt,
+			scheduledAt,
 			eventStart,
 			eventEnd,
 			isNotificationAfter,
@@ -90,7 +90,7 @@ class NotificationProgress extends Component {
 			completed = (scheduleProgress / scheduleSent) * 100;
 		}
 
-		if (scheduleAt || notificationTriggered) {
+		if (scheduledAt && !broadcastSent) {
 			return (
 				<Grid container alignItems="center" spacing={24}>
 					<Grid item xs={1}>
@@ -129,7 +129,7 @@ class NotificationProgress extends Component {
 							</Grid>
 							<Grid item xs={7}>
 								<Typography className={classes.greyText}>
-									Period:{" "}
+									Event Period:{" "}
 									<span className={classes.blackText}>
 										{eventStart ? eventStart : ""} -
 										{eventEnd ? eventEnd : ""}
@@ -152,11 +152,11 @@ class NotificationProgress extends Component {
 					</Grid>
 					<Grid item xs={9} md={4}>
 						<Typography className={classes.descriptionHeading}>
-							{(isNotificationAfter || isEventEnded) ? "Event has ended" : "Schedule the Last Call"}
+							{isEventEnded ? "Event has ended" : "Schedule the Last Call"}
 						</Typography>
 					</Grid>
 					<Grid item xs={12} md={4}>
-						{(isNotificationAfter || isEventEnded) ? null : renderTimes}
+						{isEventEnded ? null : renderTimes}
 					</Grid>
 				</Grid>
 			);
@@ -166,7 +166,7 @@ class NotificationProgress extends Component {
 
 NotificationProgress.propTypes = {
 	classes: PropTypes.object.isRequired,
-	notificationTriggered: PropTypes.bool.isRequired,
+	broadcastSent: PropTypes.bool.isRequired,
 	scheduleProgress: PropTypes.number,
 	scheduleAt: PropTypes.string,
 	eventStart: PropTypes.string,

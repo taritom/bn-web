@@ -12,7 +12,7 @@ class DesktopView extends Component {
 
 		const {
 			canTrigger,
-			notificationTriggered,
+			broadcastSent,
 			scheduleProgress,
 			scheduledAt,
 			eventStart,
@@ -23,12 +23,13 @@ class DesktopView extends Component {
 			scheduleSent,
 			isSending,
 			isCustom,
-			renderTimes
+			renderTimes,
+			onSendNow
 		} = this.props;
 
 		this.defaultState = {
 			canTrigger,
-			notificationTriggered,
+			broadcastSent,
 			scheduleProgress,
 			scheduledAt,
 			eventStart,
@@ -39,7 +40,8 @@ class DesktopView extends Component {
 			scheduleSent,
 			isSending,
 			isCustom,
-			renderTimes
+			renderTimes,
+			onSendNow
 		};
 
 		this.state = this.defaultState;
@@ -48,7 +50,7 @@ class DesktopView extends Component {
 	static getDerivedStateFromProps(props, state) {
 		const {
 			canTrigger,
-			notificationTriggered,
+			broadcastSent,
 			scheduleProgress,
 			scheduledAt,
 			eventStart,
@@ -59,12 +61,13 @@ class DesktopView extends Component {
 			scheduleSent,
 			isSending,
 			isCustom,
-			renderTimes
+			renderTimes,
+			onSendNow
 		} = props;
 
 		return {
 			canTrigger,
-			notificationTriggered,
+			broadcastSent,
 			scheduleProgress,
 			scheduledAt,
 			eventStart,
@@ -75,15 +78,15 @@ class DesktopView extends Component {
 			scheduleSent,
 			isSending,
 			isCustom,
-			renderTimes
+			renderTimes,
+			onSendNow
 		};
 	}
 
 	render() {
 		const {
 			classes,
-			canTrigger,
-			notificationTriggered,
+			broadcastSent,
 			scheduleProgress,
 			scheduledAt,
 			eventStart,
@@ -98,7 +101,8 @@ class DesktopView extends Component {
 			onSend,
 			onAction,
 			details,
-			eventId
+			eventId,
+			onSendNow
 		} = this.props;
 
 		return (
@@ -115,7 +119,7 @@ class DesktopView extends Component {
 					<Grid item xs={12} md={7}>
 						<NotificationProgress
 							classes={classes}
-							notificationTriggered={notificationTriggered}
+							broadcastSent={broadcastSent}
 							scheduleProgress={scheduleProgress}
 							scheduledAt={scheduledAt}
 							eventStart={eventStart}
@@ -139,7 +143,7 @@ class DesktopView extends Component {
 										isEventEnded={isEventEnded}
 										timezone={timezone}
 										onSend={onSend}
-										notificationTriggered={notificationTriggered}
+										broadcastSent={broadcastSent}
 									/>
 								</div>
 							</Grid>
@@ -152,7 +156,8 @@ class DesktopView extends Component {
 									isEventEnded={isEventEnded}
 									isCustom={isCustom}
 									onAction={onAction}
-									notificationTriggered={notificationTriggered}
+									onSendNow={onSendNow}
+									broadcastSent={broadcastSent}
 								/>
 							</Grid>
 						</Grid>
@@ -170,7 +175,7 @@ class DesktopView extends Component {
 DesktopView.propTypes = {
 	classes: PropTypes.object.isRequired,
 	canTrigger: PropTypes.bool,
-	notificationTriggered: PropTypes.bool,
+	broadcastSent: PropTypes.bool,
 	scheduleProgress: PropTypes.number,
 	scheduledAt: PropTypes.string,
 	eventStart: PropTypes.string,
@@ -184,6 +189,7 @@ DesktopView.propTypes = {
 	renderTimes: PropTypes.object,
 	onSend: PropTypes.func,
 	onAction: PropTypes.func,
+	onSendNow: PropTypes.func,
 	details: PropTypes.object,
 	eventId: PropTypes.string
 };
