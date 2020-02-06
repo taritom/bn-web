@@ -205,7 +205,7 @@ class EventUpdate {
 			//By default the server will create a Default ticket price point, anything additional added to this array is an override.
 			pricing: [],
 			...updateTimezonesInObjects(
-				{ startDate, startTime: startDate, endDate, endTime: endDate.clone() },
+				{ startDate, startTime: startDate ? startDate.clone() : null, endDate, endTime: endDate.clone() },
 				this.timezone,
 				false
 			),

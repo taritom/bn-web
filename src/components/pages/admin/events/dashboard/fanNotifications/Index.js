@@ -132,7 +132,8 @@ class Index extends Component {
 			broadcastId: null,
 			isNotificationAfter: true,
 			isEventEnded: false,
-			datesOptions: []
+			datesOptions: [],
+			hasEventStarted: true
 		};
 	}
 
@@ -203,6 +204,9 @@ class Index extends Component {
 					venue,
 					status
 				} = response.data;
+				const hasEventStarted = !!moment
+					.utc(door_time)
+					.isBefore(moment.utc());
 				this.setState(
 					{
 						event_start,
@@ -217,7 +221,8 @@ class Index extends Component {
 							.tz(venue.timezone)
 							.format(TIME_FORMAT_MM_DD_YYYY_NO_TIMEZONE),
 						timezone: venue.timezone,
-						isEventEnded: status === "Closed"
+						isEventEnded: status === "Closed",
+						hasEventStarted
 					},
 
 					() => {
@@ -489,7 +494,8 @@ class Index extends Component {
 			isNotificationAfter,
 			isEventEnded,
 			scheduleSent,
-			isCustom
+			isCustom,
+			hasEventStarted
 		} = this.state;
 
 		const Details = (
@@ -552,6 +558,7 @@ class Index extends Component {
 						onSendNow={this.onSendNow.bind(this)}
 						details={Details}
 						eventId={this.eventId}
+						hasEventStarted={hasEventStarted}
 					/>
 				</Hidden>
 				<Hidden mdUp>
@@ -574,6 +581,7 @@ class Index extends Component {
 						onSendNow={this.onSendNow.bind(this)}
 						details={Details}
 						eventId={this.eventId}
+						hasEventStarted={hasEventStarted}
 					/>
 				</Hidden>
 			</div>

@@ -224,7 +224,18 @@ class Routes extends Component {
 									component={ElementShowcase}
 								/>
 								<Route exact path="/" component={Home}/>
-								<Route exact path="/events" component={Home}/>
+								<Route exact
+									   path="/events"
+									   component={
+									   	() => (
+											<Redirect
+												to={`/tickets${
+													window.location.search
+												}`}
+											/>
+										)}
+								/>
+								<Route exact path="/tickets" component={Home}/>
 								<Route exact path="/venues/:id" component={SlugsLanding}/>
 								<Route exact path="/cities/:id" component={SlugsLanding}/>
 								<Route exact path="/genres/:id" component={SlugsLanding}/>

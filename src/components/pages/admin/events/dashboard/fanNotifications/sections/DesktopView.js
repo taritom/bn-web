@@ -24,7 +24,8 @@ class DesktopView extends Component {
 			isSending,
 			isCustom,
 			renderTimes,
-			onSendNow
+			onSendNow,
+			hasEventStarted
 		} = this.props;
 
 		this.defaultState = {
@@ -41,7 +42,8 @@ class DesktopView extends Component {
 			isSending,
 			isCustom,
 			renderTimes,
-			onSendNow
+			onSendNow,
+			hasEventStarted
 		};
 
 		this.state = this.defaultState;
@@ -62,7 +64,8 @@ class DesktopView extends Component {
 			isSending,
 			isCustom,
 			renderTimes,
-			onSendNow
+			onSendNow,
+			hasEventStarted
 		} = props;
 
 		return {
@@ -79,7 +82,8 @@ class DesktopView extends Component {
 			isSending,
 			isCustom,
 			renderTimes,
-			onSendNow
+			onSendNow,
+			hasEventStarted
 		};
 	}
 
@@ -102,7 +106,8 @@ class DesktopView extends Component {
 			onAction,
 			details,
 			eventId,
-			onSendNow
+			onSendNow,
+			hasEventStarted
 		} = this.props;
 
 		return (
@@ -158,6 +163,7 @@ class DesktopView extends Component {
 									onAction={onAction}
 									onSendNow={onSendNow}
 									broadcastSent={broadcastSent}
+									hasEventStarted={hasEventStarted}
 								/>
 							</Grid>
 						</Grid>
@@ -183,6 +189,7 @@ DesktopView.propTypes = {
 	timezone: PropTypes.string,
 	isNotificationAfter: PropTypes.bool,
 	isEventEnded: PropTypes.bool,
+	hasEventStarted: PropTypes.bool,
 	scheduleSent: PropTypes.number,
 	isSending: PropTypes.bool,
 	isCustom: PropTypes.bool,

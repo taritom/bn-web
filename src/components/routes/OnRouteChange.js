@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import layout from "../../stores/layout";
 import analytics from "../../helpers/analytics";
 import errorReporting from "../../helpers/errorReporting";
-import { isReactNative, sendMessage } from "../../helpers/reactNative";
+import { isReactNative, sendReactNativeMessage } from "../../helpers/reactNative";
 
 const showSideMenuRoutes = ["/admin", "/my-events", "/orders", "/account"];
 const showStudioLogoRoutes = ["/admin", "/box-office"];
@@ -67,7 +67,7 @@ class OnRouteChange extends Component {
 			errorReporting.addBreadcrumb(`Navigated to: ${window.location.pathname}`);
 		}
 		if (isReactNative()) {
-			sendMessage(this.props.location);
+			// sendMessage(this.props.location);
 		}
 
 	}
