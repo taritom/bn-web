@@ -63,8 +63,7 @@ class SettlementReport extends Component {
 			settlement: null,
 			grandTotals: null,
 
-			showAdjustmentDialog: false,
-			showDeleteDialog: false
+			showAdjustmentDialog: false
 		};
 	}
 
@@ -432,7 +431,7 @@ class SettlementReport extends Component {
 
 				{adjustments && adjustments.length > 0 ? (
 					<React.Fragment>
-						<AdjustmentsList adjustments={adjustments} deleteDialog={this.handleDelete.bind(this)}/> <br/>
+						<AdjustmentsList adjustments={adjustments} refreshAdjustments={this.onAdjustmentAdded.bind(this)}/> <br/>
 						<br/>
 					</React.Fragment>
 				) : null}
@@ -466,21 +465,9 @@ class SettlementReport extends Component {
 		);
 	}
 
-	onDeleteDialogClose() {
-		this.setState({ showDeleteDialog: null });
-	}
-
-	handleDelete() {
-		this.setState({ showDeleteDialog: true });
-	}
-
-	onDeleteAdjustment() {
-
-	}
-
 	render() {
 		const { classes, printVersion } = this.props;
-		const { settlement, showAdjustmentDialog, settlementId, showDeleteDialog } = this.state;
+		const { settlement, showAdjustmentDialog, settlementId } = this.state;
 
 		if (!settlement) {
 			return <Loader>Loading settlement report...</Loader>;
@@ -505,12 +492,6 @@ class SettlementReport extends Component {
 						onSuccess={this.onAdjustmentAdded.bind(this)}
 					/>
 				) : null}
-				<DeleteDialog
-					open={!!showDeleteDialog}
-
-					onClose={this.onDeleteDialogClose.bind(this)}
-					onDelete={this.onDeleteAdjustment.bind(this)}
-				/>
 				<div className={classes.root}>
 					<div
 						style={{

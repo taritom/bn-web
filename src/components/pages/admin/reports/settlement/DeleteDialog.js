@@ -6,10 +6,9 @@ import classnames from "classnames";
 import Button from "../../../../elements/Button";
 import Dialog from "../../../../elements/Dialog";
 import { Hidden, Typography } from "@material-ui/core";
-import {
-	fontFamilyDemiBold,
-	secondaryHex
-} from "../../../../../config/theme";
+import { fontFamilyDemiBold, secondaryHex } from "../../../../../config/theme";
+import Bigneon from "../../../../../helpers/bigneon";
+import notifications from "../../../../../stores/notifications";
 
 const styles = theme => ({
 	content: {
@@ -117,32 +116,55 @@ class DeleteDialog extends Component {
 		super(props);
 
 		this.defaultState = {
-			reasonVal: "empty",
-			selectedRefundType: "fullRefund",
-			isDeleting: false,
-			selectedRefundOrderItem: {},
-			refundAmountInCents: 0,
-			refundSuccessDetails: null
+			isDeleting: false
 		};
 
 		this.state = this.defaultState;
+
+		this.onDeleteAdjustment = this.onDeleteAdjustment.bind(this);
 	}
 
 	static getDerivedStateFromProps(props, state) {
-		const { selectedRefundOrderItem } = props;
+		const { id } = props;
 
-		return { selectedRefundOrderItem };
+		return { id };
+	}
+
+	onDeleteAdjustment() {
+		const { id } = this.props;
+
+		Bigneon()
+			.settlementAdjustments.delete({ id: id })
+			.then(response => {
+				const { status } = response;
+				status === 200
+					? this.adjustmentDeleted()
+					: notifications.showFromErrorResponse({
+						defaultMessage: "Deleting settlement adjustment failed."
+					  });
+			})
+			.catch(error => {
+				console.error(error);
+				notifications.showFromErrorResponse({
+					error,
+					defaultMessage: "Deleting settlement adjustment failed."
+				});
+			});
+	}
+
+	adjustmentDeleted() {
+		const { onClose, refreshAdjustments } = this.props;
+		notifications.show({
+			message: "Settlement adjustment deleted.",
+			variant: "success"
+		});
+		onClose();
+		refreshAdjustments();
 	}
 
 	render() {
-		const { classes, open, order, type, onClose } = this.props;
-		const {
-			reasonVal,
-			selectedRefundType,
-			isDeleting,
-			refundAmountInCents,
-			refundSuccessDetails
-		} = this.state;
+		const { classes, open, onClose } = this.props;
+		const { isDeleting } = this.state;
 
 		return (
 			<Dialog
@@ -153,8 +175,10 @@ class DeleteDialog extends Component {
 			>
 				<div className={classes.content}>
 					<Typography align="center">
-						The manual adjustment will be deleted from the Settlement Report. Total Settlement value will be updated accordingly.
-						<br/><br/>
+						The manual adjustment will be deleted from the Settlement Report.
+						Total Settlement value will be updated accordingly.
+						<br/>
+						<br/>
 						Please confirm that you want to delete this manual adjustment.
 					</Typography>
 					<div className={classes.actionButtonsContainer}>
@@ -169,6 +193,7 @@ class DeleteDialog extends Component {
 							style={{ marginLeft: 5, width: 150 }}
 							variant="secondary"
 							disabled={isDeleting}
+							onClick={this.onDeleteAdjustment}
 						>
 							{isDeleting ? "Deleting..." : "Confirm"}
 						</Button>
@@ -183,8 +208,8 @@ DeleteDialog.propTypes = {
 	classes: PropTypes.object.isRequired,
 	open: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
-	onSuccess: PropTypes.func.isRequired,
-	adjustment: PropTypes.array.isRequired
+	refreshAdjustments: PropTypes.func,
+	id: PropTypes.string
 };
 
 export default withStyles(styles)(DeleteDialog);
