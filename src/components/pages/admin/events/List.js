@@ -31,6 +31,7 @@ import Loader from "../../../elements/loaders/Loader";
 import CloneEventDialog from "./CloneEventDialog";
 import { LibraryAdd } from "@material-ui/icons";
 import { Pagination, urlPageParam } from "../../../elements/pagination";
+import Settings from "../../../../config/settings";
 
 const styles = theme => ({
 	paper: {
@@ -120,6 +121,8 @@ class EventsList extends Component {
 			return;
 		}
 
+		const pageLimit = Settings().defaultPageLimit;
+
 		this.setState({ events: null, paging: null }, () => {
 			const { upcomingOrPast } = this.state;
 			Bigneon()
@@ -127,7 +130,7 @@ class EventsList extends Component {
 					organization_id: user.currentOrganizationId,
 					past_or_upcoming: upcomingOrPast,
 					page,
-					limit: 50
+					limit: pageLimit
 				})
 				.then(eventResponse => {
 					const { data, paging } = eventResponse.data;
