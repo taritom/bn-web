@@ -127,11 +127,11 @@ class EventsList extends Component {
 					organization_id: user.currentOrganizationId,
 					past_or_upcoming: upcomingOrPast,
 					page,
-					limit: 100
+					limit: 50
 				})
 				.then(eventResponse => {
 					const { data, paging } = eventResponse.data;
-					this.setState({ events: data, paging }); 
+					this.setState({ events: data, paging });
 				})
 				.catch(error => {
 					console.error(error);
