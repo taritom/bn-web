@@ -33,7 +33,7 @@ class SendDialog extends Component {
 					<div className={classes.dialogContainer}>
 						<Typography className={classes.description}>
 							<span className={classes.descriptionHeading}>
-								You may only send this notification once per evening. &nbsp;
+								You may only send this notification once per event. &nbsp;
 							</span>
 							All attendees who have enabled notifications on their devices will
 							receive the Last Call notification.
