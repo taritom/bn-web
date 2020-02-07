@@ -17,7 +17,6 @@ import ViewIcon from "@material-ui/icons/Link";
 import CancelIcon from "@material-ui/icons/Cancel";
 import RemoveRedEye from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
-
 import notifications from "../../../../stores/notifications";
 import Button from "../../../elements/Button";
 import StyledLink from "../../../elements/StyledLink";
