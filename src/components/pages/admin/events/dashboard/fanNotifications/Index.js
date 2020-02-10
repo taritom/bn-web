@@ -115,10 +115,8 @@ class Index extends Component {
 			openConfirmDialog: false,
 			isCustom: false,
 			broadcastSent: false,
-			lastCallMessage: "",
 			errors: {},
 			broadcastData: {},
-			customNotificationMessage: "",
 			eventStart: null,
 			eventEnd: null,
 			times: [],
@@ -127,21 +125,66 @@ class Index extends Component {
 			scheduledAt: null,
 			scheduleProgress: null,
 			scheduleSent: null,
-			isSchedule: false,
-			updateNotification: false,
 			broadcastId: null,
 			isNotificationAfter: true,
 			isEventEnded: false,
 			datesOptions: [],
-			hasEventStarted: true
+			hasEventStarted: true,
+			timeout: null
 		};
 	}
 
 	componentDidMount() {
+		const { broadcastSent, scheduleProgress, scheduleSent } = this.state;
 		//TODO check if the event is running before enabling the button
 		this.setState({ canTrigger: true });
 
 		this.loadNotificationDetails();
+
+		!broadcastSent ? (
+			this.autoLoadProgress()
+		) : null;
+	}
+
+	autoLoadProgress() {
+		let count = 1;
+		const setTimer = setInterval(() => {
+			this.fetchNotificationQuantity();
+			count++;
+			if(count > 12) { // 12 * 5000 = 600000 or 2 minutes clear the interval
+				clearInterval(setTimer);
+			}
+		}, 5000 * count);
+		this.setState({ timeout: setTimer });
+	}
+
+	fetchNotificationQuantity() {
+		Bigneon()
+			.events.broadcasts.index({ event_id: this.eventId })
+			.then(response => {
+				const { data } = response.data;
+				data.forEach(
+					({
+						 notification_type,
+						 sent_quantity,
+						 opened_quantity
+					 }) => {
+						if (notification_type === "LastCall") {
+							this.setState({
+								scheduleProgress: opened_quantity,
+								scheduleSent: sent_quantity
+							});
+						}
+					}
+				);
+			})
+			.catch(error => {
+				console.error(error);
+				notifications.showFromErrorResponse({
+					error,
+					defaultMessage: "Loading existing notifications failed."
+				});
+			});
 	}
 
 	loadEventBroadcast() {
@@ -204,9 +247,7 @@ class Index extends Component {
 					venue,
 					status
 				} = response.data;
-				const hasEventStarted = !!moment
-					.utc(door_time)
-					.isBefore(moment.utc());
+				const hasEventStarted = !!moment.utc(door_time).isBefore(moment.utc());
 				this.setState(
 					{
 						event_start,
@@ -337,6 +378,7 @@ class Index extends Component {
 					variant: "success"
 				});
 				this.loadEventBroadcast();
+				this.autoLoadProgress();
 			})
 			.catch(error => {
 				this.setState({
@@ -365,6 +407,7 @@ class Index extends Component {
 					variant: "success"
 				});
 				this.loadEventBroadcast();
+				this.autoLoadProgress();
 			})
 			.catch(error => {
 				this.setState({
