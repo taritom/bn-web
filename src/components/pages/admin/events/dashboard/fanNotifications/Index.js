@@ -223,6 +223,9 @@ class Index extends Component {
 									.tz(timezone)
 									.format(TIME_FORMAT_MM_DD_YYYY_NO_TIMEZONE)
 							});
+							if(!isNotificationAfter) {
+								this.autoLoadProgress();
+							}
 						}
 					}
 				);
@@ -378,7 +381,6 @@ class Index extends Component {
 					variant: "success"
 				});
 				this.loadEventBroadcast();
-				this.autoLoadProgress();
 			})
 			.catch(error => {
 				this.setState({
@@ -407,7 +409,6 @@ class Index extends Component {
 					variant: "success"
 				});
 				this.loadEventBroadcast();
-				this.autoLoadProgress();
 			})
 			.catch(error => {
 				this.setState({
