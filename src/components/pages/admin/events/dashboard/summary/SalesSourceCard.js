@@ -117,7 +117,7 @@ class SalesSourceCard extends Component {
 	}
 
 	onChangeSelectTime(e) {
-		const { on_sale, venue } = this.props;
+		const { on_sale, venue, publish_date, event_end } = this.props;
 		const selectedTimePeriod = e.target.value;
 
 		let startDate = null;
@@ -150,8 +150,12 @@ class SalesSourceCard extends Component {
 			}
 			case "custom": {
 				showCustomDateRange = true;
-				startDate = null;
-				endDate = null;
+				startDate = moment.utc(publish_date)
+					.tz(venue.timezone)
+					.startOf("day");
+				endDate = moment.utc(event_end)
+					.tz(venue.timezone)
+					.endOf("day");
 
 				break;
 			}
@@ -220,7 +224,6 @@ class SalesSourceCard extends Component {
 								name="startDate"
 								label="Start Date"
 								onChange={this.onChangeStartDate}
-								timezone={venue.timezone}
 							/>
 						</div>
 						<span style={{ width: 20 }}/>

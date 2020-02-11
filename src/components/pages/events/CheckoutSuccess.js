@@ -35,6 +35,7 @@ import classNames from "classnames";
 import PurchaseDetails from "./PurchaseDetails";
 import Hero from "./SuccessHero";
 import removeCountryFromAddress from "../../../helpers/removeCountryFromAddress";
+import Drift from "react-driftjs";
 
 const heroHeight = 586;
 
@@ -427,12 +428,14 @@ class CheckoutSuccess extends Component {
 			mobileDialogOpen: true,
 			mobileCardSlideIn: true,
 			order_id: null,
+			appId: null,
 			order: null,
 			phoneOS: getPhoneOS()
 		};
 	}
 
 	componentDidMount() {
+		this.setState({ appId: Settings().driftBotAppID });
 		cart.emptyCart(); //TODO move this to after they've submitted the final form
 
 		if (
@@ -517,9 +520,9 @@ class CheckoutSuccess extends Component {
 			mobileCardSlideIn,
 			order,
 			order_id,
-			phoneOS
+			phoneOS,
+			appId
 		} = this.state;
-
 		if (event === null || order === null) {
 			return (
 				<div>
@@ -842,6 +845,7 @@ class CheckoutSuccess extends Component {
 						</div>
 					</Dialog>
 				</Hidden>
+				{ appId && <Drift appId={appId}/> }
 			</div>
 		);
 	}
