@@ -19,6 +19,7 @@ import removePhoneFormatting from "../../../../helpers/removePhoneFormatting";
 import cloudinaryWidget from "../../../../helpers/cloudinaryWidget";
 import Settings from "../../../../config/settings";
 import user from "../../../../stores/user";
+import VenueOrganizationList from "./VenueOrganizationList";
 
 const styles = theme => ({
 	paper: {
@@ -150,7 +151,7 @@ class Venue extends Component {
 		fetch(Settings().webUrl + "/countries.json")
 			.then(response => response.json())
 			.then(
-				(result) => {
+				result => {
 					const states = [];
 					result.forEach(country => {
 						if (country.name === "United States") {
@@ -164,7 +165,7 @@ class Venue extends Component {
 					});
 					this.setState({ states });
 				},
-				(error) => {
+				error => {
 					console.error(error);
 
 					notifications.showFromErrorResponse({
@@ -335,14 +336,17 @@ class Venue extends Component {
 		}));
 
 		return (
-			<SelectGroup
-				value={organizationId}
-				items={organizationOptions}
-				error={errors.organizationId}
-				name={"organization"}
-				label={"Organization *"}
-				onChange={e => this.setState({ organizationId: e.target.value })}
-			/>
+			<div>
+				<SelectGroup
+					value={organizationId}
+					items={organizationOptions}
+					error={errors.organizationId}
+					name={"organization"}
+					label={"Organization *"}
+					onChange={e => this.setState({ organizationId: e.target.value })}
+				/>
+				<VenueOrganizationList organizationId={organizationId}/>
+			</div>
 		);
 	}
 
@@ -430,7 +434,7 @@ class Venue extends Component {
 			}
 		}
 
-		if(phone){
+		if (phone) {
 			if (!validPhone(phone)) {
 				errors.phone = "Invalid phone number.";
 			}
@@ -536,7 +540,9 @@ class Venue extends Component {
 												name="postal_code"
 												label="Zip *"
 												type="text"
-												onChange={e => this.setState({ postal_code: e.target.value })}
+												onChange={e =>
+													this.setState({ postal_code: e.target.value })
+												}
 												onBlur={this.validateFields.bind(this)}
 											/>
 										</Grid>
@@ -547,7 +553,9 @@ class Venue extends Component {
 												name="country"
 												label="Country *"
 												type="text"
-												onChange={e => this.setState({ country: e.target.value })}
+												onChange={e =>
+													this.setState({ country: e.target.value })
+												}
 												onBlur={this.validateFields.bind(this)}
 												disabled={!user.isSuper}
 											/>
