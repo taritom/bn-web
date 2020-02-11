@@ -129,8 +129,7 @@ class Index extends Component {
 			isNotificationAfter: true,
 			isEventEnded: false,
 			datesOptions: [],
-			hasEventStarted: true,
-			timeout: null
+			hasEventStarted: true
 		};
 	}
 
@@ -147,15 +146,12 @@ class Index extends Component {
 	}
 
 	autoLoadProgress() {
-		let count = 1;
-		const setTimer = setInterval(() => {
-			this.fetchNotificationQuantity();
-			count++;
-			if(count > 12) { // 12 * 5000 = 600000 or 2 minutes clear the interval
-				clearInterval(setTimer);
-			}
-		}, 5000 * count);
-		this.setState({ timeout: setTimer });
+		// 12 * 5000 = 600000 or 2 minutes
+		for (let count = 0; count < 12; count++) {
+			setTimeout(() => {
+				this.fetchNotificationQuantity();
+			}, 5000 * count);
+		}
 	}
 
 	fetchNotificationQuantity() {
