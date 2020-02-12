@@ -23,6 +23,7 @@ export const settingsFactory = () => {
 			appStoreIos: process.env.REACT_APP_STORE_IOS,
 			appStoreAndroid: process.env.REACT_APP_STORE_ANDROID,
  			driftBotAppID: process.env.REACT_APP_DRIFT_BOT_APP_ID,
+ 			driftBotOrderConfirmationInteractionID: process.env.REACT_APP_DRIFT_BOT_ORDER_CONFIRMATION_INTERACTION_ID,
 			cubeApiUrl: process.env.REACT_APP_CUBE_API_URL || "http://localhost:4000",
 			defaultPageLimit: process.env.REACT_APP_DEFAULT_PAGE_LIMIT || 50
 			//TODO add all process.env variables here
