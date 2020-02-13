@@ -64,7 +64,8 @@ class Venue extends Component {
 			showManualEntry: false,
 			regionOptions: null,
 			regionId: "none",
-			states: []
+			states: [],
+			venueOrganizations: []
 		};
 	}
 
@@ -324,6 +325,15 @@ class Venue extends Component {
 		);
 	}
 
+	addOrganizationToVenue(id) {
+		const { venueOrganizations } = this.state;
+		const orgs = venueOrganizations;
+		if (id) {
+			orgs.push(id);
+		}
+		return orgs;
+	}
+
 	renderOrganizations() {
 		const { organizationId, organizations, errors } = this.state;
 		if (organizations === null) {
@@ -343,7 +353,11 @@ class Venue extends Component {
 					error={errors.organizationId}
 					name={"organization"}
 					label={"Organization *"}
-					onChange={e => this.setState({ organizationId: e.target.value })}
+					onChange={e =>
+						this.setState({ organizationId: e.target.value }, () => {
+							this.addOrganizationToVenue(this.state.organizationId);
+						})
+					}
 				/>
 				<VenueOrganizationList organizationId={organizationId}/>
 			</div>
