@@ -144,21 +144,22 @@ class Index extends Component {
 		!broadcastSent ? this.autoLoadProgress() : null;
 	}
 
-	loop = () => {
+	autoLoadProgress() {
+		this.gradualTimer();
+	}
+
+	gradualTimer = () => {
 		let { count } = this.state;
- 		setTimeout(() => {
+		setTimeout(() => {
 			this.fetchNotificationQuantity();
 			count++;
 			this.setState({ count });
+			// 12 * 5000 = 600000 or 2 minutes 
 			if (count < 12) {
-				this.loop();
+				this.gradualTimer();
 			}
 		}, count * 5000);
 	};
-
-	autoLoadProgress() {
-		this.loop();
-	}
 
 	fetchNotificationQuantity() {
 		Bigneon()
