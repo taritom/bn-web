@@ -129,7 +129,8 @@ class Index extends Component {
 			isNotificationAfter: true,
 			isEventEnded: false,
 			datesOptions: [],
-			hasEventStarted: true
+			hasEventStarted: true,
+			count: 1
 		};
 	}
 
@@ -140,18 +141,22 @@ class Index extends Component {
 
 		this.loadNotificationDetails();
 
-		!broadcastSent ? (
-			this.autoLoadProgress()
-		) : null;
+		!broadcastSent ? this.autoLoadProgress() : null;
 	}
 
+	loop = () => {
+		let { count } = this.state;
+ 		setTimeout(() => {
+			this.fetchNotificationQuantity();
+			count++;
+			if (count < 12) {
+				this.loop();
+			}
+		}, count * 5000);
+	};
+
 	autoLoadProgress() {
-		// 12 * 5000 = 600000 or 2 minutes
-		for (let count = 0; count < 12; count++) {
-			setTimeout(() => {
-				this.fetchNotificationQuantity();
-			}, 5000 * count);
-		}
+		this.loop();
 	}
 
 	fetchNotificationQuantity() {
@@ -160,11 +165,7 @@ class Index extends Component {
 			.then(response => {
 				const { data } = response.data;
 				data.forEach(
-					({
-						 notification_type,
-						 sent_quantity,
-						 opened_quantity
-					 }) => {
+					({ notification_type, sent_quantity, opened_quantity }) => {
 						if (notification_type === "LastCall") {
 							this.setState({
 								scheduleProgress: opened_quantity,
@@ -219,7 +220,7 @@ class Index extends Component {
 									.tz(timezone)
 									.format(TIME_FORMAT_MM_DD_YYYY_NO_TIMEZONE)
 							});
-							if(!isNotificationAfter) {
+							if (!isNotificationAfter) {
 								this.autoLoadProgress();
 							}
 						}
