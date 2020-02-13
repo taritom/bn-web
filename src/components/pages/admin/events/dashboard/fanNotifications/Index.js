@@ -149,6 +149,7 @@ class Index extends Component {
  		setTimeout(() => {
 			this.fetchNotificationQuantity();
 			count++;
+			this.setState({ count });
 			if (count < 12) {
 				this.loop();
 			}
