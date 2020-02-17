@@ -20,6 +20,9 @@
             <class name="test.RefundPartialCheckOrderFeeRefundDisabledStepsIT"/>
             <class name="test.reports.ReportBoxOfficeStepsIT" />
             <class name="test.announcement.EmailTicketToBuyersUsingAnnouncement"/>
+            <class name="test.refund.override.RefundOverrideJustPerEventFeePerOrderStepsIT"/>
+			<class name="test.refund.override.RefundOverrideEntireOrderWithOrderFees"/>
+			<class name="test.refund.override.RefundOverrideEntireOrderWithOutFees"/>
 		</classes>
 	</test>
 	<test name="Firefox">
@@ -41,6 +44,9 @@
 	 		<class name="test.RefundPartialCheckOrderFeeRefundDisabledStepsIT" />
 	 		<class name="test.reports.ReportBoxOfficeStepsIT" />
 	 		<class name="test.announcement.EmailTicketToBuyersUsingAnnouncement"/>
+	 		<class name="test.refund.override.RefundOverrideJustPerEventFeePerOrderStepsIT"/>
+			<class name="test.refund.override.RefundOverrideEntireOrderWithOrderFees"/>
+			<class name="test.refund.override.RefundOverrideEntireOrderWithOutFees"/>
 		</classes>
 	</test>
 </suite>

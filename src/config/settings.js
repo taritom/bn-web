@@ -25,7 +25,9 @@ export const settingsFactory = () => {
  			driftBotAppID: process.env.REACT_APP_DRIFT_BOT_APP_ID,
  			driftBotOrderConfirmationInteractionID: process.env.REACT_APP_DRIFT_BOT_ORDER_CONFIRMATION_INTERACTION_ID,
 			cubeApiUrl: process.env.REACT_APP_CUBE_API_URL || "http://localhost:4000",
-			defaultPageLimit: process.env.REACT_APP_DEFAULT_PAGE_LIMIT || 50
+			defaultPageLimit: process.env.REACT_APP_DEFAULT_PAGE_LIMIT || 50,
+			aboutLink: process.env.REACT_APP_ABOUT_URL,
+			aboutChatLink: process.env.REACT_APP_ABOUT_CHAT_URL
 			//TODO add all process.env variables here
 		};
 
