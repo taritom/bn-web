@@ -28,7 +28,7 @@
 		<serverauthname />
 		<serverauthpass />
 		<browser>rm</browser>
-		<baseurl>https://develop.bigneon.com/</baseurl>
+		<baseurl />
 	</properties>
 
 	<dependencies>
@@ -172,17 +172,17 @@
 									<htmlMessage>
                                     <![CDATA[
                                     <p>New test build triggered!</p>
-                                    <p>Attached html file contains the test result status</p> 
+                                    <p>Attached html file contains the test result status</p>
                                     ]]>
 									</htmlMessage>
 									host
-									 <mailhost></mailhost> 
-									 port of the host 
-									 <mailport>465</mailport> 
-									 <mailssl>true</mailssl> 
-									 <mailAltConfig>true</mailAltConfig> 
+									 <mailhost></mailhost>
+									 port of the host
+									 <mailport>465</mailport>
+									 <mailssl>true</mailssl>
+									 <mailAltConfig>true</mailAltConfig>
 										Email Authentication(Username and Password)
-									 <mailuser></mailuser> 
+									 <mailuser></mailuser>
 									<mailpassword></mailpassword>
 									<receivers>
 										To Email address
