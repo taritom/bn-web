@@ -125,10 +125,10 @@ const TicketingOverview = props => {
 	];
 
 	const desktopLeftColStyles = [
-		{ flex: 4 },
-		{ flex: 2 },
-		{ flex: 2 },
-		{ flex: 3 }
+		{ flex: 5 },
+		{ flex: 3 },
+		{ flex: 3 },
+		{ flex: 6 }
 	];
 
 	//Additional info cols

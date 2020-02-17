@@ -189,8 +189,8 @@ class OrderItems extends Component {
 		this.props.refreshOrder();
 	}
 
-	onRefundOverrideDialogOpen() {
-		this.setState({ showRefundOverrideType: "items" });
+	onRefundOverrideDialogOpen(showRefundOverrideType) {
+		this.setState({ showRefundOverrideType });
 	}
 
 	onRefundOverrideDialogClose() {

@@ -150,12 +150,12 @@ class NotificationProgress extends Component {
 							src={servedImage("/icons/drinks-pink.svg")}
 						/>
 					</Grid>
-					<Grid item xs={9} md={4}>
+					<Grid item xs={10} md={4}>
 						<Typography className={classes.descriptionHeading}>
 							{isEventEnded ? "Event has ended" : "Schedule the Last Call"}
 						</Typography>
 					</Grid>
-					<Grid item xs={12} md={4}>
+					<Grid item xs={12} md={6}>
 						{isEventEnded ? null : renderTimes}
 					</Grid>
 				</Grid>

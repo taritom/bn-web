@@ -18,7 +18,8 @@ import {
 	secondaryHex
 } from "../../../../config/theme";
 import servedImage from "../../../../helpers/imagePathHelper";
-import RichTextInputField from "../../../elements/form/rich-editor/RichTextInputField";
+import RichTextInputField
+	from "../../../elements/form/rich-editor/RichTextInputField";
 import FormatInputLabel from "../../../elements/form/FormatInputLabel";
 import { Pagination, urlPageParam } from "../../../elements/pagination";
 import Hidden from "@material-ui/core/Hidden";
@@ -87,7 +88,8 @@ class SlugsList extends Component {
 			title: "",
 			description: "",
 			isSubmitting: false,
-			slugType: "Genre"
+			slugType: "Genre",
+			slugHref: "genres"
 		};
 	}
 
@@ -98,12 +100,17 @@ class SlugsList extends Component {
 	refreshSlugs(query = "", page = urlPageParam()) {
 		const { slugType } = this.state;
 		this.setState({ paging: null });
-
+		const slugHrefs = {
+			"Genre": "genres",
+			"Organization": "organizations",
+			"Venue": "venues"
+		};
 		Bigneon()
 			.slugs.index({ type: slugType, page, limit: 20 })
 			.then(response => {
 				const { data, paging } = response.data;
-				this.setState({ slugs: data, paging });
+				const slugHref = slugHrefs[slugType] || "genres";
+				this.setState({ slugHref, slugs: data, paging });
 			})
 			.catch(error => {
 				let message = "Loading slugs failed.";
@@ -149,7 +156,8 @@ class SlugsList extends Component {
 			},
 			() => {
 				Bigneon()
-					.slugs.update({
+					.slugs
+					.update({
 						id: slugId,
 						title,
 						description
@@ -172,7 +180,7 @@ class SlugsList extends Component {
 	}
 
 	renderSlugs() {
-		const { slugs, paging, isLoading, slugType } = this.state;
+		const { slugs, paging, isLoading, slugType, slugHref } = this.state;
 		const { classes } = this.props;
 
 		const slugTypes = [
@@ -205,18 +213,40 @@ class SlugsList extends Component {
 					/>
 					<Hidden smDown>
 						<SlugRow>
-							<Typography className={classes.heading}>Slug</Typography>
-							<Typography className={classes.heading}>Title</Typography>
-							<Typography className={classes.heading}>Description</Typography>
-							<Typography className={classes.heading}>Update</Typography>
+							<Typography
+								className={classes.heading}
+							>
+								Slug
+							</Typography>
+							<Typography
+								className={classes.heading}
+							>
+								Title
+							</Typography>
+							<Typography
+								className={classes.heading}
+							>Description
+							</Typography>
+							<Typography
+								className={classes.heading}
+							>
+								Update
+							</Typography>
 						</SlugRow>
 
 						{slugs.map((item, index) => {
 							const { id, slug, title, description } = item;
 							return (
 								<SlugRow shaded={!(index % 2)} key={id}>
-									<a href={`/genres/${slug}`} target="_blank">
-										<Typography className={classes.slugLink}>{slug}</Typography>
+									<a
+										href={`/${slugHref}/${slug}`}
+										target="_blank"
+									>
+										<Typography
+											className={classes.slugLink}
+										>
+											{slug}
+										</Typography>
 									</a>
 									<Typography className={classes.itemText}>
 										{title ? title : null}
@@ -225,7 +255,9 @@ class SlugsList extends Component {
 										{description ? ellipsis(description, 80) : null}
 									</Typography>
 									<Typography className={classes.itemText}>
-										<span onClick={this.toggleModal.bind(this, id)}>
+										<span
+											onClick={this.toggleModal.bind(this, id)}
+										>
 											<img
 												alt={name}
 												src={servedImage(`/icons/edit-gray.svg`)}
@@ -241,8 +273,16 @@ class SlugsList extends Component {
 					{/*mobi*/}
 					<Hidden smUp>
 						<SlugRow>
-							<Typography className={classes.heading}>Slug</Typography>
-							<Typography className={classes.heading}>Update</Typography>
+							<Typography
+								className={classes.heading}
+							>
+								Slug
+							</Typography>
+							<Typography
+								className={classes.heading}
+							>
+								Update
+							</Typography>
 						</SlugRow>
 
 						{slugs.map((item, index) => {
@@ -250,10 +290,16 @@ class SlugsList extends Component {
 							return (
 								<SlugRow shaded={!(index % 2)} key={id}>
 									<a href={`/genres/${slug}`} target="_blank">
-										<Typography className={classes.slugLink}>{slug}</Typography>
+										<Typography
+											className={classes.slugLink}
+										>
+											{slug}
+										</Typography>
 									</a>
 									<Typography className={classes.itemText}>
-										<span onClick={this.toggleModal.bind(this, id)}>
+										<span
+											onClick={this.toggleModal.bind(this, id)}
+										>
 											<img
 												alt={name}
 												src={servedImage(`/icons/edit-gray.svg`)}
@@ -301,13 +347,15 @@ class SlugsList extends Component {
 						Description
 					</FormatInputLabel>
 					<br/>
-					<Typography>Please ensure that your HTML is valid. </Typography>
+					<Typography>Please ensure that your HTML is
+						valid. </Typography>
 					<a
 						href="https://www.online-toolz.com/tools/html-validator.php"
 						target="_blank"
 					>
 						<Typography className={classes.slugLink}>
-							Here is an HTML Validator should you wish to check before.
+							Here is an HTML Validator should you wish to check
+							before.
 						</Typography>
 					</a>
 					<textarea

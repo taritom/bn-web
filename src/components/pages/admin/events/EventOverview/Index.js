@@ -222,7 +222,10 @@ const styles = theme => ({
 	},
 	artistsOverviewCard: {
 		flexDirection: "row",
-		alignItems: "center"
+		alignItems: "center",
+		[theme.breakpoints.down("sm")]: {
+			padding: "15px 15px"
+		}
 	},
 	smallGreyCapTitle: {
 		opacity: 0.2,
