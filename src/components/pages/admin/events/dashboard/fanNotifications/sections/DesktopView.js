@@ -25,7 +25,8 @@ class DesktopView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		} = this.props;
 
 		this.defaultState = {
@@ -43,7 +44,8 @@ class DesktopView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		};
 
 		this.state = this.defaultState;
@@ -65,7 +67,8 @@ class DesktopView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		} = props;
 
 		return {
@@ -83,7 +86,8 @@ class DesktopView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		};
 	}
 
@@ -107,7 +111,8 @@ class DesktopView extends Component {
 			details,
 			eventId,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		} = this.props;
 
 		return (
@@ -134,6 +139,7 @@ class DesktopView extends Component {
 							isEventEnded={isEventEnded}
 							scheduleSent={scheduleSent}
 							renderTimes={renderTimes}
+							inProgress={inProgress}
 						/>
 					</Grid>
 					<Grid item xs={12} md={5}>
@@ -149,6 +155,7 @@ class DesktopView extends Component {
 										timezone={timezone}
 										onSend={onSend}
 										broadcastSent={broadcastSent}
+										inProgress={inProgress}
 									/>
 								</div>
 							</Grid>
@@ -164,6 +171,7 @@ class DesktopView extends Component {
 									onSendNow={onSendNow}
 									broadcastSent={broadcastSent}
 									hasEventStarted={hasEventStarted}
+									inProgress={inProgress}
 								/>
 							</Grid>
 						</Grid>
@@ -190,6 +198,7 @@ DesktopView.propTypes = {
 	isNotificationAfter: PropTypes.bool,
 	isEventEnded: PropTypes.bool,
 	hasEventStarted: PropTypes.bool,
+	inProgress: PropTypes.bool,
 	scheduleSent: PropTypes.number,
 	isSending: PropTypes.bool,
 	isCustom: PropTypes.bool,

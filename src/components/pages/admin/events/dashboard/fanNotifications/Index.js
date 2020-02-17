@@ -130,7 +130,8 @@ class Index extends Component {
 			isEventEnded: false,
 			datesOptions: [],
 			hasEventStarted: true,
-			count: 1
+			count: 1,
+			inProgress: false
 		};
 	}
 
@@ -154,7 +155,7 @@ class Index extends Component {
 			this.fetchNotificationQuantity();
 			count++;
 			this.setState({ count });
-			// 12 * 5000 = 600000 or 2 minutes 
+			// 12 * 5000 = 600000 or 2 minutes
 			if (count < 12) {
 				this.gradualTimer();
 			}
@@ -193,6 +194,7 @@ class Index extends Component {
 			.then(response => {
 				const { data } = response.data;
 				let broadcastSent = true;
+				let inProgress = false;
 				data.forEach(
 					({
 						id,
@@ -204,7 +206,8 @@ class Index extends Component {
 						opened_quantity
 					}) => {
 						if (notification_type === "LastCall") {
-							broadcastSent = status !== "Pending" && status !== "InProgress";
+							broadcastSent = status !== "Pending";
+							inProgress = status === "InProgress";
 							const scheduledAt = send_at !== null ? send_at : updated_at;
 
 							const isNotificationAfter = !!moment
@@ -220,7 +223,8 @@ class Index extends Component {
 								sendAt: moment
 									.utc(scheduledAt)
 									.tz(timezone)
-									.format(TIME_FORMAT_MM_DD_YYYY_NO_TIMEZONE)
+									.format(TIME_FORMAT_MM_DD_YYYY_NO_TIMEZONE),
+								inProgress
 							});
 							if (!isNotificationAfter) {
 								this.autoLoadProgress();
@@ -430,7 +434,8 @@ class Index extends Component {
 	onAction() {
 		this.setState({
 			broadcastSent: true,
-			updateNotification: true
+			updateNotification: true,
+			inProgress: false
 		});
 	}
 
@@ -538,7 +543,8 @@ class Index extends Component {
 			isEventEnded,
 			scheduleSent,
 			isCustom,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		} = this.state;
 
 		const Details = (
@@ -602,6 +608,7 @@ class Index extends Component {
 						details={Details}
 						eventId={this.eventId}
 						hasEventStarted={hasEventStarted}
+						inProgress={inProgress}
 					/>
 				</Hidden>
 				<Hidden mdUp>
@@ -625,6 +632,7 @@ class Index extends Component {
 						details={Details}
 						eventId={this.eventId}
 						hasEventStarted={hasEventStarted}
+						inProgress={inProgress}
 					/>
 				</Hidden>
 			</div>

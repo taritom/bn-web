@@ -26,7 +26,8 @@ class MobileView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		} = this.props;
 
 		this.defaultState = {
@@ -44,7 +45,8 @@ class MobileView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		};
 
 		this.state = this.defaultState;
@@ -66,7 +68,8 @@ class MobileView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		} = props;
 
 		return {
@@ -84,7 +87,8 @@ class MobileView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		};
 	}
 
@@ -109,7 +113,8 @@ class MobileView extends Component {
 			details,
 			eventId,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		} = this.props;
 
 		return (
@@ -139,6 +144,7 @@ class MobileView extends Component {
 								isEventEnded={isEventEnded}
 								scheduleSent={scheduleSent}
 								renderTimes={renderTimes}
+								inProgress={inProgress}
 							/>
 						</Grid>
 						<Grid item xs={12} className={classes.actionInfoContainer}>
@@ -152,6 +158,7 @@ class MobileView extends Component {
 										isEventEnded={isEventEnded}
 										timezone={timezone}
 										onSend={onSend}
+										inProgress={inProgress}
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -167,6 +174,7 @@ class MobileView extends Component {
 											onSendNow={onSendNow}
 											broadcastSent={broadcastSent}
 											hasEventStarted={hasEventStarted}
+											inProgress={inProgress}
 										/>
 									</div>
 								</Grid>
@@ -202,6 +210,7 @@ MobileView.propTypes = {
 	isNotificationAfter: PropTypes.bool,
 	hasEventStarted: PropTypes.bool,
 	isEventEnded: PropTypes.bool,
+	inProgress: PropTypes.bool,
 	scheduleSent: PropTypes.number,
 	isSending: PropTypes.bool,
 	isCustom: PropTypes.bool,

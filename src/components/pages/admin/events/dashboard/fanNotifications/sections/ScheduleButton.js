@@ -18,7 +18,8 @@ class ScheduleButton extends Component {
 			isEventEnded,
 			timezone,
 			classes,
-			onSend
+			onSend,
+			inProgress
 		} = this.props;
 
 		this.defaultState = {
@@ -30,7 +31,8 @@ class ScheduleButton extends Component {
 			isEventEnded,
 			timezone,
 			classes,
-			onSend
+			onSend,
+			inProgress
 		};
 
 		this.state = this.defaultState;
@@ -46,7 +48,8 @@ class ScheduleButton extends Component {
 			isEventEnded,
 			timezone,
 			classes,
-			onSend
+			onSend,
+			inProgress
 		} = props;
 
 		return {
@@ -58,7 +61,8 @@ class ScheduleButton extends Component {
 			isEventEnded,
 			timezone,
 			classes,
-			onSend
+			onSend,
+			inProgress
 		};
 	}
 
@@ -72,10 +76,11 @@ class ScheduleButton extends Component {
 			isEventEnded,
 			timezone,
 			classes,
-			onSend
+			onSend,
+			inProgress
 		} = this.props;
 
-		if (scheduledAt && !broadcastSent) {
+		if (scheduledAt && (!broadcastSent || inProgress)) {
 			return (
 				<Typography className={classes.notificationBg}>
 					Notification scheduled
@@ -116,7 +121,8 @@ ScheduleButton.propTypes = {
 	isEventEnded: PropTypes.bool.isRequired,
 	timezone: PropTypes.string,
 	onSend: PropTypes.func.isRequired,
-	broadcastSent: PropTypes.bool
+	broadcastSent: PropTypes.bool,
+	inProgress: PropTypes.bool
 };
 
 export default ScheduleButton;

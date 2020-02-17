@@ -15,7 +15,8 @@ class ActionButton extends Component {
 			onAction,
 			broadcastSent,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		} = this.props;
 
 		this.defaultState = {
@@ -27,7 +28,8 @@ class ActionButton extends Component {
 			onAction,
 			broadcastSent,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		};
 
 		this.state = this.defaultState;
@@ -42,7 +44,8 @@ class ActionButton extends Component {
 			onAction,
 			broadcastSent,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		} = props;
 
 		return {
@@ -53,7 +56,8 @@ class ActionButton extends Component {
 			onAction,
 			broadcastSent,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		};
 	}
 
@@ -65,10 +69,11 @@ class ActionButton extends Component {
 			onAction,
 			broadcastSent,
 			onSendNow,
-			hasEventStarted
+			hasEventStarted,
+			inProgress
 		} = this.props;
 
-		if (scheduledAt && !broadcastSent && isNotificationAfter) {
+		if (scheduledAt && !broadcastSent) {
 			return (
 				<Button
 					variant={"whiteCTA"}
@@ -79,7 +84,7 @@ class ActionButton extends Component {
 					Change
 				</Button>
 			);
-		} else if(isNotificationAfter && hasEventStarted) {
+		} else if(isNotificationAfter && hasEventStarted && !inProgress) {
 			return (
 				<Button
 					variant={"whiteCTA"}
@@ -105,7 +110,8 @@ ActionButton.propTypes = {
 	broadcastSent: PropTypes.bool,
 	onAction: PropTypes.func.isRequired,
 	onSendNow: PropTypes.func.isRequired,
-	hasEventStarted: PropTypes.bool
+	hasEventStarted: PropTypes.bool,
+	inProgress: PropTypes.bool
 };
 
 export default ActionButton;

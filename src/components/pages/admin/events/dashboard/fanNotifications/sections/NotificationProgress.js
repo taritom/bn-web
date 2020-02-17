@@ -19,7 +19,8 @@ class NotificationProgress extends Component {
 			isNotificationAfter,
 			isEventEnded,
 			scheduleSent,
-			renderTimes
+			renderTimes,
+			inProgress
 		} = this.props;
 
 		this.defaultState = {
@@ -33,7 +34,8 @@ class NotificationProgress extends Component {
 			isNotificationAfter,
 			isEventEnded,
 			scheduleSent,
-			renderTimes
+			renderTimes,
+			inProgress
 		};
 
 		this.state = this.defaultState;
@@ -51,7 +53,8 @@ class NotificationProgress extends Component {
 			isNotificationAfter,
 			isEventEnded,
 			scheduleSent,
-			renderTimes
+			renderTimes,
+			inProgress
 		} = props;
 
 		return {
@@ -65,7 +68,8 @@ class NotificationProgress extends Component {
 			isNotificationAfter,
 			isEventEnded,
 			scheduleSent,
-			renderTimes
+			renderTimes,
+			inProgress
 		};
 	}
 
@@ -80,7 +84,8 @@ class NotificationProgress extends Component {
 			isNotificationAfter,
 			isEventEnded,
 			scheduleSent,
-			renderTimes
+			renderTimes,
+			inProgress
 		} = this.props;
 
 		let completed = 0;
@@ -90,7 +95,7 @@ class NotificationProgress extends Component {
 			completed = (scheduleProgress / scheduleSent) * 100;
 		}
 
-		if (scheduledAt && !broadcastSent) {
+		if (scheduledAt && (!broadcastSent || inProgress)) {
 			return (
 				<Grid container alignItems="center" spacing={24}>
 					<Grid item xs={1}>
@@ -175,7 +180,8 @@ NotificationProgress.propTypes = {
 	isNotificationAfter: PropTypes.bool.isRequired,
 	isEventEnded: PropTypes.bool.isRequired,
 	scheduleSent: PropTypes.number,
-	renderTimes: PropTypes.object
+	renderTimes: PropTypes.object,
+	inProgress: PropTypes.bool
 };
 
 export default NotificationProgress;
