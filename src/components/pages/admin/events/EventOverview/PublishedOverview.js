@@ -9,15 +9,15 @@ const PublishedOverview = ({ classes, event }) => {
 		cancelled_at,
 		publishedDateFormatted,
 		publishStatus,
-		publishStatusHeading
+		publishStatusHeading,
+		unpublishedDateFormatted
 	} = event;
 
 	// Top Line col styles
 	const colStyles = [{ flex: 1 }, { flex: 4 }];
 
 	const headings = ["Status", publishStatusHeading];
-	const values = [publishStatus, publish_date ? publishedDateFormatted : ""];
-
+	const values = [publishStatus, publish_date ? publishedDateFormatted : unpublishedDateFormatted];
 	return (
 		<Card className={classes.detailsCardStyle}>
 			{/*DESKTOP*/}
@@ -40,7 +40,7 @@ const PublishedOverview = ({ classes, event }) => {
 							style={colStyles[index]}
 							className={classes.smallTitle}
 						>
-							{value ? value + " " : "Not Published"}
+							{values[index] ? values[index] + " " : "Not Published"}
 						</Typography>
 					))}
 				</div>

@@ -415,7 +415,8 @@ class EventOverview extends Component {
 						venue,
 						publish_date,
 						door_time,
-						cancelled_at
+						cancelled_at,
+						updated_at
 					} = event;
 
 					this.getTickets(selectedEventId);
@@ -458,16 +459,29 @@ class EventOverview extends Component {
 							.utc(publish_date)
 							.isBefore(moment.utc())
 							? "Published on"
-							: "Publish date";
+							: moment.utc(publish_date).isAfter(moment.utc())
+								? "Scheduled on"
+								: publish_date
+									? "Publish date"
+									: "Unpublished at";
 
 						event.publishStatus = cancelled_at
 							? "Cancelled"
 							: moment.utc(publish_date).isBefore(moment.utc())
 								? "Published"
-								: "Draft";
+								: moment.utc(publish_date).isAfter(moment.utc())
+									? "Scheduled"
+									: !isPublished && updated_at
+										? "Not Published"
+										: "Draft";
 
 						event.publishedDateFormatted = moment
 							.utc(publish_date)
+							.tz(venueTimezone)
+							.format("MM/DD/YYYY HH:mm A z");
+
+						event.unpublishedDateFormatted = moment
+							.utc(updated_at)
 							.tz(venueTimezone)
 							.format("MM/DD/YYYY HH:mm A z");
 

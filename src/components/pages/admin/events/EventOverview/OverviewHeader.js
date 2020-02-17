@@ -5,6 +5,7 @@ import optimizedImageUrl from "../../../../../helpers/optimizedImageUrl";
 import Divider from "@material-ui/core/Divider";
 import servedImage from "../../../../../helpers/imagePathHelper";
 import ColorTag from "../../../../elements/ColorTag";
+import moment from "moment-timezone";
 
 const OverviewHeader = ({ classes, event, artists, venue, timezoneAbbr }) => {
 	const {
@@ -16,7 +17,8 @@ const OverviewHeader = ({ classes, event, artists, venue, timezoneAbbr }) => {
 		shortDate,
 		isPublished,
 		isOnSale,
-		eventEnded
+		eventEnded,
+		publish_date
 	} = event;
 
 	const promo_image_url = event.promo_image_url
@@ -44,9 +46,17 @@ const OverviewHeader = ({ classes, event, artists, venue, timezoneAbbr }) => {
 			<div className={classes.statusContainer}>
 				<ColorTag
 					style={{ marginRight: 10, borderRadius: 3 }}
-					variant={isPublished ? "secondary" : "disabled"}
+					variant={
+						isPublished || moment.utc(publish_date).isAfter(moment.utc())
+							? "secondary"
+							: "disabled"
+					}
 				>
-					{isPublished ? "Published" : "Draft"}
+					{isPublished
+						? "Published"
+						: moment.utc(publish_date).isAfter(moment.utc())
+							? "Scheduled"
+							: "Not Published"}
 				</ColorTag>
 				{onSaleTag}
 			</div>

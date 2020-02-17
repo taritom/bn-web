@@ -291,7 +291,7 @@ class Event extends Component {
 				this.setState({ isSubmitting: false });
 				notifications.show({
 					variant: "success",
-					message: "Event published."
+					message: "Event saved."
 				});
 				eventUpdateStore.loadDetails(id);
 
@@ -443,7 +443,7 @@ class Event extends Component {
 							})
 						}
 					>
-						Published
+						{moment.utc(event.publishDate).isBefore(moment.utc()) ? "Published" : "Future Date"}
 					</RadioButton>
 					<RadioButton
 						active={shouldUnpublish}
@@ -459,7 +459,7 @@ class Event extends Component {
 
 				{!shouldUnpublish ? (
 					<Typography className={classes.publishedAt}>
-						{moment.utc(event.publishDate).isBefore(moment.utc()) ? "Published at " : "Scheduled "}
+						{moment.utc(event.publishDate).isBefore(moment.utc()) ? "Published at " : "Scheduled at "}
 						{moment(event.publishDate).format("MM/DD/YYYY hh:mm A (z)")}
 					</Typography>
 				) : null}
@@ -468,21 +468,9 @@ class Event extends Component {
 	}
 
 	renderLoader() {
-		const { isSubmitting, isSavingDraft, isPublishing } = this.state;
-		const { id } = eventUpdateStore;
+		const { isSubmitting } = this.state;
 
-		let loadingText = "";
-		if (id) {
-			if (isSavingDraft) {
-				loadingText = "Saving draft...";
-			} else if (isPublishing) {
-				loadingText = "Publishing event...";
-			} else {
-				loadingText = "Updating event...";
-			}
-		} else {
-			loadingText = "Creating new event...";
-		}
+		const loadingText = "Updating event...";
 
 		return (
 			<Dialog open={isSubmitting}>
@@ -665,7 +653,7 @@ class Event extends Component {
 									variant="callToAction"
 								>
 									{isDraft
-										? "Publish"
+										? "Save"
 										: isSubmitting
 											? "Updating..."
 											: "Update"}

@@ -130,7 +130,8 @@ const EventSummaryCard = props => {
 		onExpandClick,
 		ticketTypes,
 		cancelled,
-		eventEnded
+		eventEnded,
+		publishDate
 	} = props;
 
 	const mediaStyle = imageUrl
@@ -157,9 +158,13 @@ const EventSummaryCard = props => {
 			<div className={classes.statusContainer}>
 				<ColorTag
 					style={{ marginRight: 10 }}
-					variant={isPublished ? "secondary" : "disabled"}
+					variant={isPublished || moment.utc(publishDate).isAfter(moment.utc()) ? "secondary" : "disabled"}
 				>
-					{isPublished ? "Published" : "Draft"}
+					{isPublished
+						? "Published"
+						: moment.utc(publishDate).isAfter(moment.utc())
+							? "Scheduled"
+							: "Not Published"}
 				</ColorTag>
 				{onSaleTag}
 			</div>
@@ -315,7 +320,8 @@ EventSummaryCard.propTypes = {
 	onExpandClick: PropTypes.func.isRequired,
 	ticketTypes: PropTypes.array.isRequired,
 	cancelled: PropTypes.bool,
-	eventEnded: PropTypes.bool
+	eventEnded: PropTypes.bool,
+	publishDate: PropTypes.string
 };
 
 export default withStyles(styles)(EventSummaryCard);
