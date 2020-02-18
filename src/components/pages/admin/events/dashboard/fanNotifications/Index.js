@@ -160,7 +160,7 @@ class Index extends Component {
 				this.gradualTimer();
 			}
 		}, count * 5000);
-	};
+	}
 
 	fetchNotificationQuantity() {
 		Bigneon()
