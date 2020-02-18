@@ -149,7 +149,7 @@ class Index extends Component {
 		this.gradualTimer();
 	}
 
-	gradualTimer = () => {
+	gradualTimer() {
 		let { count } = this.state;
 		setTimeout(() => {
 			this.fetchNotificationQuantity();
