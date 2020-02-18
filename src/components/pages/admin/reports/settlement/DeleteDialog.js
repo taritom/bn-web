@@ -115,11 +115,9 @@ class DeleteDialog extends Component {
 	constructor(props) {
 		super(props);
 
-		this.defaultState = {
+		this.state = {
 			isDeleting: false
 		};
-
-		this.state = this.defaultState;
 
 		this.onDeleteAdjustment = this.onDeleteAdjustment.bind(this);
 	}
@@ -140,14 +138,14 @@ class DeleteDialog extends Component {
 				status === 200
 					? this.adjustmentDeleted()
 					: notifications.showFromErrorResponse({
-						defaultMessage: "Deleting settlement adjustment failed."
+						defaultMessage: "There was an error deleting the settlement adjustment, please try again."
 					  });
 			})
 			.catch(error => {
 				console.error(error);
 				notifications.showFromErrorResponse({
 					error,
-					defaultMessage: "Deleting settlement adjustment failed."
+					defaultMessage: "There was an error deleting the settlement adjustment, please try again."
 				});
 			});
 	}
