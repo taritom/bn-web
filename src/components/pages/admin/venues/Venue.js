@@ -285,6 +285,7 @@ class Venue extends Component {
 
 	createNewVenue(params, onSuccess) {
 		const { venueOrganizations } = this.state;
+		this.setState({ isSubmitting: true });
 		Bigneon()
 			.venues.create(params)
 			.then(response => {
@@ -302,6 +303,7 @@ class Venue extends Component {
 					});
 				}
 				onSuccess(id);
+				this.setState({ isSubmitting: false });
 			})
 			.catch(error => {
 				console.error(error);
@@ -331,6 +333,7 @@ class Venue extends Component {
 
 	async updateVenue(id, params, onSuccess) {
 		const { venueOrganizations, existingVenueOrgLinks } = this.state;
+		this.setState({ isSubmitting: true });
 		await Bigneon()
 			.venues.update({ ...params, id })
 			.then(async () => {
@@ -366,6 +369,7 @@ class Venue extends Component {
 					})
 				);
 				onSuccess(id);
+				this.setState({ isSubmitting: false });
 			})
 			.catch(error => {
 				console.error(error);
@@ -769,8 +773,8 @@ class Venue extends Component {
 									>
 										{isSubmitting
 											? venueId
-												? "Creating..."
-												: "Updating..."
+												? "Updating..."
+												: "Creating..."
 											: venueId
 												? "Update"
 												: "Create"}
