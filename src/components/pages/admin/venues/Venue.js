@@ -326,16 +326,24 @@ class Venue extends Component {
 	}
 
 	addOrganizationToVenue(id) {
-		const { venueOrganizations } = this.state;
+		const { venueOrganizations, organizations } = this.state;
 		const orgs = venueOrganizations;
 		if (id) {
-			orgs.push(id);
+			const selectedOrg = organizations.find(org => org.id === id);
+			if (!orgs.find(o => o.id === selectedOrg.id)) orgs.push(selectedOrg);
 		}
+		this.setState({ venueOrganizations: orgs });
 		return orgs;
 	}
 
 	renderOrganizations() {
-		const { organizationId, organizations, errors } = this.state;
+		const {
+			organizationId,
+			organizations,
+			errors,
+			venueOrganizations
+		} = this.state;
+		const { classes } = this.props;
 		if (organizations === null) {
 			return <Typography variant="body1">Loading organizations...</Typography>;
 		}
@@ -353,13 +361,17 @@ class Venue extends Component {
 					error={errors.organizationId}
 					name={"organization"}
 					label={"Organization *"}
-					onChange={e =>
-						this.setState({ organizationId: e.target.value }, () => {
-							this.addOrganizationToVenue(this.state.organizationId);
-						})
-					}
+					onChange={e => {
+						this.addOrganizationToVenue(e.target.value);
+					}}
 				/>
-				<VenueOrganizationList organizationId={organizationId}/>
+				<div>
+					{venueOrganizations
+						? venueOrganizations.map((org, index) => {
+							return <VenueOrganizationList key={index} organization={org}/>;
+						  })
+						: null}
+				</div>
 			</div>
 		);
 	}
