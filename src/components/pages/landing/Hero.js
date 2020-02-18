@@ -16,7 +16,6 @@ const styles = theme => ({
 		backgroundSize: "cover",
 		backgroundPosition: "center",
 		backgroundColor: "#19081e",
-		backgroundImage: "url(/images/homepage-bg.png)",
 		display: "flex",
 		flexDirection: "column",
 		minHeight: 500,
@@ -24,6 +23,12 @@ const styles = theme => ({
 			flexDirection: "column",
 			minHeight: 210
 		}
+	},
+	"webp": {
+		backgroundImage: "url(/images/homepage-bg.webp)"
+	},
+	"nowebp": {
+		backgroundImage: "url(/images/homepage-bg.jpg)"
 	},
 	headingContainer: {
 		display: "flex",
@@ -164,8 +169,9 @@ class Hero extends Component {
 	render() {
 		const { history, classes } = this.props;
 		const { phoneOS, isReactNative } = this.state;
+		const { webPSupported } = Settings();
 		return isReactNative ? null : (
-			<div className={classes.root}>
+			<div className={[classes.root, webPSupported ? classes.webp : classes.nowebp].join(" ")}>
 				{/*<Hidden smDown>*/}
 				{/*	<div className={classes.toolBar}>*/}
 				{/*		<img*/}

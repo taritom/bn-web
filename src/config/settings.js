@@ -5,13 +5,13 @@ let settings;
 export const settingsFactory = () => {
 	if (!settings) {
 		let webUrl = process.env.REACT_APP_WEB_URL;
-		if (webUrl.substring(webUrl.length - 1) == "/") {
+		if (webUrl.substring(webUrl.length - 1) === "/") {
 			webUrl = webUrl.substring(0, webUrl.length - 1);
 		}
 
 		settings = {
 			promoImageAspectRatio: 1920 / 1080,
-			webPSupported: null, //Does the browser support next gen image formats
+			webPSupported: checkWebPFeature(), //Does the browser support next gen image formats
 			webUrl,
 			genericAppDownloadLink: process.env.REACT_APP_DOWNLOAD_APP,
 			facebookLink: process.env.REACT_APP_FACEBOOK_URL,
@@ -30,10 +30,6 @@ export const settingsFactory = () => {
 			aboutChatLink: process.env.REACT_APP_ABOUT_CHAT_URL
 			//TODO add all process.env variables here
 		};
-
-		checkWebPFeature("lossy", isSupported => {
-			settings.webPSupported = isSupported;
-		});
 	}
 
 	return settings;
