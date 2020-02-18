@@ -40,7 +40,18 @@ const styles = theme => ({
 		alignItems: "center"
 	},
 	addImgContainer: {
-		marginBottom: theme.spacing.unit * 2
+		marginBottom: theme.spacing.unit * 4
+	},
+	removeOrgIcon: {
+		maxWidth: 14
+	},
+	orgContainer: {
+		marginBottom: theme.spacing.unit,
+		marginTop: theme.spacing.unit
+	},
+	orgName: {
+		fontSize: 16,
+		color: "#9DA3B4"
 	}
 });
 
@@ -197,8 +208,8 @@ class Venue extends Component {
 					).name;
 				});
 				this.setState({
-					venueOrganizations: data,
-					existingVenueOrgLinks: data
+					venueOrganizations: [...data],
+					existingVenueOrgLinks: [...data]
 				});
 			})
 			.catch(error => {
@@ -284,7 +295,7 @@ class Venue extends Component {
 						if (org.id !== params.organization_id) {
 							this.createVenueOrgLink({
 								id: id,
-								organization_id: org.id,
+								organization_id: org.organization_id,
 								venue_id: id
 							});
 						}
@@ -324,16 +335,18 @@ class Venue extends Component {
 			.venues.update({ ...params, id })
 			.then(async () => {
 				// Create missing ones
-
-				const toInsert = venueOrganizations.filter(x =>
-					venueOrganizations.find(newOrg => newOrg.id === x.id)
+				const toInsert = venueOrganizations.filter(
+					x =>
+						!existingVenueOrgLinks.find(
+							newOrg => newOrg.organization_id === x.organization_id
+						)
 				);
 
 				await Promise.all(
 					toInsert.map(org => {
 						return this.createVenueOrgLink({
 							id: id,
-							organization_id: org.id,
+							organization_id: org.organization_id,
 							venue_id: id
 						});
 					})
@@ -342,14 +355,16 @@ class Venue extends Component {
 				// Delete
 				// Find orgs that are in existing that are no longer present
 				const toDelete = existingVenueOrgLinks.filter(
-					link => !venueOrganizations.find(newOrg => newOrg.id === link.id)
+					link =>
+						!venueOrganizations.find(
+							newOrg => newOrg.organization_id === link.organization_id
+						)
 				);
 				await Promise.all(
 					toDelete.map(link => {
 						return this.deleteVenueOrgLink(link.id);
 					})
 				);
-
 				onSuccess(id);
 			})
 			.catch(error => {
@@ -448,7 +463,11 @@ class Venue extends Component {
 		const orgs = venueOrganizations;
 		if (id) {
 			const selectedOrg = this.findOrgById(id, organizations);
-			if (!orgs.find(o => o.id === selectedOrg.id)) orgs.push(selectedOrg);
+			if (
+				!orgs.find(org => org.id === selectedOrg.id) &&
+				!orgs.find(org => org.organization_id === selectedOrg.id)
+			)
+				orgs.push({ organization_id: selectedOrg.id, ...selectedOrg });
 		}
 		this.setState({ venueOrganizations: orgs });
 		return orgs;
@@ -501,18 +520,25 @@ class Venue extends Component {
 					}}
 				/>
 				<div>
-					{venueOrganizations
-						? venueOrganizations.map((org, index) => {
-							return (
-								<VenueOrganizationList
-									classes={classes}
-									key={index}
-									organization={org}
-									removeOrg={this.removeOrgFromList}
-								/>
-							);
-						  })
-						: null}
+					{venueOrganizations ? (
+						<div>
+							<Typography>Linked Organizations:</Typography>
+							<div className={classes.orgContainer}>
+								{venueOrganizations.map((org, index) => {
+									return (
+										<div>
+											<VenueOrganizationList
+												classes={classes}
+												key={index}
+												organization={org}
+												removeOrg={this.removeOrgFromList}
+											/>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					) : null}
 				</div>
 			</div>
 		);
@@ -624,7 +650,8 @@ class Venue extends Component {
 			address = "",
 			city = "",
 			postal_code = "",
-			country = ""
+			country = "",
+			venueOrganizations
 		} = this.state;
 
 		const { classes } = this.props;
@@ -652,6 +679,7 @@ class Venue extends Component {
 										/>
 										<Button
 											style={{ width: "100%" }}
+											variant={"callToAction"}
 											onClick={this.uploadWidget.bind(this)}
 										>
 											Upload image

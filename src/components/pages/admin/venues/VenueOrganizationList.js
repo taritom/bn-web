@@ -17,10 +17,10 @@ class VenueOrganizationList extends Component {
 		const { classes, organization } = this.props;
 		return (
 			<div className={classes.orgRow}>
-				<Typography> {organization.name}</Typography>
+				<Typography className={classes.orgName}> {organization.name}</Typography>
 				<div onClick={() => this.removeOrg(organization.id)}>
 					<img
-						className={classes.mobileHeaderIcon}
+						className={classes.removeOrgIcon}
 						alt="close"
 						src={servedImage("/icons/delete-active.svg")}
 					/>
