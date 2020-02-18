@@ -32,6 +32,12 @@ const styles = theme => ({
 		backgroundRepeat: "no-repeat",
 		backgroundSize: "50% 50%",
 		borderRadius: theme.shape.borderRadius
+	},
+	orgRow: {
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center"
 	}
 });
 
@@ -67,6 +73,7 @@ class Venue extends Component {
 			states: [],
 			venueOrganizations: []
 		};
+		this.removeOrgFromList = this.removeOrgFromList.bind(this);
 	}
 
 	componentDidMount() {
@@ -336,6 +343,17 @@ class Venue extends Component {
 		return orgs;
 	}
 
+	removeOrgFromList(id) {
+		const { venueOrganizations } = this.state;
+		const orgs = venueOrganizations;
+		let newOrgs = [];
+		if (id) {
+			newOrgs = orgs.filter(org => org.id !== id);
+		}
+		this.setState({ venueOrganizations: newOrgs });
+		return newOrgs;
+	}
+
 	renderOrganizations() {
 		const {
 			organizationId,
@@ -368,7 +386,14 @@ class Venue extends Component {
 				<div>
 					{venueOrganizations
 						? venueOrganizations.map((org, index) => {
-							return <VenueOrganizationList key={index} organization={org}/>;
+							return (
+								<VenueOrganizationList
+									classes={classes}
+									key={index}
+									organization={org}
+									removeOrg={this.removeOrgFromList}
+								/>
+							);
 						  })
 						: null}
 				</div>
