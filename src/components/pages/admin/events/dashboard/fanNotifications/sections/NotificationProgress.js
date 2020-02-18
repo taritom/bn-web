@@ -19,7 +19,6 @@ class NotificationProgress extends Component {
 			isNotificationAfter,
 			isEventEnded,
 			scheduleSent,
-			renderTimes,
 			inProgress
 		} = this.props;
 
@@ -34,7 +33,6 @@ class NotificationProgress extends Component {
 			isNotificationAfter,
 			isEventEnded,
 			scheduleSent,
-			renderTimes,
 			inProgress
 		};
 

@@ -25,7 +25,6 @@ class DesktopView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted,
 			inProgress
 		} = this.props;
 
@@ -44,7 +43,6 @@ class DesktopView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted,
 			inProgress
 		};
 

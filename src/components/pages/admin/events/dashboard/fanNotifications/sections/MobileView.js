@@ -26,7 +26,6 @@ class MobileView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted,
 			inProgress
 		} = this.props;
 
@@ -45,7 +44,6 @@ class MobileView extends Component {
 			isCustom,
 			renderTimes,
 			onSendNow,
-			hasEventStarted,
 			inProgress
 		};
 

@@ -136,13 +136,13 @@ class Index extends Component {
 	}
 
 	componentDidMount() {
-		const { broadcastSent, scheduleProgress, scheduleSent } = this.state;
+		const { broadcastSent, inProgress } = this.state;
 		//TODO check if the event is running before enabling the button
 		this.setState({ canTrigger: true });
 
 		this.loadNotificationDetails();
 
-		broadcastSent && this.autoLoadProgress();
+		broadcastSent && inProgress && this.autoLoadProgress();
 	}
 
 	autoLoadProgress() {

@@ -18,8 +18,7 @@ class ScheduleButton extends Component {
 			isEventEnded,
 			timezone,
 			classes,
-			onSend,
-			inProgress
+			onSend
 		} = this.props;
 
 		this.defaultState = {
@@ -31,8 +30,7 @@ class ScheduleButton extends Component {
 			isEventEnded,
 			timezone,
 			classes,
-			onSend,
-			inProgress
+			onSend
 		};
 
 		this.state = this.defaultState;
@@ -72,7 +70,6 @@ class ScheduleButton extends Component {
 			isSending,
 			broadcastSent,
 			isSchedule,
-			isNotificationAfter,
 			isEventEnded,
 			timezone,
 			classes,
