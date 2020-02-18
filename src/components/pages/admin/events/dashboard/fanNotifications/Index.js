@@ -142,7 +142,7 @@ class Index extends Component {
 
 		this.loadNotificationDetails();
 
-		!broadcastSent ? this.autoLoadProgress() : null;
+		broadcastSent && this.autoLoadProgress();
 	}
 
 	autoLoadProgress() {
