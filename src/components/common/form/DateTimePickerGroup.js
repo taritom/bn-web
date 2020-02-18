@@ -315,9 +315,11 @@ class DateTimePickerGroup extends Component {
 						</Popover>
 					</span>
 				) : null}
-				<FormHelperText id={`${name}-error-text`}>
-					{!isTimeValid ? "Not a valid time (e.g. 9:30 PM)" : error}
-				</FormHelperText>
+				{!isTimeValid || error ? (
+					<FormHelperText id={`${name}-error-text`}>
+						{!isTimeValid ? "Not a valid time (e.g. 9:30 PM)" : error}
+					</FormHelperText>
+				) : null}
 			</FormControl>
 		);
 	}

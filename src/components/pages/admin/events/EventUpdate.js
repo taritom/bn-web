@@ -567,6 +567,7 @@ class Event extends Component {
 						<EventDetails
 							validateFields={this.validateFields.bind(this)}
 							errors={errors.event || {}}
+							hasSubmitted={this.hasSubmitted}
 						/>
 
 						<div className={classes.spacer}/>
