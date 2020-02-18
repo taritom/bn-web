@@ -640,7 +640,6 @@ class Details extends Component {
 							name="eventDate"
 							label="Event date *"
 							onChange={newEventDate => {
-
 								//Check if date selected is before current date/time
 								moment.utc(newEventDate).isBefore(moment.utc())
 									? (dateError.eventDate = true)
@@ -669,7 +668,7 @@ class Details extends Component {
 							error={dateError.eventDate}
 							id={`eventDate-error-text`}
 						>
-							{dateError.eventDate && !hasSubmitted && disablePastDate
+							{dateError.eventDate && disablePastDate
 								? "Event with sales cannot move to past date."
 								: ""}
 						</FormHelperText>
@@ -720,7 +719,7 @@ class Details extends Component {
 								const updatedEndTime = newEndDate;
 
 								let adjustTime;
-								
+
 								//Check if date selected is before current date/time
 								moment.utc(updatedEndTime).isBefore(moment.utc())
 									? (dateError.endTime = true)
